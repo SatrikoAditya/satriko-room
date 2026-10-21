@@ -79,9 +79,9 @@ export const sections: readonly Section[] = [
     objectId: 'edu-frames',
     theme: 'frames',
     cameraPose: {
-      target: [-4.8, 3.5, 2],
-      offset: [3.6, 1.6, 3.0],
-      zoomFactor: 2.2,
+      target: [-4.93, 3.5, 2],
+      offset: [4.2, 1.7, 2.2],
+      zoomFactor: 2.8,
     },
     seo: {
       title: by('Education'),
@@ -114,8 +114,8 @@ export const sections: readonly Section[] = [
     objectId: 'indonesia-map',
     theme: 'map',
     cameraPose: {
-      target: [2.4, 3.9, -4.85],
-      offset: [3.0, 1.4, 3.6],
+      target: [2.4, 3.9, -4.93],
+      offset: [3.0, 1.6, 3.6],
       zoomFactor: 2.2,
     },
     seo: {
@@ -165,9 +165,9 @@ export const sections: readonly Section[] = [
     objectId: 'clocks',
     theme: 'clocks',
     cameraPose: {
-      target: [0, 4.2, -4.85],
-      offset: [3.0, 1.2, 3.6],
-      zoomFactor: 2.4,
+      target: [0, 4.1, -4.93],
+      offset: [3.0, 1.6, 3.6],
+      zoomFactor: 2.8,
     },
     seo: {
       title: by('Remote work'),
@@ -183,7 +183,7 @@ export const sections: readonly Section[] = [
     objectId: 'mailbox',
     theme: 'envelope',
     cameraPose: {
-      target: [3.4, 1.0, -4.85],
+      target: [3.5, 1.0, -4.88],
       offset: [3.0, 2.0, 3.6],
       zoomFactor: 2.8,
     },

@@ -1,9 +1,10 @@
 export const palette = {
-  wall: '#F6E7CC',
+  wall: '#FCE6C6',
   wallTrim: '#E7CFAE',
   floor: '#B9875A',
   base: '#7A5235',
   cream: '#FFF1DC',
+  paper: '#FFFDF8',
   ink: '#4A3426',
   wood: '#B9875A',
   woodDark: '#7A5235',

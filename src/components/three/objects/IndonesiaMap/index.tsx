@@ -25,7 +25,7 @@ export default function IndonesiaMap() {
         labelHeight={h / 2 + 0.3}
         onActivate={() => openFromScene('travel')}
       >
-        <RoundedBox args={[w + 0.12, h + 0.12, 0.06]} radius={0.02} castShadow>
+        <RoundedBox args={[w + 0.12, h + 0.12, 0.06]} radius={0.02}>
           <meshStandardMaterial {...clay(palette.wood)} />
         </RoundedBox>
         <mesh position={[0, 0, 0.035]} userData={{ noHighlight: true }}>
