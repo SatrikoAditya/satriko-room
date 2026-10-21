@@ -12,14 +12,14 @@ export default function GamingPanel({
   games?: readonly IGame[]
 }) {
   return (
-    <div className="border-ink/80 font-pixel text-mint rounded-2xl border-[12px] bg-[#0d0f1a] p-4 text-xl">
+    <div className="border-ink/80 font-pixel text-screen-ink bg-screen rounded-2xl border-[12px] p-4 text-xl">
       <p className="mb-3">▶ SELECT GAME</p>
       {games.length === 0 ? (
-        <EmptyState message={oyenLines.empty.gaming} />
+        <EmptyState tone="light" message={oyenLines.empty.gaming} />
       ) : (
         <ul className="grid gap-3 sm:grid-cols-3">
           {games.map((g) => (
-            <li key={g.title} className="bg-ink/60 rounded p-3">
+            <li key={g.title} className="rounded bg-white/10 p-3">
               {g.cover && (
                 <Image
                   src={g.cover}
@@ -34,7 +34,7 @@ export default function GamingPanel({
                 {g.nowPlaying ? '★ ' : ''}
                 {g.title}
               </p>
-              <p className="text-paper text-base">
+              <p className="text-screen-ink-soft text-base">
                 {g.platform} · {g.why}
               </p>
             </li>

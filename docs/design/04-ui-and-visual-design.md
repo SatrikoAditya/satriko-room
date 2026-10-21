@@ -224,6 +224,10 @@ These are the values **as built** in `src/styles/globals.css` (the original prop
 | `--accent` / `--accent-soft` | `#F2A65A` / `#F2A65A` | Lamp amber; **use dark text on it** |
 | `--on-accent` | `#2B2238` | Dark text on `--accent` |
 
+### Fixed (both themes)
+
+The Gaming panel's TV screen stays dark in both themes, so its colors are fixed Tailwind colors (`@theme inline` in `globals.css`), not theme tokens: `screen` `#0D0F1A` (the screen), `screen-ink` `#9FD8C3` (pixel text, about 11.9:1) and `screen-ink-soft` `#FFF7E8` (secondary text and the empty state, via `EmptyState tone="light"`).
+
 Themes are applied by **next-themes** as `<html data-theme="day|night">` (D1: next-themes' own names stay `light` / `dark` and its `value` prop maps them to these attribute values; the dark variant is `@custom-variant dark` on `[data-theme='night']`), with CSS variables (in `src/styles/globals.css`) that Tailwind consumes. The 3D scene reads the same theme, mirrored into `useSceneStore`, for its lighting presets.
 
 ## Iconography

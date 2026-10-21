@@ -35,7 +35,7 @@
 - **Oyen's speech bubble:** text is mirrored to an `aria-live="polite"` region right away.
 - **Images:** meaningful images (Satriko's photo, hobby photos) have descriptive `alt` text; decorative SVGs have `alt=""` / `aria-hidden`.
 - **Reduced motion:** honored everywhere ([04](04-ui-and-visual-design.md#reduced-motion)).
-- **Text resizing:** text can scale to 200% inside panels without being cut off (panels scroll).
+- **Text resizing:** text can scale to 200% inside panels without being cut off (panels scroll). The scrolling area is a focusable region named after the panel, so panels without links can still be scrolled by keyboard (axe `scrollable-region-focusable`).
 - **Sound:** off by default, and never needed to understand content.
 - **Language:** `<html lang="en">`.
 
@@ -99,7 +99,7 @@
 | `no-webgl` | Desktop Chrome with `--disable-3d-apis` | `no-webgl` |
 | `reduced-motion` | Desktop Chrome with `reducedMotion: 'reduce'`, SwiftShader | `navigation` |
 
-The axe suite (`a11y.spec.ts`) scans six routes (`/`, `/experience`, `/skills`, `/contact`, `/resume`, `/travel`) in both themes (12 scans per project) and fails on serious or critical violations. The visual check (`visual.spec.ts`) compares the scene to a baseline screenshot with `maxDiffPixelRatio: 0.08`; the committed baseline is **darwin-only** (`room-default-desktop-darwin.png`), so on Linux CI it needs its own baseline first. Setting `PLAYWRIGHT_BASE_URL` points the suite at a deployment instead (see [Deployment](#deployment)).
+The axe suite (`a11y.spec.ts`) scans all 12 routes (`/` and the 11 sections) in both themes (24 scans per project, on desktop and mobile) and fails on serious or critical violations. The visual check (`visual.spec.ts`) compares the scene to a baseline screenshot with `maxDiffPixelRatio: 0.08`; the committed baseline is **darwin-only** (`room-default-desktop-darwin.png`), so on Linux CI it needs its own baseline first. Setting `PLAYWRIGHT_BASE_URL` points the suite at a deployment instead (see [Deployment](#deployment)).
 
 | Level | Tool | What it covers |
 | --- | --- | --- |

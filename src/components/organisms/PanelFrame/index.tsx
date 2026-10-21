@@ -135,7 +135,11 @@ export default function PanelFrame({
               <X />
             </IconButton>
           </div>
+          {/* Focusable so keyboard users can scroll panels without links (axe scrollable-region-focusable). */}
           <motion.div
+            role="region"
+            aria-label={section.title}
+            tabIndex={0}
             className="min-h-0 flex-1 overflow-y-auto px-5 pt-3 pb-6"
             initial={{ opacity: 0 }}
             animate={{

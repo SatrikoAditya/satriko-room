@@ -61,7 +61,7 @@ Detailed budgets are in [07: Quality](07-quality.md#performance-budgets).
 | S3 | Partly automated | A keyboard-only spec opens a section through the phone menu (`e2e/keyboard.spec.ts`); the no-WebGL spec reaches Resume without the scene; all 11 sections are real links (phone menu, `SectionNav`) and each URL is covered by the direct-link spec. There is no single test that opens all 11 by keyboard |
 | S4 | Awaits real devices | Not measurable under headless SwiftShader (about 10 fps there, tier drops to `low` automatically). Needs iPhone Safari and a mid-range Android |
 | S5 | Verified by the build check | There are no 3D model files (0 KB); `yarn budgets` enforces the limit if any appear |
-| S6 | Partly measured | Lighthouse (headless, 2026-10-22) gave Accessibility 100 and SEO 100 on `/experience` and `/`; axe runs on 6 routes in both themes. Not run on every route, and not yet on the production URL |
+| S6 | Partly measured | Lighthouse (headless, 2026-10-22) gave Accessibility 100 and SEO 100 on `/experience` and `/`; axe runs on all 12 routes (the room and the 11 sections) in both themes, on desktop and mobile. Lighthouse was not run on every route, and not yet on the production URL |
 | S7 | Verified for the site; PDF pending | `src/content/content.test.ts` fails on forbidden patterns, and a repo-wide grep is clean. The public PDF does not exist yet, so its check (`pdftotext … | grep -ciE "[+]62|referee"` must print 0) waits for C5 |
 
 ## Scope

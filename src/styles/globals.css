@@ -52,6 +52,10 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-on-accent: var(--on-accent);
+  /* The TV screen is dark in both themes, so its colors are fixed. */
+  --color-screen: #0d0f1a;
+  --color-screen-ink: #9fd8c3;
+  --color-screen-ink-soft: #fff7e8;
   --font-display: var(--font-mplus);
   --font-body: var(--font-nunito);
   --font-mono: var(--font-jetbrains);

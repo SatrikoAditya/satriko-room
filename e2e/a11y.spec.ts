@@ -3,13 +3,20 @@ import { expect, test } from '@playwright/test'
 
 import { expectSettled } from './helpers'
 
+// The room and all 11 sections, in both themes.
 for (const path of [
   '/',
+  '/about',
   '/experience',
   '/skills',
+  '/education',
+  '/gaming',
+  '/travel',
+  '/hiking',
+  '/diving',
+  '/remote-work',
   '/contact',
   '/resume',
-  '/travel',
 ]) {
   for (const theme of ['day', 'night']) {
     test(`axe: ${path} (${theme})`, async ({ page }) => {
