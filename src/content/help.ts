@@ -13,22 +13,28 @@ export const helpContent = {
     'Sound is off by default. The radio or the speaker button turns it on.',
   credits: [
     {
-      name: 'KayKit Furniture Bits',
-      by: 'Kay Lousberg',
-      url: 'https://kaylousberg.itch.io/furniture-bits',
-      license: 'CC0',
-    },
-    {
-      name: 'Kenney assets',
-      by: 'Kenney',
-      url: 'https://kenney.nl',
-      license: 'CC0',
-    },
-    {
-      name: 'Fonts',
+      name: 'Fonts: M PLUS Rounded 1c, Nunito, JetBrains Mono, VT323',
       by: 'Google Fonts',
       url: 'https://fonts.google.com',
-      license: 'SIL OFL',
+      license: 'SIL OFL 1.1',
+    },
+    {
+      name: 'Kenney Interface Sounds',
+      by: 'Kenney',
+      url: 'https://kenney.nl/assets/interface-sounds',
+      license: 'CC0',
+    },
+    {
+      name: 'Cat meow',
+      by: 'IgnasD on OpenGameArt',
+      url: 'https://opengameart.org/content/meow',
+      license: 'CC0',
+    },
+    {
+      name: 'Indonesia outline',
+      by: 'world-atlas / Natural Earth',
+      url: 'https://github.com/topojson/world-atlas',
+      license: 'ISC / public domain',
     },
   ],
 }

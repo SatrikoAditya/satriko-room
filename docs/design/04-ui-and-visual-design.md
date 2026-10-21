@@ -167,7 +167,7 @@ A small modal **with no URL**, opened by "?" or the Help app:
 - **How to explore:** mouse/trackpad and touch hints, drawn as our own simple icons.
 - **Keyboard tips.**
 - **Sound:** "sound is off by default; the radio or 🔊 turns it on".
-- **Credits & licenses:** the sheet lists its credits from `src/content/help.ts`; the full, current table is `CREDITS.md` (see [03](03-room-scene.md#assets--licenses)). *Known gap:* `help.ts` still names KayKit and Kenney (Kenney is used; KayKit is not, since no pack was adopted) and does not list the Indonesia outline or the meow sample; update it with the next content commit.
+- **Credits & licenses:** the sheet lists its credits from `src/content/help.ts`, kept in step with `CREDITS.md`.
 
 ## Typography
 
