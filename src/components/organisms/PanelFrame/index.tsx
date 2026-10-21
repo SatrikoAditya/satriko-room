@@ -81,7 +81,21 @@ export default function PanelFrame({
           transition={{ duration: 0.2 }}
         />
       </DialogOverlay>
-      <DialogContent asChild forceMount aria-describedby={undefined}>
+      <DialogContent
+        asChild
+        forceMount
+        aria-describedby={undefined}
+        onCloseAutoFocus={() => {
+          // The opener (e.g. a phone tile) may be gone by now; fall back to the phone button.
+          setTimeout(() => {
+            const a = document.activeElement
+            if (!a || a === document.body)
+              document
+                .querySelector<HTMLElement>('[aria-label="Open phone menu"]')
+                ?.focus()
+          }, 0)
+        }}
+      >
         <motion.div
           className={cn(
             'stitched rounded-frame fixed z-50 flex flex-col shadow-[0_20px_60px_rgb(74_52_38/0.25)] outline-none',
