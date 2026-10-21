@@ -4,9 +4,10 @@ import Chip from '@components/atoms/Chip'
 
 import { jobs as defaultJobs } from '@content/experience'
 import type { IJob } from '@models/job'
+import { formatRange } from '@utils/dates'
 
 import CompanySidebar from './CompanySidebar'
-import { formatRange, useExperiencePanel } from './useExperiencePanel'
+import { useExperiencePanel } from './useExperiencePanel'
 
 export default function ExperiencePanel({
   jobs = defaultJobs,

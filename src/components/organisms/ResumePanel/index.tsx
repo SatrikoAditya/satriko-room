@@ -1,10 +1,10 @@
 import Button from '@components/atoms/Button'
 import Chip from '@components/atoms/Chip'
-import { formatRange } from '@components/organisms/ExperiencePanel/useExperiencePanel'
 
 import { about } from '@content/about'
 import { jobs } from '@content/experience'
 import { resume as defaultResume } from '@content/resume'
+import { formatRange } from '@utils/dates'
 
 export default function ResumePanel({
   content = defaultResume,
