@@ -91,10 +91,12 @@ export default function CameraDirector() {
       const c = controls.current
       if (!c) return
       const { args, zoom } = computeFit()
-      c.setLookAt(...args, animate)
-      return Promise.resolve(
-        c.zoomTo(zoom * (coarsePointer ? MOBILE_ZOOM_FACTOR : 1), animate),
-      ).then(() => {
+      return Promise.all([
+        Promise.resolve(c.setLookAt(...args, animate)),
+        Promise.resolve(
+          c.zoomTo(zoom * (coarsePointer ? MOBILE_ZOOM_FACTOR : 1), animate),
+        ),
+      ]).then(() => {
         if (!stillCurrent()) return
         limitZoom(false)
         setTouchLocked(false)
