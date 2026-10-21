@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -53,5 +53,15 @@ describe('Hud', () => {
     await userEvent.keyboard('{ArrowDown}')
     expect(document.activeElement).toBe(tiles[4].querySelector('a,button'))
     expect(grid).toBeInTheDocument()
+  })
+  it('phone grid has rows of three cells', async () => {
+    render(<Hud />)
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Open phone menu' }),
+    )
+    const rows = await screen.findAllByRole('row')
+    expect(rows).toHaveLength(4)
+    for (const row of rows)
+      expect(within(row).getAllByRole('gridcell')).toHaveLength(3)
   })
 })

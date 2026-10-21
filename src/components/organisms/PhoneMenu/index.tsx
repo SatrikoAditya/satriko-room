@@ -17,9 +17,12 @@ import { useBogorTime } from '@hooks/useBogorTime'
 import { useSectionNavigation } from '@hooks/useSectionNavigation'
 
 import { sections } from '@constants/sections'
+import type { Section } from '@interfaces/section'
 import { formatHHMM } from '@utils/time'
 
-import { usePhoneGrid } from './usePhoneGrid'
+import { chunk, PHONE_COLUMNS, usePhoneGrid } from './usePhoneGrid'
+
+type Entry = { kind: 'section'; section: Section } | { kind: 'help' }
 
 export default function PhoneMenu({
   open,
@@ -59,36 +62,54 @@ export default function PhoneMenu({
               onKeyDown={onKeyDown}
               className="grid grid-cols-3 gap-2"
             >
-              {sections.map((s) => {
-                const p = linkProps(s.slug)
-                return (
-                  <div key={s.slug} role="gridcell">
-                    <PhoneAppTile
-                      section={s}
-                      href={p.href}
-                      onClick={(e) => {
-                        p.onClick(e)
-                        if (e.defaultPrevented) onOpenChange(false)
-                      }}
-                    />
-                  </div>
-                )
-              })}
-              <div role="gridcell">
-                <button
-                  type="button"
-                  onClick={() => {
-                    onOpenChange(false)
-                    onHelp()
-                  }}
-                  className="focus-visible:ring-accent flex min-h-11 w-full flex-col items-center gap-1 rounded-2xl p-2 outline-none focus-visible:ring-4"
-                >
-                  <span className="bg-paper-2 flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm">
-                    <CircleQuestionMark size={26} />
-                  </span>
-                  <span className="font-display text-xs font-bold">Help</span>
-                </button>
-              </div>
+              {chunk<Entry>(
+                [
+                  ...sections.map((section) => ({
+                    kind: 'section' as const,
+                    section,
+                  })),
+                  { kind: 'help' as const },
+                ],
+                PHONE_COLUMNS,
+              ).map((row, r) => (
+                <div key={r} role="row" className="contents">
+                  {row.map((entry) => {
+                    if (entry.kind === 'help')
+                      return (
+                        <div key="help" role="gridcell">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onOpenChange(false)
+                              onHelp()
+                            }}
+                            className="focus-visible:ring-accent flex min-h-11 w-full flex-col items-center gap-1 rounded-2xl p-2 outline-none focus-visible:ring-4"
+                          >
+                            <span className="bg-paper-2 flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm">
+                              <CircleQuestionMark size={26} />
+                            </span>
+                            <span className="font-display text-xs font-bold">
+                              Help
+                            </span>
+                          </button>
+                        </div>
+                      )
+                    const p = linkProps(entry.section.slug)
+                    return (
+                      <div key={entry.section.slug} role="gridcell">
+                        <PhoneAppTile
+                          section={entry.section}
+                          href={p.href}
+                          onClick={(e) => {
+                            p.onClick(e)
+                            if (e.defaultPrevented) onOpenChange(false)
+                          }}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              ))}
             </div>
           </motion.div>
         </DialogContent>

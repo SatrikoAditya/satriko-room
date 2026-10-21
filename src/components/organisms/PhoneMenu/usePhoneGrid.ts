@@ -25,3 +25,10 @@ export function usePhoneGrid(gridRef: RefObject<HTMLElement | null>) {
     items[Math.min(items.length - 1, Math.max(0, index + d))]?.focus()
   }
 }
+
+export function chunk<T>(items: readonly T[], size: number): T[][] {
+  const rows: T[][] = []
+  for (let i = 0; i < items.length; i += size)
+    rows.push(items.slice(i, i + size))
+  return rows
+}
