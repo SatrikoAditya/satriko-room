@@ -1,6 +1,7 @@
 'use client'
 
 import Poster from '@components/molecules/Poster'
+import Hud from '@components/organisms/Hud'
 import ModalHost from '@components/organisms/ModalHost'
 import SectionNav from '@components/organisms/SectionNav'
 
@@ -23,6 +24,7 @@ export default function Room({
       <SectionNav />
       <Poster />
       <ModalHost />
+      <Hud />
     </main>
   )
 }
