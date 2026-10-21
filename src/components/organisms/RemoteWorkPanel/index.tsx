@@ -9,7 +9,7 @@ import OverlapBar from './OverlapBar'
 import { useRemoteWorkPanel } from './useRemoteWorkPanel'
 
 export default function RemoteWorkPanel() {
-  const { times, overlap, now } = useRemoteWorkPanel()
+  const { times, overlap, at } = useRemoteWorkPanel()
   return (
     <div className="space-y-5">
       <div className="grid gap-3 sm:grid-cols-3">
@@ -22,7 +22,7 @@ export default function RemoteWorkPanel() {
           />
         ))}
       </div>
-      <OverlapBar window={overlap} now={now} />
+      <OverlapBar window={overlap} at={at} />
       <p>{remoteWork.note}</p>
     </div>
   )

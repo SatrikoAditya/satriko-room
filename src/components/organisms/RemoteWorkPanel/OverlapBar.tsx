@@ -11,17 +11,18 @@ const toHHMM = (m: number) =>
 
 export default function OverlapBar({
   window: w,
-  now,
+  at,
 }: {
   window: { start: number; end: number } | null
-  now: Date | null
+  /** The instant the bars are drawn for (live time, or the fixed reference before mount). */
+  at: Date
 }) {
-  const base = now ? utcOffsetMinutes(now, BASE_ZONE) : 0
+  const base = utcOffsetMinutes(at, BASE_ZONE)
   return (
     <div>
       <ul className="space-y-1">
         {clockZones.map((z) => {
-          const shift = now ? utcOffsetMinutes(now, z.timeZone) - base : 0
+          const shift = utcOffsetMinutes(at, z.timeZone) - base
           const s = WORK_START - shift
           const e = WORK_END - shift
           return (

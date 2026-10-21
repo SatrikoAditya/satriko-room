@@ -6,3 +6,6 @@ export const clockZones = [
 export const BASE_ZONE = 'Asia/Jakarta'
 export const WORK_START = 9 * 60
 export const WORK_END = 18 * 60
+// Used for the overlap before the live clock starts (server render, first client render).
+// None of the zones observe DST, so any instant gives the same overlap as "now".
+export const OVERLAP_REFERENCE_ISO = '2026-01-01T00:00:00Z'
