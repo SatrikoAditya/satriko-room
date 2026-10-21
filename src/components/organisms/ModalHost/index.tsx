@@ -1,32 +1,60 @@
 'use client'
 
-import Link from 'next/link'
+import { AnimatePresence } from 'motion/react'
 
+import PanelFrame from '@components/organisms/PanelFrame'
+import { Dialog, DialogPortal } from '@/components/ui/dialog'
+
+import { useRoomStore } from '@store/useRoomStore'
 import { useActiveSection } from '@hooks/useActiveSection'
+import { useSectionNavigation } from '@hooks/useSectionNavigation'
+import { useViewportSize } from '@hooks/useViewportSize'
 
 import { sectionBySlug } from '@constants/sections'
+import { finalRect } from '@utils/modalRect'
 
 import { panelComponents } from './panels'
 
 export default function ModalHost() {
-  const slug = useActiveSection()
-  if (!slug) return null
-  const section = sectionBySlug(slug)
-  const Panel = panelComponents[slug]
+  const active = useActiveSection()
+  const transition = useRoomStore((s) => s.transition)
+  const originRect = useRoomStore((s) => s.originRect)
+  const { close } = useSectionNavigation()
+  const viewport = useViewportSize()
+  const shown = active && transition !== 'focusing' ? active : null
+  const to = viewport ? finalRect(viewport.width, viewport.height) : null
+
   return (
-    <section
-      aria-labelledby="panel-title"
-      className="stitched rounded-frame bg-paper fixed inset-4 z-40 overflow-auto p-6 shadow-2xl"
+    <Dialog
+      open={shown !== null}
+      onOpenChange={(open) => {
+        if (!open) close()
+      }}
     >
-      <h2 id="panel-title" className="font-display text-3xl font-extrabold">
-        {section.title}
-      </h2>
-      <Link href="/" className="font-display absolute top-4 right-4 font-bold">
-        Close ✕
-      </Link>
-      <div className="mt-4">
-        <Panel />
-      </div>
-    </section>
+      <DialogPortal forceMount>
+        <AnimatePresence
+          mode="wait"
+          onExitComplete={() => {
+            const s = useRoomStore.getState()
+            if (s.transition === 'closing') s.setTransition('idle')
+          }}
+        >
+          {shown && (
+            <PanelFrame
+              key={shown}
+              section={sectionBySlug(shown)}
+              onClose={close}
+              originRect={originRect}
+              finalRect={to}
+            >
+              {(() => {
+                const Panel = panelComponents[shown]
+                return <Panel />
+              })()}
+            </PanelFrame>
+          )}
+        </AnimatePresence>
+      </DialogPortal>
+    </Dialog>
   )
 }
