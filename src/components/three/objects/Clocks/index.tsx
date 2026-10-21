@@ -16,7 +16,7 @@ export function Clock({ zoneId, x }: { zoneId: string; x: number }) {
         <cylinderGeometry args={[0.28, 0.28, 0.06, 32]} />
         <meshStandardMaterial {...clay(palette.cream)} />
       </mesh>
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0.005]}>
+      <mesh position={[0, 0, 0.005]}>
         <torusGeometry args={[0.28, 0.035, 12, 32]} />
         <meshStandardMaterial {...clay(palette.wood)} />
       </mesh>
