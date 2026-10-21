@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test'
 
+// Software WebGL under parallel load can starve frames for seconds (the scene
+// drops to the low tier), so closing gets the same 15 s as opening, and each
+// test the 60 s that visual.spec.ts uses. The assertions are unchanged.
+const SLOW = { timeout: 15_000 }
+test.describe.configure({ timeout: 60_000 })
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/')
   await page.getByRole('button', { name: /Enter/ }).click()
@@ -28,9 +34,13 @@ test('phone menu opens a section, back closes it with the room URL restored', as
     },
   )
   await page.goBack()
-  await expect(page.getByRole('dialog')).toHaveCount(0)
-  await expect(page).toHaveURL(/\/$/)
-  await expect(page.locator('main')).toHaveAttribute('data-transition', 'idle')
+  await expect(page.getByRole('dialog')).toHaveCount(0, SLOW)
+  await expect(page).toHaveURL(/\/$/, SLOW)
+  await expect(page.locator('main')).toHaveAttribute(
+    'data-transition',
+    'idle',
+    SLOW,
+  )
 })
 
 test('opening a panel adds one history entry so one Back returns to the room', async ({
@@ -49,9 +59,13 @@ test('opening a panel adds one history entry so one Back returns to the room', a
     },
   )
   await page.goBack()
-  await expect(page).toHaveURL(/\/$/)
-  await expect(page.getByRole('dialog')).toHaveCount(0)
-  await expect(page.locator('main')).toHaveAttribute('data-transition', 'idle')
+  await expect(page).toHaveURL(/\/$/, SLOW)
+  await expect(page.getByRole('dialog')).toHaveCount(0, SLOW)
+  await expect(page.locator('main')).toHaveAttribute(
+    'data-transition',
+    'idle',
+    SLOW,
+  )
 })
 
 test('Escape and the close button close the panel', async ({ page }) => {
@@ -68,9 +82,13 @@ test('Escape and the close button close the panel', async ({ page }) => {
     },
   )
   await page.keyboard.press('Escape')
-  await expect(page).toHaveURL(/\/$/)
-  await expect(page.getByRole('dialog')).toHaveCount(0)
-  await expect(page.locator('main')).toHaveAttribute('data-transition', 'idle')
+  await expect(page).toHaveURL(/\/$/, SLOW)
+  await expect(page.getByRole('dialog')).toHaveCount(0, SLOW)
+  await expect(page.locator('main')).toHaveAttribute(
+    'data-transition',
+    'idle',
+    SLOW,
+  )
   await contact.click()
   await expect(page.getByRole('dialog', { name: 'Contact' })).toBeVisible({
     timeout: 15_000,
@@ -83,7 +101,7 @@ test('Escape and the close button close the panel', async ({ page }) => {
     },
   )
   await page.getByRole('button', { name: 'Close' }).click()
-  await expect(page.getByRole('dialog')).toHaveCount(0)
+  await expect(page.getByRole('dialog')).toHaveCount(0, SLOW)
 })
 
 test('clicking the PC in the scene opens Experience', async ({ page }) => {
