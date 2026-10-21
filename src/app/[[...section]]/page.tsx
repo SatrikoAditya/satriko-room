@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
+import JsonLd from '@components/organisms/JsonLd'
 import Room from '@components/pages/Room'
 
 import { isSectionSlug, sectionBySlug, sectionSlugs } from '@constants/sections'
@@ -49,5 +50,10 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Promise<Params> }) {
   const slug = resolve((await params).section)
   if (slug === undefined) notFound()
-  return <Room initialSection={slug} />
+  return (
+    <>
+      {slug === null && <JsonLd />}
+      <Room initialSection={slug} />
+    </>
+  )
 }

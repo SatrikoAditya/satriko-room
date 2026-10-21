@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useSyncExternalStore } from 'react'
 import dynamic from 'next/dynamic'
 import { AnimatePresence } from 'motion/react'
 
@@ -29,12 +29,23 @@ const SceneCanvas = dynamic(() => import('@components/three/SceneCanvas'), {
   ssr: false,
 })
 
+const subscribeNever = () => () => {}
+
 export default function Room({
   initialSection,
 }: {
   initialSection: SectionSlug | null
 }) {
   const { phase, transition, active, showLoader } = useRoom(initialSection)
+  // ?poster=1 renders the bare scene (used by the poster capture script).
+  const poster = useSyncExternalStore(
+    subscribeNever,
+    () => new URLSearchParams(window.location.search).has('poster'),
+    () => false,
+  )
+  useEffect(() => {
+    if (poster) useRoomStore.getState().setPhase('ready')
+  }, [poster, phase])
   useWebGLSupport()
   useIdleHint()
   useThemeSync()
@@ -69,11 +80,11 @@ export default function Room({
       <Poster hidden={sceneReady} />
       {webgl === 'supported' && <SceneCanvas />}
       <ModalHost />
-      <Hud />
-      <SpeechBubble />
-      {active !== null && <ProgressPill />}
+      {!poster && <Hud />}
+      {!poster && <SpeechBubble />}
+      {!poster && active !== null && <ProgressPill />}
       <AnimatePresence>
-        {showLoader && <Loader key="loader" onEnter={enter} />}
+        {!poster && showLoader && <Loader key="loader" onEnter={enter} />}
       </AnimatePresence>
     </main>
   )

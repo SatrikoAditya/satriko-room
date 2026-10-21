@@ -1,12 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import Image from 'next/image'
+import { useTheme } from 'next-themes'
 
 import { cn } from '@components/shadcn/utils'
 
+const subscribeNever = () => () => {}
+
 export default function Poster({ hidden = false }: { hidden?: boolean }) {
   const [broken, setBroken] = useState(false)
+  const { resolvedTheme } = useTheme()
+  const mounted = useSyncExternalStore(
+    subscribeNever,
+    () => true,
+    () => false,
+  )
+  const night = mounted && resolvedTheme === 'dark'
   return (
     <div
       aria-hidden="true"
@@ -17,7 +27,7 @@ export default function Poster({ hidden = false }: { hidden?: boolean }) {
     >
       {!broken && (
         <Image
-          src="/poster/room-day.webp"
+          src={night ? '/poster/room-night.webp' : '/poster/room-day.webp'}
           alt=""
           fill
           unoptimized
