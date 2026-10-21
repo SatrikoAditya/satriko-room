@@ -39,6 +39,7 @@ Every decision made during the brainstorming session on **2026-10-21**, in the o
 | 28 | Code structure | (request) | **Follow Satriko's Jitera Next.js project structure and conventions**: `src/` + aliases, thin `app/` routes → `components/pages`, atomic design, `store/use*Store.ts`, `constants/`, `hooks/`, `interfaces/`, `models/` (`I` prefix), `utils/`, Prettier/ESLint rules. Additions: `components/three/`, `src/content/`, `e2e/` | Familiar to Satriko, so the code is easy to work in. Only structure and conventions are carried over, no client code | Satriko (follow the reference) / Design (additions) |
 | 29 | Theme and dialog libraries | Custom theme script vs. next-themes; custom modal semantics vs. a Radix Dialog base | **next-themes** (`data-theme`, day/night) and **shadcn/ui Radix Dialog** as the modal base | Both already used in the reference project; they handle no-flash theming and accessible dialogs without custom code | Design (follows #28) |
 | 30 | State shape | One big store with slices vs. one store per concern | **One Zustand store per concern**: `useRoomStore`, `useSceneStore`, `useSoundStore` | Matches the reference project's store pattern | Design (follows #28) |
+| 31 | Style test (Task 19) | ACES vs Neutral tone mapping; M PLUS Rounded 1c vs Zen Maru Gothic; mobile zoom 1.3 vs 1.15 | Tuned room + Neutral tone mapping; M PLUS Rounded 1c; mobile zoom 1.3 | Neutral keeps the pastels vivid; M PLUS reads more game-like; tighter mobile framing keeps objects tappable | Satriko |
 
 ## Design sections reviewed and approved
 
@@ -49,6 +50,7 @@ Every decision made during the brainstorming session on **2026-10-21**, in the o
 | 3 | On-screen UI and the modal | Changes requested → palette kept (#24), fonts changed (#25) |
 | 4 | Panel contents | Approved, plus the Indonesia map (#12), Oyen (#7), and filling in content later (#26) |
 | 5 | Extras, phase 2, quality, docs structure | Approved |
+| Style test | Task 19 screenshots (docs/design/style-test/) | Approved 2026-10-22 with Neutral tone mapping |
 
 ## Still open
 

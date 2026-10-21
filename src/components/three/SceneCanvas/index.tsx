@@ -4,7 +4,7 @@ import { Suspense } from 'react'
 import { PerformanceMonitor } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { useTheme } from 'next-themes'
-import { PCFShadowMap } from 'three'
+import { NeutralToneMapping, PCFShadowMap } from 'three'
 
 import CameraDirector from '@components/three/CameraDirector'
 import Room from '@components/three/Room'
@@ -49,7 +49,12 @@ export default function SceneCanvas() {
           }}
           dpr={tier === 'high' ? [1, 2] : [1, 1.5]}
           shadows={tier === 'high' ? { type: PCFShadowMap } : false}
-          gl={{ antialias: true, powerPreference: 'high-performance' }}
+          gl={{
+            antialias: true,
+            powerPreference: 'high-performance',
+            // Neutral keeps the palette's pastels; R3F's default ACES greys them (Task 19).
+            toneMapping: NeutralToneMapping,
+          }}
           onCreated={({ gl, camera }) => {
             camera.lookAt(T[0], T[1], T[2])
             gl.domElement.addEventListener('webglcontextlost', (e) => {

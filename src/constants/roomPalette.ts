@@ -1,7 +1,7 @@
 export const palette = {
-  wall: '#FCE6C6',
+  wall: '#FBEFD9',
   wallTrim: '#E7CFAE',
-  floor: '#B9875A',
+  floor: '#C29262',
   base: '#7A5235',
   cream: '#FFF1DC',
   paper: '#FFFDF8',
