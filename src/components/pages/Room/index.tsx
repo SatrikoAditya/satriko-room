@@ -11,6 +11,7 @@ import Hud from '@components/organisms/Hud'
 import Loader from '@components/organisms/Loader'
 import ModalHost from '@components/organisms/ModalHost'
 import SectionNav from '@components/organisms/SectionNav'
+import SceneErrorBoundary from '@components/three/SceneCanvas/SceneErrorBoundary'
 
 import { useRoomStore } from '@store/useRoomStore'
 import { useSceneStore } from '@store/useSceneStore'
@@ -25,9 +26,18 @@ import { audio } from '@utils/audio'
 
 import { useRoom } from './useRoom'
 
-const SceneCanvas = dynamic(() => import('@components/three/SceneCanvas'), {
-  ssr: false,
-})
+const markSceneLost = () => useSceneStore.getState().setWebgl('lost')
+const SceneUnavailable = () => null
+
+// A failed download of the 3D chunk falls back to the poster instead of the error page.
+const SceneCanvas = dynamic(
+  () =>
+    import('@components/three/SceneCanvas').catch(() => {
+      markSceneLost()
+      return { default: SceneUnavailable }
+    }),
+  { ssr: false },
+)
 
 const subscribeNever = () => () => {}
 
@@ -80,7 +90,11 @@ export default function Room({
     >
       <SectionNav />
       <Poster hidden={sceneReady} />
-      {webgl === 'supported' && <SceneCanvas />}
+      {webgl === 'supported' && (
+        <SceneErrorBoundary onError={markSceneLost}>
+          <SceneCanvas />
+        </SceneErrorBoundary>
+      )}
       <ModalHost />
       {!poster && <Hud />}
       {!poster && <SpeechBubble />}
