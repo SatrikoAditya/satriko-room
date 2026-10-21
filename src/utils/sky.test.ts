@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { skyPhase, sunHeight } from './sky'
+import { fadeStep, skyPhase, sunHeight } from './sky'
 
 describe('sky', () => {
   it('maps Bogor minutes-of-day to phases', () => {
@@ -15,5 +15,9 @@ describe('sky', () => {
     expect(sunHeight(12 * 60)).toBeCloseTo(1, 1)
     expect(sunHeight(6 * 60)).toBeCloseTo(0.07, 1)
     expect(sunHeight(2 * 60)).toBe(0)
+  })
+  it('fades opacity linearly and clamps at 0', () => {
+    expect(fadeStep(1, 1.5, 3)).toBeCloseTo(0.5)
+    expect(fadeStep(0.2, 1, 3)).toBe(0)
   })
 })

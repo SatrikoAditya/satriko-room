@@ -27,3 +27,8 @@ export const skyColors: Record<
   sunset: { top: '#6A5A9A', bottom: '#FF9A6A', light: '#ffb48a' },
   night: { top: '#0F1A3A', bottom: '#2B3A5C', light: '#9fb4ff' },
 }
+
+/** Linearly fades an opacity towards 0 over `seconds`, clamped to [0, 1]. */
+export function fadeStep(opacity: number, dt: number, seconds: number) {
+  return Math.min(1, Math.max(0, opacity - dt / seconds))
+}

@@ -3,15 +3,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { RoundedBox, Sparkles } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import type { Group, Mesh, MeshStandardMaterial } from 'three'
+import type { CanvasTexture, Group, Mesh, MeshBasicMaterial } from 'three'
 
 import { clay } from '@components/three/materials'
+import { useSceneBridge } from '@components/three/SceneCanvas/SceneBridge'
 
 import { roomLayout } from '@constants/roomLayout'
 import { palette } from '@constants/roomPalette'
 import { SKY_BLEND_SECONDS, SKY_UPDATE_MS } from '@constants/sky'
 import { BASE_ZONE } from '@constants/timezones'
-import { skyPhase, sunHeight } from '@utils/sky'
+import { fadeStep, skyPhase, sunHeight } from '@utils/sky'
 import { zonedTime } from '@utils/time'
 
 import { useSkyTexture } from './useSkyTexture'
@@ -31,22 +32,28 @@ export default function WindowSky() {
   }, [])
   const phase = skyPhase(minutes)
   const texture = useSkyTexture(phase)
-  const sky = useRef<Mesh>(null)
+  const { reducedMotion } = useSceneBridge()
+  // keep the outgoing texture on a front plane that fades out over the new one
+  const [shown, setShown] = useState<CanvasTexture>(texture)
+  const [previous, setPrevious] = useState<CanvasTexture | null>(null)
+  if (shown !== texture) {
+    setShown(texture)
+    setPrevious(reducedMotion ? null : shown)
+  }
+  const fade = useRef<Mesh>(null)
   const clouds = useRef<Group>(null)
   const sun = useRef<Mesh>(null)
   // the moon rides high; the sun follows its daily arc (0 at night)
   const height = phase === 'night' ? 0.75 : sunHeight(minutes)
 
   useFrame((state, dt) => {
-    const m = sky.current?.material as MeshStandardMaterial | undefined
-    if (m && m.map !== texture) {
-      m.opacity = Math.max(0, m.opacity - dt / SKY_BLEND_SECONDS)
+    const m = fade.current?.material as MeshBasicMaterial | undefined
+    if (m && previous) {
+      m.opacity = fadeStep(m.opacity, dt, SKY_BLEND_SECONDS)
       if (m.opacity <= 0) {
-        m.map = texture
-        m.needsUpdate = true
+        previous.dispose()
+        setPrevious(null)
       }
-    } else if (m && m.opacity < 1) {
-      m.opacity = Math.min(1, m.opacity + dt / SKY_BLEND_SECONDS)
     }
     if (clouds.current) {
       clouds.current.position.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.3
@@ -61,21 +68,26 @@ export default function WindowSky() {
       <RoundedBox args={[W + 0.2, H + 0.2, 0.08]} radius={0.03}>
         <meshStandardMaterial {...clay(palette.cream)} />
       </RoundedBox>
-      <mesh ref={sky} position={[0, 0, 0.05]}>
+      <mesh position={[0, 0, 0.05]}>
         <planeGeometry args={[W, H]} />
-        <meshStandardMaterial
-          map={texture}
-          transparent
-          opacity={1}
-          roughness={1}
-        />
+        <meshBasicMaterial map={texture} toneMapped={false} />
       </mesh>
+      {previous && (
+        <mesh ref={fade} key={previous.uuid} position={[0, 0, 0.052]}>
+          <planeGeometry args={[W, H]} />
+          <meshBasicMaterial
+            map={previous}
+            transparent
+            opacity={1}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
       <mesh ref={sun} position={[W / 3, 0, 0.06]}>
         <circleGeometry args={[0.16, 24]} />
-        <meshStandardMaterial
+        <meshBasicMaterial
           color={phase === 'night' ? '#fff7d6' : '#ffe27a'}
-          emissive={phase === 'night' ? '#fff7d6' : '#ffd25a'}
-          emissiveIntensity={0.8}
+          toneMapped={false}
         />
       </mesh>
       {phase !== 'night' && (
@@ -87,7 +99,7 @@ export default function WindowSky() {
               scale={[1.6, 0.6, 1]}
             >
               <sphereGeometry args={[0.22, 12, 8]} />
-              <meshStandardMaterial color="#ffffff" roughness={1} />
+              <meshBasicMaterial color="#ffffff" toneMapped={false} />
             </mesh>
           ))}
         </group>
