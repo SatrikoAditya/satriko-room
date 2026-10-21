@@ -15,11 +15,13 @@ import SectionNav from '@components/organisms/SectionNav'
 import { useRoomStore } from '@store/useRoomStore'
 import { useSceneStore } from '@store/useSceneStore'
 import { useIdleHint } from '@hooks/useIdleHint'
+import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useThemeSync } from '@hooks/useThemeSync'
 import { useWebGLSupport } from '@hooks/useWebGLSupport'
 
 import { oyenLines } from '@content/oyen'
 import type { SectionSlug } from '@interfaces/section'
+import { audio } from '@utils/audio'
 
 import { useRoom } from './useRoom'
 
@@ -36,6 +38,12 @@ export default function Room({
   useWebGLSupport()
   useIdleHint()
   useThemeSync()
+  useSoundEffects()
+  useEffect(() => {
+    const once = () => audio.unlock()
+    window.addEventListener('pointerdown', once, { once: true })
+    return () => window.removeEventListener('pointerdown', once)
+  }, [])
   const prevPhase = useRef(phase)
   useEffect(() => {
     if (prevPhase.current === 'entering' && phase === 'ready')
@@ -44,10 +52,12 @@ export default function Room({
   }, [phase])
   const webgl = useSceneStore((s) => s.webgl)
   const sceneReady = useSceneStore((s) => s.sceneReady)
-  const enter = () =>
+  const enter = () => {
+    audio.unlock()
     useRoomStore
       .getState()
       .setPhase(webgl === 'supported' && sceneReady ? 'entering' : 'ready')
+  }
   return (
     <main
       className="relative h-dvh w-full overflow-hidden"

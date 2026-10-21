@@ -15,6 +15,7 @@ import {
   MESSAGE_INTERVAL_MS,
   MIN_LOADER_MS,
 } from '@constants/loader'
+import { audio } from '@utils/audio'
 
 import OyenWalk from './OyenWalk'
 
@@ -83,6 +84,7 @@ export default function Loader({ onEnter }: { onEnter: () => void }) {
       <a
         href={skip.href}
         onClick={(e) => {
+          audio.unlock()
           skip.onClick(e)
           if (e.defaultPrevented) useRoomStore.getState().setPhase('ready')
         }}
