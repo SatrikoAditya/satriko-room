@@ -210,6 +210,7 @@ export default function Decor() {
       <Html
         transform
         occlude="blending"
+        zIndexRange={[10, 0]}
         position={[door.position[0], 2.0, door.position[2] + 0.07]}
         scale={0.25}
         style={{ pointerEvents: 'none' }}
