@@ -6,6 +6,7 @@ import { Canvas } from '@react-three/fiber'
 import { useTheme } from 'next-themes'
 import { PCFShadowMap } from 'three'
 
+import CameraDirector from '@components/three/CameraDirector'
 import Room from '@components/three/Room'
 import Lighting from '@components/three/Room/Lighting'
 import RoomObjects from '@components/three/RoomObjects'
@@ -66,6 +67,7 @@ export default function SceneCanvas() {
               <Lighting />
               <Room />
               <RoomObjects />
+              <CameraDirector />
               <SceneReady />
             </Suspense>
           </SceneBridgeProvider>
