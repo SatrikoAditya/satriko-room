@@ -25,7 +25,7 @@ export interface Placement {
 export const roomLayout: Record<ObjectId | DecorId, Placement> = {
   // left wall (x = -5)
   'edu-frames': { position: [-4.965, 3.5, 2.0] },
-  window: { position: [-4.85, 3.1, -2.0], size: [0.08, 1.8, 2.4] },
+  window: { position: [-4.95, 3.1, -2.0], size: [0.08, 1.8, 2.4] },
   bed: { position: [-3.8, 0, 2.0], size: [2.2, 0.6, 3.4] },
   nightstand: { position: [-4.3, 0, 4.3], size: [0.8, 0.6, 0.8] },
   bedsideLamp: { position: [-4.3, 0.6, 4.3] },

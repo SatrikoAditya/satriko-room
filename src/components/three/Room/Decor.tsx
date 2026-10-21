@@ -8,6 +8,7 @@ import { palette } from '@constants/roomPalette'
 import { site } from '@constants/site'
 
 import { clay } from '../materials'
+import WindowSky from '../objects/WindowSky'
 
 type V3 = readonly [number, number, number]
 
@@ -94,6 +95,7 @@ export default function Decor() {
   } = L
   return (
     <group>
+      <WindowSky />
       <Box
         args={bed.size!}
         position={[bed.position[0], bed.size![1] / 2, bed.position[2]]}
