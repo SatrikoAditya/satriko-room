@@ -22,6 +22,7 @@ import { useSoundStore } from '@store/useSoundStore'
 import { useSectionNavigation } from '@hooks/useSectionNavigation'
 
 import { site } from '@constants/site'
+import { audio } from '@utils/audio'
 
 const subscribeNever = () => () => {}
 
@@ -52,7 +53,14 @@ export default function Hud() {
         <span className="text-ink-muted hidden sm:inline">· {site.title}</span>
       </a>
       <div className="fixed top-4 right-4 z-30 flex gap-2">
-        <IconButton label="Sound" pressed={master} onClick={toggleMaster}>
+        <IconButton
+          label="Sound"
+          pressed={master}
+          onClick={() => {
+            audio.unlock()
+            toggleMaster()
+          }}
+        >
           {master ? <Volume2 /> : <VolumeX />}
         </IconButton>
         <IconButton

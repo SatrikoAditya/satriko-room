@@ -9,10 +9,12 @@ import { useSoundStore } from '@store/useSoundStore'
 
 import { roomLayout } from '@constants/roomLayout'
 import { palette } from '@constants/roomPalette'
+import { audio } from '@utils/audio'
 
 export default function Radio() {
   const music = useSoundStore((s) => s.music)
   const toggle = () => {
+    audio.unlock()
     const s = useSoundStore.getState()
     if (!s.music && !s.master) s.setMaster(true)
     s.toggleMusic()

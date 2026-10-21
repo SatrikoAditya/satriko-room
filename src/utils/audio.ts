@@ -28,15 +28,19 @@ export function createAudioManager() {
   }
 
   return {
+    /** Call from a user activation. Retries resume() while the context is not running. */
     unlock() {
       unlocked = true
       try {
         ctx ??= new AudioContext()
-        safe(ctx.resume())
+        if (ctx.state !== 'running') safe(ctx.resume())
       } catch {
         ctx = null
       }
       syncMusic()
+    },
+    isRunning() {
+      return ctx?.state === 'running'
     },
     setMuted(value: boolean) {
       muted = value

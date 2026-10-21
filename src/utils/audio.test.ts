@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { createAudioManager } from './audio'
 
@@ -51,5 +51,44 @@ describe('audio manager', () => {
     const a = createAudioManager()
     a.unlock()
     expect(() => a.playSfx('tick')).not.toThrow()
+  })
+
+  describe('with an AudioContext', () => {
+    const contexts: { state: AudioContextState; resume: () => void }[] = []
+    beforeEach(() => {
+      contexts.length = 0
+      vi.stubGlobal(
+        'AudioContext',
+        vi.fn(function () {
+          const c = {
+            state: 'suspended' as AudioContextState,
+            resume: vi.fn(() => Promise.resolve()),
+          }
+          contexts.push(c)
+          return c
+        }),
+      )
+    })
+    afterEach(() => vi.unstubAllGlobals())
+
+    it('is not running until the context reports running', () => {
+      const a = createAudioManager()
+      expect(a.isRunning()).toBe(false)
+      a.unlock()
+      expect(contexts).toHaveLength(1)
+      expect(a.isRunning()).toBe(false)
+      contexts[0].state = 'running'
+      expect(a.isRunning()).toBe(true)
+    })
+    it('retries resume() on a later unlock while the context is suspended', () => {
+      const a = createAudioManager()
+      a.unlock()
+      a.unlock()
+      expect(contexts).toHaveLength(1)
+      expect(contexts[0].resume).toHaveBeenCalledTimes(2)
+      contexts[0].state = 'running'
+      a.unlock()
+      expect(contexts[0].resume).toHaveBeenCalledTimes(2)
+    })
   })
 })

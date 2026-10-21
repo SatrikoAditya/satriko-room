@@ -74,7 +74,7 @@ The window shows **the real sky in Bogor right now**, whatever the visitor's own
 - Clicking the radio while music is on → music off, with a 1s fade-out.
 - 🔊 mute while music is playing → everything goes silent. Unmuting resumes the music if `music` is still on.
 - Sound effects only play while `master` is on.
-- **Browser autoplay rules:** the `AudioContext` is unlocked by the **Enter** click on `/`, or by the first interaction on a direct link.
+- **Browser autoplay rules:** the `AudioContext` is unlocked by the **Enter** click on `/`, or by the first interaction on a direct link (a click, tap or key press anywhere; the mute button and the radio unlock it too). If the browser keeps it suspended (for example after an Esc press, which is not a user activation), the next interaction retries until it runs.
 - The music file is **loaded only the first time it's played** (not part of the initial load). It loops at volume about 0.35. Sound effects play at about 0.5.
 - Audio **pauses when the tab is hidden** and resumes when the visitor comes back.
 - **Radio feedback (3D):** while playing, the dial light is on, the radio gently bounces, and little music-note particles float up.

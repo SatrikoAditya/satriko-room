@@ -16,7 +16,7 @@ Copied from the design docs; every task implicitly includes these.
 - **Privacy:** the site, the content files and the public PDF contain **only email, LinkedIn and GitHub**. Never add the phone number or any referee name/contact. "References available on request."
 - **Legal:** Animal Crossing–*inspired* only. No Nintendo assets, characters, logos, UI copies or the FOT-Seurat font. Every model/sound/music/font must be CC0 or properly licensed and listed in `CREDITS.md`.
 - **Text is always HTML**, never baked into the 3D scene. The canvas is decorative (`aria-hidden`). Everything must work by keyboard and without WebGL.
-- **Sound is off by default**; music never auto-plays; the `AudioContext` is unlocked only by a user click.
+- **Sound is off by default**; music never auto-plays; the `AudioContext` is unlocked only by a user activation (a click, tap or key press).
 - **Reduced motion** (`prefers-reduced-motion`) is honored: no camera glides, no parallax, fades only, no typing effect.
 - **Budgets:** 3D assets ≤ 2 MB compressed; initial JS on a direct-link route ≤ ~200 KB gzip (3D is a lazy chunk ≤ ~350 KB gzip); Lighthouse Accessibility ≥ 95 and SEO ≥ 95 on every route.
 - **Conventions (from the Jitera reference project):** everything under `src/`; path aliases `@components/*`, `@constants/*`, `@content/*`, `@hooks/*`, `@interfaces/*`, `@models/*`, `@store/*`, `@utils/*`, `@styles/*`, `@assets/*`, plus `@/components/ui/*` → `src/components/shadcn/components/ui/*`; thin `app/` routes that hand off to `components/pages/<Page>`; atomic design folders; **PascalCase** component folders with `index.tsx` default export and a co-located `use<Component>.ts` logic hook when logic is non-trivial; stores named `use<Name>Store.ts`, one per concern; models with `I` prefix (`IJob`); hooks `use<Name>.ts`; `UPPER_SNAKE_CASE` primitive constants, `camelCase` config objects; Prettier `singleQuote`, `semi: false`, `trailingComma: 'all'`; ESLint `unused-imports/no-unused-imports: error`, `@typescript-eslint/no-shadow: error`.
@@ -209,7 +209,7 @@ export function mercatorXY(lat: number, lon: number, scale: number, translate: r
 
 // audio.ts
 export type SfxName = 'tick' | 'pop' | 'whoosh' | 'switch' | 'printer' | 'meow' | 'radio'
-export const audio: { unlock(): void; playSfx(name: SfxName): void; startMusic(): void; stopMusic(): void; setMuted(muted: boolean): void }
+export const audio: { unlock(): void; isRunning(): boolean; playSfx(name: SfxName): void; startMusic(): void; stopMusic(): void; setMuted(muted: boolean): void } // unlock() retries resume() until the context runs
 
 // webgl.ts
 export function detectWebGL(): boolean

@@ -39,6 +39,8 @@ const SceneCanvas = dynamic(
   { ssr: false },
 )
 
+const UNLOCK_EVENTS = ['pointerdown', 'keydown', 'click'] as const
+
 const subscribeNever = () => () => {}
 
 export default function Room({
@@ -60,10 +62,16 @@ export default function Room({
   useIdleHint()
   useThemeSync()
   useSoundEffects()
+  // Any user activation (pointer, key, click) unlocks audio; keep trying until it runs.
   useEffect(() => {
-    const once = () => audio.unlock()
-    window.addEventListener('pointerdown', once, { once: true })
-    return () => window.removeEventListener('pointerdown', once)
+    const detach = () =>
+      UNLOCK_EVENTS.forEach((e) => window.removeEventListener(e, onActivate))
+    function onActivate() {
+      audio.unlock()
+      if (audio.isRunning()) detach()
+    }
+    UNLOCK_EVENTS.forEach((e) => window.addEventListener(e, onActivate))
+    return detach
   }, [])
   const prevPhase = useRef(phase)
   useEffect(() => {
