@@ -3,7 +3,7 @@
 import { AnimatePresence } from 'motion/react'
 
 import PanelFrame from '@components/organisms/PanelFrame'
-import { Dialog, DialogPortal } from '@/components/ui/dialog'
+import { Dialog } from '@/components/ui/dialog'
 
 import { useRoomStore } from '@store/useRoomStore'
 import { useActiveSection } from '@hooks/useActiveSection'
@@ -31,30 +31,29 @@ export default function ModalHost() {
         if (!open) close()
       }}
     >
-      <DialogPortal forceMount>
-        <AnimatePresence
-          mode="wait"
-          onExitComplete={() => {
-            const s = useRoomStore.getState()
-            if (s.transition === 'closing') s.setTransition('idle')
-          }}
-        >
-          {shown && (
-            <PanelFrame
-              key={shown}
-              section={sectionBySlug(shown)}
-              onClose={close}
-              originRect={originRect}
-              finalRect={to}
-            >
-              {(() => {
-                const Panel = panelComponents[shown]
-                return <Panel />
-              })()}
-            </PanelFrame>
-          )}
-        </AnimatePresence>
-      </DialogPortal>
+      {/* Inline, not portalled, so direct links are server-rendered. */}
+      <AnimatePresence
+        mode="wait"
+        onExitComplete={() => {
+          const s = useRoomStore.getState()
+          if (s.transition === 'closing') s.setTransition('idle')
+        }}
+      >
+        {shown && (
+          <PanelFrame
+            key={shown}
+            section={sectionBySlug(shown)}
+            onClose={close}
+            originRect={originRect}
+            finalRect={to}
+          >
+            {(() => {
+              const Panel = panelComponents[shown]
+              return <Panel />
+            })()}
+          </PanelFrame>
+        )}
+      </AnimatePresence>
     </Dialog>
   )
 }

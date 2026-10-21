@@ -19,12 +19,17 @@ for (const [slug, title, text] of sections) {
     page,
     request,
   }) => {
-    // The panel itself is a client-side portal, so the server HTML carries the
-    // section's own <title>, canonical URL and crawlable nav link instead.
+    // The panel text must be in the server HTML (SEO, screen readers, text before 3D).
     const html = await (await request.get(`/${slug}`)).text()
+    const decoded = html
+      .replace(/&#x27;|&#39;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&amp;/g, '&')
+    expect(decoded).toContain(title)
+    expect(decoded).toMatch(text)
     expect(html).toMatch(/<title>[^<]*Satriko Aditya<\/title>/)
-    expect(html).toMatch(new RegExp(`rel="canonical" href="[^"]*/${slug}"`))
-    expect(html).toContain(`<a href="/${slug}">`)
     await page.goto(`/${slug}`)
     await expect(page.getByRole('dialog', { name: title })).toBeVisible()
     await expect(page.getByRole('dialog')).toContainText(text)
