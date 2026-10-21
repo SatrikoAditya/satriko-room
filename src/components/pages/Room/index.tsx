@@ -32,7 +32,11 @@ const SceneUnavailable = () => null
 // A failed download of the 3D chunk falls back to the poster instead of the error page.
 const SceneCanvas = dynamic(
   () =>
-    import('@components/three/SceneCanvas').catch(() => {
+    import('@components/three/SceneCanvas').catch((error: unknown) => {
+      console.error(
+        'The 3D scene could not be loaded; showing the simple view.',
+        error,
+      )
       markSceneLost()
       return { default: SceneUnavailable }
     }),
