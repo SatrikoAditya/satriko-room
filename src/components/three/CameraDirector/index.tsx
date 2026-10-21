@@ -72,17 +72,35 @@ export default function CameraDirector() {
     c.maxZoom = fittedZoom.current * (wide ? 4 : 1.6)
   }, [])
 
+  // Touch rotate/pinch only in the room view; locked while a section is focused.
+  const setTouchLocked = useCallback(
+    (locked: boolean) => {
+      const c = controls.current
+      if (!c) return
+      c.touches.one =
+        coarsePointer && !locked ? ACTION.TOUCH_ROTATE : ACTION.NONE
+      c.touches.two =
+        coarsePointer && !locked ? ACTION.TOUCH_ZOOM_TRUCK : ACTION.NONE
+      c.touches.three = ACTION.NONE
+    },
+    [coarsePointer],
+  )
+
   const fitDefault = useCallback(
-    (animate: boolean) => {
+    (animate: boolean, stillCurrent: () => boolean) => {
       const c = controls.current
       if (!c) return
       const { args, zoom } = computeFit()
       c.setLookAt(...args, animate)
       return Promise.resolve(
         c.zoomTo(zoom * (coarsePointer ? MOBILE_ZOOM_FACTOR : 1), animate),
-      ).then(() => limitZoom(false))
+      ).then(() => {
+        if (!stillCurrent()) return
+        limitZoom(false)
+        setTouchLocked(false)
+      })
     },
-    [computeFit, coarsePointer, limitZoom],
+    [computeFit, coarsePointer, limitZoom, setTouchLocked],
   )
 
   const applyPose = useCallback(
@@ -91,6 +109,7 @@ export default function CameraDirector() {
       if (!c) return Promise.resolve()
       const pose = sectionBySlug(slug).cameraPose
       limitZoom(true)
+      setTouchLocked(true)
       return Promise.all([
         Promise.resolve(
           c.setLookAt(...lookAtArgs(pose.target, pose.offset), animate),
@@ -100,7 +119,7 @@ export default function CameraDirector() {
         ),
       ])
     },
-    [limitZoom],
+    [limitZoom, setTouchLocked],
   )
 
   // Input: desktop has no drag/zoom (parallax only); touch gets clamped rotate + pinch zoom.
@@ -112,11 +131,9 @@ export default function CameraDirector() {
     c.mouseButtons.middle = ACTION.NONE
     c.mouseButtons.right = ACTION.NONE
     c.mouseButtons.wheel = ACTION.NONE
-    c.touches.one = coarsePointer ? ACTION.TOUCH_ROTATE : ACTION.NONE
-    c.touches.two = coarsePointer ? ACTION.TOUCH_ZOOM_TRUCK : ACTION.NONE
-    c.touches.three = ACTION.NONE
+    setTouchLocked(currentSlug() !== null)
     c.setBoundary(ROOM_BOX)
-  }, [coarsePointer])
+  }, [setTouchLocked])
 
   // Default framing on mount and resize; then record the fitted zoom and set limits.
   useEffect(() => {
@@ -152,7 +169,7 @@ export default function CameraDirector() {
         ...lookAtArgs(DEFAULT_CAMERA_TARGET, ENTER_SWOOP_OFFSET),
         false,
       )
-      fitDefault(animate)?.then(() =>
+      fitDefault(animate, () => mine === token.current)?.then(() =>
         done(() => useRoomStore.getState().setPhase('ready')),
       )
       return
@@ -178,7 +195,7 @@ export default function CameraDirector() {
       slug === null &&
       phase === 'ready'
     )
-      fitDefault(animate)
+      fitDefault(animate, () => mine === token.current)
   }, [
     phase,
     transition,
