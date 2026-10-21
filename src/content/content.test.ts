@@ -1,10 +1,20 @@
 import { describe, expect, it } from 'vitest'
 
+import { site } from '@constants/site'
+
 import { about } from './about'
 import { contact } from './contact'
+import { certification, dives } from './diving'
 import { education } from './education'
 import { jobs } from './experience'
-import { skillShelves } from './skills'
+import { games, platforms } from './gaming'
+import { helpContent } from './help'
+import { hikes } from './hiking'
+import { oyenLines } from './oyen'
+import { remoteWork } from './remoteWork'
+import { resume } from './resume'
+import { skillShelves, SOFT_SKILL, UNLINKED_SKILL_LABEL } from './skills'
+import { travelPins } from './travel'
 
 const forbidden = [/\+62/, /0851/, /Sugeng/, /Gilang/, /Fadel/, /Zaidan/]
 
@@ -34,6 +44,20 @@ describe('content', () => {
       education,
       jobs,
       skillShelves,
+      SOFT_SKILL,
+      UNLINKED_SKILL_LABEL,
+      resume,
+      oyenLines,
+      helpContent,
+      remoteWork,
+      site,
+      // Hobby content is empty until Satriko fills it in (launch checklist item 6).
+      games,
+      platforms,
+      travelPins,
+      hikes,
+      dives,
+      certification,
     })
     for (const re of forbidden) expect(blob).not.toMatch(re)
   })

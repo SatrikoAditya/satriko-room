@@ -30,7 +30,7 @@ The code is done. These items need Satriko before the production launch. Paths a
 5. **Optional: music track (C17).** Add a CC0 or properly licensed loop, at most about 1.5 MB, as `public/audio/music-cozy.mp3`, and add its row (source, license) to `CREDITS.md`. Without it the radio stays silent (it fails quietly). Verify: `ls -l public/audio/music-cozy.mp3` and click the radio in the room.
 6. **Optional: hobby content (C10 to C13).** Games, Indonesia pins, hikes and dives go in `src/content/gaming.ts`, `travel.ts`, `hiking.ts` and `diving.ts`; photos go in `public/images/<section>/`. Empty ones show the "Oyen is still sorting these photos..." state. Verify: `yarn test && yarn build`, then open the panel.
 7. **Optional decisions.** Wording for skills with no job link is the default `'Side projects & learning'` (`UNLINKED_SKILL_LABEL` in `src/content/skills.ts`); analytics is none (C19).
-8. **Final check before deploying:** `yarn lint && yarn typecheck && yarn test && yarn build && yarn budgets && yarn e2e`. The content test (`src/content/content.test.ts`) fails if a phone number or referee name appears in the site content.
+8. **Final check before deploying:** `yarn lint && yarn typecheck && yarn test && yarn build && yarn budgets && yarn e2e`. The content test (`src/content/content.test.ts`) fails if a phone number or referee name appears in any file under `src/content/` (including Oyen's lines, the Help text and the hobby sections) or in `src/constants/site.ts`. It does not check the PDF (item 1 has its own check).
 
 Then deploy (below).
 

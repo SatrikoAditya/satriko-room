@@ -13,6 +13,16 @@ describe('detectWebGL', () => {
     )
     expect(detectWebGL()).toBe(true)
   })
+  it('releases the probe context so it does not count against the page', () => {
+    const loseContext = vi.fn()
+    const getExtension = vi.fn(() => ({ loseContext }))
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue({
+      getExtension,
+    } as never)
+    expect(detectWebGL()).toBe(true)
+    expect(getExtension).toHaveBeenCalledWith('WEBGL_lose_context')
+    expect(loseContext).toHaveBeenCalled()
+  })
   it('is false when getContext throws', () => {
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(
       () => {

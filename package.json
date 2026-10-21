@@ -11,7 +11,7 @@
     "e2e:ui": "playwright test --ui",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prettier": "prettier --write --no-error-on-unmatched-pattern 'src/**/*.{ts,tsx,css}' 'e2e/**/*.ts' 'scripts/**/*.{ts,mts,mjs}'",
+    "prettier": "prettier --write --no-error-on-unmatched-pattern '*.{mjs,mts,ts}' 'src/**/*.{ts,tsx,css}' 'e2e/**/*.ts' 'scripts/**/*.{ts,mts,mjs}'",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

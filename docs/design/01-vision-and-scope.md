@@ -42,7 +42,7 @@ Animal Crossing is Nintendo's intellectual property. The site may use the *vibe*
 
 | # | Criterion | How it's checked |
 | --- | --- | --- |
-| S1 | From any state, a visitor can reach the resume download in **≤ 2 clicks** | E2E test + manual |
+| S1 | From the room, a visitor can reach the resume download in **≤ 2 clicks** (HUD **Resume**, then **Download PDF**); with a section panel open it takes **3**, because the panel is closed first (deviation D11) | E2E test + manual |
 | S2 | A direct link (e.g. `/experience`) shows the panel **text before the 3D finishes loading** | E2E test; panel HTML is server-rendered |
 | S3 | All 11 sections are reachable **by keyboard alone and without WebGL** | E2E tests with keyboard and with WebGL disabled |
 | S4 | Works and feels smooth on a **mid-range phone** (≥ 30 fps target; graphics drop to the low tier automatically) | Manual device QA |
@@ -56,7 +56,7 @@ Detailed budgets are in [07: Quality](07-quality.md#performance-budgets).
 
 | # | Status | Evidence / what is still open |
 | --- | --- | --- |
-| S1 | Verified by the automated suite | The HUD **Resume** link is one click from the room and opens `/resume` (`e2e/navigation.spec.ts`, also with WebGL off in `e2e/no-webgl.spec.ts`); the panel has the **Download PDF** button. The PDF file itself is still pending (checklist C5) |
+| S1 | Partly automated | The e2e suite checks the first click: the HUD **Resume** link opens `/resume` from the room (`e2e/navigation.spec.ts`, also with WebGL off in `e2e/no-webgl.spec.ts`), and the Resume panel serves the **Download PDF** button (`e2e/direct-links.spec.ts`). The download click itself and the 3-click path with a panel open are not tested end to end. The PDF file is still pending (checklist C5) |
 | S2 | Verified by the automated suite | `e2e/direct-links.spec.ts` fetches each of the 11 URLs and asserts the panel text is in the server HTML, then checks the dialog after hydration |
 | S3 | Partly automated | A keyboard-only spec opens a section through the phone menu (`e2e/keyboard.spec.ts`); the no-WebGL spec reaches Resume without the scene; all 11 sections are real links (phone menu, `SectionNav`) and each URL is covered by the direct-link spec. There is no single test that opens all 11 by keyboard |
 | S4 | Awaits real devices | Not measurable under headless SwiftShader (about 10 fps there, tier drops to `low` automatically). Needs iPhone Safari and a mid-range Android |

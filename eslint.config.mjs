@@ -11,13 +11,24 @@ const config = [
     plugins: { 'unused-imports': unusedImports },
     rules: {
       'unused-imports/no-unused-imports': 'error',
-      '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
       'react-hooks/exhaustive-deps': 'warn',
     },
   },
-  { ignores: ['.next/**', 'node_modules/**', 'out/**', 'playwright-report/**', 'test-results/**'] },
+  {
+    ignores: [
+      '.next/**',
+      'node_modules/**',
+      'out/**',
+      'playwright-report/**',
+      'test-results/**',
+    ],
+  },
 ]
 
 export default config
