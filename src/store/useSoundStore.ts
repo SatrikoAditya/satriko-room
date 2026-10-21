@@ -29,5 +29,9 @@ export const useSoundStore = create<SoundState>((set, get) => ({
   toggleMaster: () => get().setMaster(!get().master),
   toggleMusic: () => set({ music: !get().music }),
   hydrate: () =>
-    set({ master: readJSON(STORAGE_KEYS.sound, { master: false }).master }),
+    set({
+      master:
+        readJSON<{ master?: unknown } | null>(STORAGE_KEYS.sound, null)
+          ?.master === true,
+    }),
 }))

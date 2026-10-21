@@ -43,6 +43,14 @@ describe('stores', () => {
     useSoundStore.getState().hydrate()
     expect(useSoundStore.getState().master).toBe(true)
   })
+  it('hydrate tolerates a stored null and non-object values', () => {
+    window.localStorage.setItem(STORAGE_KEYS.sound, 'null')
+    expect(() => useSoundStore.getState().hydrate()).not.toThrow()
+    expect(useSoundStore.getState().master).toBe(false)
+    window.localStorage.setItem(STORAGE_KEYS.sound, '{"master":"yes"}')
+    useSoundStore.getState().hydrate()
+    expect(useSoundStore.getState().master).toBe(false)
+  })
   it('toggleMaster off also silences music', () => {
     useSoundStore.setState({ master: true, music: true })
     useSoundStore.getState().toggleMaster()
