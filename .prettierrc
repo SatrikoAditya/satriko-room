@@ -1,0 +1,28 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "semi": false,
+  "endOfLine": "auto",
+  "importOrder": [
+    "^(react/(.*)$)|^(react$)",
+    "^(next/(.*)$)|^(next$)",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@components/(.*)$",
+    "^@/components/(.*)$",
+    "",
+    "^@store/(.*)$",
+    "^@hooks/(.*)$",
+    "",
+    "^@constants/(.*)$",
+    "^@content/(.*)$",
+    "^@models/(.*)$",
+    "^@interfaces/(.*)$",
+    "^@utils/(.*)$",
+    "^@styles/(.*)$",
+    "^@assets/(.*)$",
+    "",
+    "^[./]"
+  ],
+  "plugins": ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"]
+}
