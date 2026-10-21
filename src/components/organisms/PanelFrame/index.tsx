@@ -81,13 +81,7 @@ export default function PanelFrame({
           transition={{ duration: 0.2 }}
         />
       </DialogOverlay>
-      <DialogContent
-        asChild
-        forceMount
-        onEscapeKeyDown={onClose}
-        onPointerDownOutside={onClose}
-        aria-describedby={undefined}
-      >
+      <DialogContent asChild forceMount aria-describedby={undefined}>
         <motion.div
           className={cn(
             'stitched rounded-frame fixed z-50 flex flex-col shadow-[0_20px_60px_rgb(74_52_38/0.25)] outline-none',
