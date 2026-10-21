@@ -15,6 +15,7 @@ import SectionNav from '@components/organisms/SectionNav'
 import { useRoomStore } from '@store/useRoomStore'
 import { useSceneStore } from '@store/useSceneStore'
 import { useIdleHint } from '@hooks/useIdleHint'
+import { useThemeSync } from '@hooks/useThemeSync'
 import { useWebGLSupport } from '@hooks/useWebGLSupport'
 
 import { oyenLines } from '@content/oyen'
@@ -34,6 +35,7 @@ export default function Room({
   const { phase, transition, active, showLoader } = useRoom(initialSection)
   useWebGLSupport()
   useIdleHint()
+  useThemeSync()
   const prevPhase = useRef(phase)
   useEffect(() => {
     if (prevPhase.current === 'entering' && phase === 'ready')
