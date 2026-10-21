@@ -39,9 +39,6 @@ export default function BubbleCard({
     <motion.button
       type="button"
       onClick={advance}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') advance()
-      }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       initial={{ opacity: 0, scale: 0.8 }}

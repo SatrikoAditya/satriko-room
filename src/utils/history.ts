@@ -22,6 +22,10 @@ export function openSection(
   slug: SectionSlug,
 ): void {
   if (active === slug) return
+  // The camera director reads the slug when a glide starts, so a second open
+  // mid-glide (or during the entering swoop) would frame the wrong object.
+  const { phase, transition } = useRoomStore.getState()
+  if (transition === 'focusing' || phase === 'entering') return
   if (active === null) {
     useRoomStore.getState().setOpenedInApp(true)
     pushPath(`/${slug}`)
@@ -31,6 +35,7 @@ export function openSection(
 }
 export function closeSection(active: SectionSlug | null): void {
   if (active === null) return
+  if (useRoomStore.getState().transition === 'closing') return // already on its way out
   const strategy = decideClose(useRoomStore.getState().openedInApp)
   useRoomStore.getState().setOpenedInApp(false)
   if (strategy === 'back') window.history.back()
