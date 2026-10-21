@@ -1,20 +1,28 @@
+'use client'
+
+import ClockFace from '@components/molecules/ClockFace'
+
 import { clockZones } from '@constants/timezones'
 import { remoteWork } from '@content/remoteWork'
 
+import OverlapBar from './OverlapBar'
+import { useRemoteWorkPanel } from './useRemoteWorkPanel'
+
 export default function RemoteWorkPanel() {
+  const { times, overlap, now } = useRemoteWorkPanel()
   return (
-    <div>
-      <ul className="mb-4 grid gap-3 sm:grid-cols-3">
+    <div className="space-y-5">
+      <div className="grid gap-3 sm:grid-cols-3">
         {clockZones.map((z) => (
-          <li
+          <ClockFace
             key={z.id}
-            className="bg-paper-2 font-display rounded-xl p-3 text-center font-bold"
-          >
-            {z.city}
-            <span className="text-ink-muted block text-sm">{z.timeZone}</span>
-          </li>
+            city={z.city}
+            label={'label' in z ? z.label : undefined}
+            time={times[z.id]}
+          />
         ))}
-      </ul>
+      </div>
+      <OverlapBar window={overlap} now={now} />
       <p>{remoteWork.note}</p>
     </div>
   )

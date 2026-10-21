@@ -8,8 +8,18 @@ import { palette } from '@constants/roomPalette'
 import { clockZones } from '@constants/timezones'
 import { openFromScene } from '@utils/history'
 
-// Static hands at 10:10; Task 21 drives them.
-export function Clock({ zoneId, x }: { zoneId: string; x: number }) {
+import { useClockHands } from './useClockHands'
+
+export function Clock({
+  zoneId,
+  timeZone,
+  x,
+}: {
+  zoneId: string
+  timeZone: string
+  x: number
+}) {
+  const { hour, minute } = useClockHands(timeZone)
   return (
     <group position={[x, 0, 0]}>
       <mesh rotation={[Math.PI / 2, 0, 0]}>
@@ -20,21 +30,13 @@ export function Clock({ zoneId, x }: { zoneId: string; x: number }) {
         <torusGeometry args={[0.28, 0.035, 12, 32]} />
         <meshStandardMaterial {...clay(palette.wood)} />
       </mesh>
-      <group
-        name={`hourHand-${zoneId}`}
-        position={[0, 0, 0.04]}
-        rotation={[0, 0, -Math.PI * (10 / 6)]}
-      >
+      <group name={`hourHand-${zoneId}`} ref={hour} position={[0, 0, 0.04]}>
         <mesh position={[0, 0.08, 0]}>
           <boxGeometry args={[0.035, 0.16, 0.015]} />
           <meshStandardMaterial {...clay(palette.ink)} />
         </mesh>
       </group>
-      <group
-        name={`minuteHand-${zoneId}`}
-        position={[0, 0, 0.05]}
-        rotation={[0, 0, -Math.PI * (2 / 6)]}
-      >
+      <group name={`minuteHand-${zoneId}`} ref={minute} position={[0, 0, 0.05]}>
         <mesh position={[0, 0.11, 0]}>
           <boxGeometry args={[0.025, 0.22, 0.015]} />
           <meshStandardMaterial {...clay(palette.terracotta)} />
@@ -60,7 +62,12 @@ export default function Clocks() {
         onActivate={() => openFromScene('remote-work')}
       >
         {clockZones.map((z, i) => (
-          <Clock key={z.id} zoneId={z.id} x={(i - 1) * 0.9} />
+          <Clock
+            key={z.id}
+            zoneId={z.id}
+            timeZone={z.timeZone}
+            x={(i - 1) * 0.9}
+          />
         ))}
       </Interactive>
     </group>
