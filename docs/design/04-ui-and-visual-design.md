@@ -59,7 +59,7 @@
 | Control | Position (desktop / mobile) | Icon (Lucide) | Behavior |
 | --- | --- | --- | --- |
 | Name tag | Top-left / top-left (short form) | n/a | Stitched chip "Satriko Aditya · Full Stack Engineer" (the title part is hidden on small screens). It is a link that opens `/about` |
-| Mute | Top-right | `Volume2` / `VolumeX` | Master sound on/off; **off by default**. See [06](06-extras-and-easter-eggs.md#radio--sound-phase-1) |
+| Mute | Top-right | `Volume2` / `VolumeX` | Master sound on/off; **off by default**. One fixed label, "Sound", with `aria-pressed` for the state. See [06](06-extras-and-easter-eggs.md#radio--sound-phase-1) |
 | Day / night | Top-right | `Sun` / `Moon` | Same as the wall light switch, reachable by keyboard |
 | Help | Top-right | `CircleQuestionMark` | Opens the **Help sheet** (below). *Implementation note (D7):* `CircleQuestionMark` is the canonical name in lucide-react 1.x; `CircleHelp` is only an alias |
 | Resume | Bottom-right / bottom bar | `FileDown` | Opens `/resume` |
@@ -74,7 +74,7 @@ An **original** phone-shaped panel, inspired by the cozy-game phone idea but not
 
 - **Size:** about 320×560 px on desktop, rising out of the phone button. On mobile it rises from the bottom bar to about 90% of the screen height.
 - **Status bar:** live **Bogor time + "WIB"** (rendered client-side only), plus cute signal and battery glyphs.
-- **Header:** "Hi! Where to?"
+- **Header:** "Hi! Where to?" with a round ✕ button ("Close menu"). Focus starts on the first app when the phone opens.
 - **App grid:** 3 columns × 4 rows = **12 tiles**: 11 sections + Help. Each tile is a rounded pastel square with a Lucide icon and a label underneath.
 
 | App | Icon | Tile color |
@@ -162,7 +162,7 @@ Built on the **shadcn/ui (Radix) Dialog** primitive (same setup as the reference
 
 ## Help sheet
 
-A small modal **with no URL**, opened by "?" or the Help app:
+A small modal **with no URL**, opened by "?" or the Help app, with a round ✕ button ("Close help") next to its title:
 
 - **How to explore:** mouse/trackpad and touch hints, drawn as our own simple icons.
 - **Keyboard tips.**

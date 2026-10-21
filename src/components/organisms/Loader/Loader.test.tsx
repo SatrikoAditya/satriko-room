@@ -26,7 +26,7 @@ describe('Loader', () => {
     expect(useRoomStore.getState().phase).toBe('gate')
     expect(
       screen.getByRole('button', { name: 'Enter (simple view)' }),
-    ).toBeInTheDocument()
+    ).toHaveFocus()
   })
   it('waits for the scene and the minimum time, then offers Enter', async () => {
     useSceneStore.setState({ webgl: 'supported' })
@@ -39,6 +39,7 @@ describe('Loader', () => {
       vi.advanceTimersByTime(700)
     })
     const button = screen.getByRole('button', { name: 'Enter the room' })
+    expect(button).toHaveFocus()
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
     await user.click(button)
     expect(onEnter).toHaveBeenCalled()

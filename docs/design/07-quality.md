@@ -25,8 +25,8 @@
 ### Requirements
 
 - **Everything is reachable without the 3D scene and without a mouse:** the phone menu, the on-screen buttons and real `<a href>` links cover all 11 sections.
-- **The canvas is decorative:** `aria-hidden="true"` on the canvas wrapper, plus a visually hidden description ("An illustrated 3D room. Use the phone menu to explore sections.").
-- **Skip navigation:** as built, the first focusable element is a visually hidden `SectionNav` (`<nav aria-label="Sections">`, a list of links to all 11 sections) that appears when it receives focus; the loader has its own "Skip to my resume →" link.
+- **The canvas is decorative:** `aria-hidden="true"` on the canvas wrapper, plus a visually hidden `<h1>` ("Satriko's Room") and description ("An illustrated 3D room. Use the phone menu to explore sections.").
+- **Skip navigation:** as built, the first focusable element is a visually hidden `SectionNav` (`<nav aria-label="Sections">`, a list of links to all 11 sections) that appears when it receives focus. While the loader gate is up on `/`, everything behind it is `inert`, so the loader's own controls are the only Tab stops: **Enter the room** (focused when the gate opens) and "Skip to my resume →".
 - **Modals and the Help sheet:** built on the Radix Dialog (via shadcn/ui), so they have `role="dialog"`, `aria-modal`, `aria-labelledby`, a focus trap, **Esc** to close, and focus returned to what opened them.
 - **Phone menu:** arrow-key grid navigation, Enter to open, Esc to close.
 - **Visible focus:** a 3 px accent-color focus outline with an offset on every focusable element, in both themes.

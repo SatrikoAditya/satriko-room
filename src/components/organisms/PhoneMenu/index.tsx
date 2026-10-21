@@ -1,12 +1,14 @@
 'use client'
 
 import { useRef } from 'react'
-import { CircleQuestionMark } from 'lucide-react'
+import { CircleQuestionMark, X } from 'lucide-react'
 import { motion } from 'motion/react'
 
+import IconButton from '@components/atoms/IconButton'
 import PhoneAppTile from '@components/molecules/PhoneAppTile'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogOverlay,
   DialogPortal,
@@ -41,7 +43,15 @@ export default function PhoneMenu({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 z-40 bg-[#2b2238]/20" />
-        <DialogContent asChild aria-describedby={undefined}>
+        <DialogContent
+          asChild
+          aria-describedby={undefined}
+          onOpenAutoFocus={(e) => {
+            // Start on the first app (not the close button) so arrow keys work at once.
+            e.preventDefault()
+            gridRef.current?.querySelector<HTMLElement>('a, button')?.focus()
+          }}
+        >
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -52,9 +62,16 @@ export default function PhoneMenu({
               <span>{time ? `${formatHHMM(time)} WIB` : 'WIB'}</span>
               <span aria-hidden="true">▂▄▆ 🔋</span>
             </div>
-            <DialogTitle className="font-display my-3 text-xl font-extrabold">
-              Hi! Where to?
-            </DialogTitle>
+            <div className="my-3 flex items-center justify-between gap-2">
+              <DialogTitle className="font-display text-xl font-extrabold">
+                Hi! Where to?
+              </DialogTitle>
+              <DialogClose asChild>
+                <IconButton label="Close menu">
+                  <X />
+                </IconButton>
+              </DialogClose>
+            </div>
             <div
               ref={gridRef}
               role="grid"

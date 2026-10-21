@@ -1,8 +1,4 @@
-import type {
-  AnchorHTMLAttributes,
-  ButtonHTMLAttributes,
-  ReactNode,
-} from 'react'
+import type { ComponentPropsWithRef, ReactNode } from 'react'
 
 import { cn } from '@components/shadcn/utils'
 
@@ -10,8 +6,8 @@ type Variant = 'primary' | 'ghost'
 type Common = { variant?: Variant; className?: string; children: ReactNode }
 export type ButtonProps = Common &
   (
-    | ({ href: string } & AnchorHTMLAttributes<HTMLAnchorElement>)
-    | ({ href?: undefined } & ButtonHTMLAttributes<HTMLButtonElement>)
+    | ({ href: string } & ComponentPropsWithRef<'a'>)
+    | ({ href?: undefined } & ComponentPropsWithRef<'button'>)
   )
 
 const base =
@@ -29,7 +25,7 @@ export default function Button({
 }: ButtonProps) {
   const classes = cn(base, variants[variant], className)
   if ('href' in rest && rest.href) {
-    const { href, ...a } = rest as AnchorHTMLAttributes<HTMLAnchorElement> & {
+    const { href, ...a } = rest as ComponentPropsWithRef<'a'> & {
       href: string
     }
     return (
@@ -42,7 +38,7 @@ export default function Button({
     <button
       type="button"
       className={classes}
-      {...(rest as ButtonHTMLAttributes<HTMLButtonElement>)}
+      {...(rest as ComponentPropsWithRef<'button'>)}
     >
       {children}
     </button>

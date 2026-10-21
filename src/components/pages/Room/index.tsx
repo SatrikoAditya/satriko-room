@@ -80,6 +80,7 @@ export default function Room({
       .getState()
       .setPhase(webgl === 'supported' && sceneReady ? 'entering' : 'ready')
   }
+  const gated = !poster && showLoader
   return (
     <main
       className="relative h-dvh w-full overflow-hidden"
@@ -88,19 +89,26 @@ export default function Room({
       data-webgl={webgl}
       data-tier={tier}
     >
-      <SectionNav />
-      <Poster hidden={sceneReady} />
-      {webgl === 'supported' && (
-        <SceneErrorBoundary onError={markSceneLost}>
-          <SceneCanvas />
-        </SceneErrorBoundary>
-      )}
-      <ModalHost />
-      {!poster && <Hud />}
-      {!poster && <SpeechBubble />}
-      {!poster && active !== null && <ProgressPill />}
+      <h1 className="sr-only">{"Satriko's Room"}</h1>
+      <p className="sr-only">
+        An illustrated 3D room. Use the phone menu to explore sections.
+      </p>
+      {/* While the loader gate is up, only the loader can be reached. */}
+      <div inert={gated}>
+        <SectionNav />
+        <Poster hidden={sceneReady} />
+        {webgl === 'supported' && (
+          <SceneErrorBoundary onError={markSceneLost}>
+            <SceneCanvas />
+          </SceneErrorBoundary>
+        )}
+        <ModalHost />
+        {!poster && <Hud />}
+        {!poster && <SpeechBubble />}
+        {!poster && active !== null && <ProgressPill />}
+      </div>
       <AnimatePresence>
-        {!poster && showLoader && <Loader key="loader" onEnter={enter} />}
+        {gated && <Loader key="loader" onEnter={enter} />}
       </AnimatePresence>
     </main>
   )

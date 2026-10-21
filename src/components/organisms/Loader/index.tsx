@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
 import Button from '@components/atoms/Button'
@@ -27,6 +27,7 @@ export default function Loader({ onEnter }: { onEnter: () => void }) {
   const { linkProps } = useSectionNavigation()
   const [msg, setMsg] = useState(0)
   const [mountedAt] = useState(() => Date.now())
+  const enterRef = useRef<HTMLButtonElement>(null)
   const fallback = webgl === 'unsupported' || webgl === 'lost'
   const shown =
     fallback || phase === 'gate'
@@ -55,6 +56,11 @@ export default function Loader({ onEnter }: { onEnter: () => void }) {
     return () => window.clearTimeout(t)
   }, [phase, fallback, sceneReady, progress, mountedAt])
 
+  // Keyboard users land on Enter as soon as the gate opens.
+  useEffect(() => {
+    if (phase === 'gate') enterRef.current?.focus()
+  }, [phase])
+
   const skip = linkProps('resume')
   return (
     <motion.div
@@ -75,7 +81,7 @@ export default function Loader({ onEnter }: { onEnter: () => void }) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <Button onClick={onEnter} className="text-lg">
+            <Button ref={enterRef} onClick={onEnter} className="text-lg">
               {fallback ? 'Enter (simple view)' : 'Enter the room'}
             </Button>
           </motion.div>

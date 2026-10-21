@@ -52,11 +52,7 @@ export default function Hud() {
         <span className="text-ink-muted hidden sm:inline">· {site.title}</span>
       </a>
       <div className="fixed top-4 right-4 z-30 flex gap-2">
-        <IconButton
-          label={master ? 'Sound off' : 'Sound on'}
-          pressed={master}
-          onClick={toggleMaster}
-        >
+        <IconButton label="Sound" pressed={master} onClick={toggleMaster}>
           {master ? <Volume2 /> : <VolumeX />}
         </IconButton>
         <IconButton
