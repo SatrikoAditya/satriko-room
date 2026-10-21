@@ -77,6 +77,17 @@
 | Audio | Music loaded on first play only; each sound effect ≤ about 30 KB | Not part of the initial load |
 | Lighthouse | **Accessibility ≥ 95, SEO ≥ 95, Best Practices ≥ 95**; Performance ≥ 80 (mobile) on direct-link pages | The `/` route with 3D may score lower on Performance; that's accepted, since the loader is intentional |
 
+### Measured (2026-10-22)
+
+| Metric | Result |
+| --- | --- |
+| First Load JS gzip, `/experience` (excl. noModule polyfills) | **238 KB** (budget ~200 KB: **over**; 216 KB of it is Next/React runtime, no `three` in it) |
+| Lazy scene chunk gzip (three + R3F + drei) | **268 KB** (budget ~350 KB: ok) |
+| Lighthouse `/experience` (mobile preset, headless + SwiftShader) | Performance 39, Accessibility 100, Best Practices 100, SEO 100 (Performance 87 with WebGL off: LCP 4.0 s, TBT 10 ms) |
+| Lighthouse `/` | Performance 34, Accessibility 100, Best Practices 100, SEO 100 |
+| Idle fps / tier drop (software rendering, so a lower bound, not real hardware) | about 10 fps; tier fell to `low` 2.3 s after the room was ready, before any CPU throttle was applied |
+| Assets | 3D models 0 KB, sound effects 15 KB, posters 59 KB (all within budget) |
+
 ## Testing strategy
 
 | Level | Tool | What it covers |

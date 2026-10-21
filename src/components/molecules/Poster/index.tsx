@@ -30,6 +30,7 @@ export default function Poster({ hidden = false }: { hidden?: boolean }) {
           src={night ? '/poster/room-night.webp' : '/poster/room-day.webp'}
           alt=""
           fill
+          priority
           unoptimized
           onError={() => setBroken(true)}
           className="object-contain"

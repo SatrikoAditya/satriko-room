@@ -10,6 +10,8 @@ export const mPlusRounded = M_PLUS_Rounded_1c({
   subsets: ['latin'],
   variable: '--font-mplus',
   display: 'swap',
+  // The family ships ~240 unicode-range shards; preloading them all stalls the load.
+  preload: false,
 })
 export const nunito = Nunito({
   subsets: ['latin'],

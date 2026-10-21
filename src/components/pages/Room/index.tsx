@@ -62,6 +62,7 @@ export default function Room({
     prevPhase.current = phase
   }, [phase])
   const webgl = useSceneStore((s) => s.webgl)
+  const tier = useSceneStore((s) => s.tier)
   const sceneReady = useSceneStore((s) => s.sceneReady)
   const enter = () => {
     audio.unlock()
@@ -75,6 +76,7 @@ export default function Room({
       data-phase={phase}
       data-transition={transition}
       data-webgl={webgl}
+      data-tier={tier}
     >
       <SectionNav />
       <Poster hidden={sceneReady} />
