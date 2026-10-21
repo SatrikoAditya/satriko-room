@@ -3,7 +3,7 @@ import nextTs from 'eslint-config-next/typescript'
 import prettier from 'eslint-config-prettier/flat'
 import unusedImports from 'eslint-plugin-unused-imports'
 
-export default [
+const config = [
   ...nextVitals,
   ...nextTs,
   prettier,
@@ -19,3 +19,5 @@ export default [
   },
   { ignores: ['.next/**', 'node_modules/**', 'out/**', 'playwright-report/**', 'test-results/**'] },
 ]
+
+export default config
