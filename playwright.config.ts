@@ -6,19 +6,29 @@ const softwareGl = [
   '--enable-unsafe-swiftshader',
 ]
 
+// Set PLAYWRIGHT_BASE_URL to run the suite against a deployment instead of a local server.
+const externalBaseUrl = process.env.PLAYWRIGHT_BASE_URL
+
 export default defineConfig({
   testDir: 'e2e',
   timeout: 30_000,
   retries: process.env.CI ? 2 : 0,
   // Software WebGL is CPU-bound; too many parallel scenes starve animation frames.
   workers: 2,
-  use: { baseURL: 'http://localhost:3000', trace: 'on-first-retry' },
-  webServer: {
-    command: 'yarn build && yarn start',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-    timeout: 180_000,
+  use: {
+    baseURL: externalBaseUrl ?? 'http://localhost:3000',
+    trace: 'on-first-retry',
   },
+  ...(externalBaseUrl
+    ? {}
+    : {
+        webServer: {
+          command: 'yarn build && yarn start',
+          url: 'http://localhost:3000',
+          reuseExistingServer: !process.env.CI,
+          timeout: 180_000,
+        },
+      }),
   projects: [
     {
       name: 'desktop',

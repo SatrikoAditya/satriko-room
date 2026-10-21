@@ -26,6 +26,8 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 
 **14 clickable things:** 11 that open panels, and 3 that do something in place.
 
+*Implementation note:* every object is built in code (the "Source" column's pack options were not used; see [Assets & licenses](#assets--licenses)). Objects are mounted by `src/components/three/RoomObjects/index.tsx` and each one lives in `src/components/three/objects/<Name>/`.
+
 | # | `objectId` | Object | Where | Click does | Source | Hover label |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `photo-frame` | Framed photo of Satriko | On the desk | Opens `/about` | Code (frame) + photo texture | About me |
@@ -49,33 +51,35 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 
 | Aspect | Rule |
 | --- | --- |
-| **Camera** | Orthographic. Default view about 45° around and about 30–35° above the room (true isometric is 35.26°; final angle chosen in the style test). The zoom always keeps the whole room in frame on resize |
+| **Camera** | Orthographic. Default view 45° around and about 30° above the room (look-at `[0, 1.4, 0]`, offset `[10, 8.2, 10]` in `src/constants/camera.ts`; true isometric is 35.26°, the final angle was chosen in the style test). The zoom always keeps the whole room in frame on resize |
 | **Shapes** | Everything rounded: rounded boxes with a corner radius of at least about 15% of the smallest dimension, capsules and spheres for soft things. **No sharp edges** |
 | **Proportions** | Chunky and toy-like: about 20% thicker than realistic, slightly oversized props |
-| **Materials** | Matte `MeshStandardMaterial` (roughness 0.8–1.0, metalness 0). Pack models keep their gradient-atlas colors; code-built objects use a shared palette-matched material set. The style test also tries a softer, toon-like shading |
-| **Colors** | Warm, cozy pastels (tokens in [04](04-ui-and-visual-design.md#palette)): cream walls, warm wood, mint, sky blue, peach, terracotta accents |
-| **Lighting (day)** | A warm hemisphere light (cream sky, wood-toned ground), plus a warm main light from the window side with soft shadows. The window light is tinted by the current sky phase |
-| **Lighting (night)** | Main light dimmed to about 15%; cool, low hemisphere light; warm point lights in the desk and bedside lamps with glowing shades; soft monitor and TV glow; bluish moonlight through the window. Day ↔ night blends over about 0.8s |
-| **Reflections / environment** | drei `<Environment>` with **local `Lightformer`s**, so no HDR download from a CDN |
-| **Shadows** | Soft contact shadows under objects on every tier; a soft directional shadow map on the high tier |
-| **Ambient occlusion** | Desktop high tier only (e.g. N8AO via postprocessing), and only if it fits the budget |
+| **Materials** | Matte `MeshStandardMaterial` (roughness 0.9, metalness 0) from the shared `clay(color)` helper in `src/components/three/materials.ts`, with colors from `src/constants/roomPalette.ts`. The window sky, sun and clouds are unlit `MeshBasicMaterial`s so they do not change with the room lights |
+| **Colors** | Warm, cozy pastels (tokens in [04](04-ui-and-visual-design.md#palette)): cream walls, warm wood, mint, sky blue, peach, terracotta accents. The 3D palette is `src/constants/roomPalette.ts` (wall `#FBEFD9`, wall trim `#E7CFAE`, floor `#C29262`, base `#7A5235`, wood `#B9875A`, mint `#9FD8C3`, sky `#A9D6F2`, peach `#FFC8A2`, lavender `#D9C8F0`, terracotta `#B8553A`, Oyen orange `#F2A03D`, lamp glow `#F2A65A`) |
+| **Lighting (day)** | A warm hemisphere light (sky `#fffcf7`, ground `#efe3d2`, intensity 2.4), a directional sun from the window side (`#fffaf2`, intensity 1.3, soft shadows) and a little ambient (0.3). Values are in `src/components/three/Room/lightingPresets.ts` |
+| **Lighting (night)** | Sun dimmed to 0.21 (about 16% of day, `#9fb4ff`); cool hemisphere light (sky `#3a4a70`, ground `#2a2238`, intensity 1.5, lifted once after the night screenshot check); ambient 0.16; warm point lights in the desk and bedside lamps with glowing shades (`lamp` 2.2); monitor and TV glow raised (screen glow 1.1 against 0.5); a bluish moon light (0.5). Day ↔ night blends over 0.8s (`THEME_BLEND_SECONDS`), instantly with reduced motion |
+| **Tone mapping** | `NeutralToneMapping` in `SceneCanvas`. R3F's default ACES greyed the pastels; Neutral keeps the palette close to its swatches (Satriko's decision at the style test) |
+| **Reflections / environment** | *Not used.* The materials are matte, so there is no `<Environment>`, and no HDR or other environment download |
+| **Shadows** | Contact shadows (drei `ContactShadows`) on every tier: continuous at 1024 on the high tier, rendered once at 512 on the low tier. A directional shadow map (`PCFShadowMap`, 1024) on the high tier only |
+| **Ambient occlusion** | *Not built.* `@react-three/postprocessing` is not installed; the look was approved without it |
 
 ## Assets & licenses
 
+*Implementation note:* Task 20 (the optional model-pack upgrade) was **skipped**. Satriko approved the look with code-built objects at the style-test gate, so no model pack, no `room.glb` and no `public/models/` exist, and the pack rows below are an **optional upgrade, not used**. What ships is listed in `CREDITS.md`: the fonts, the Indonesia outline and the 7 sound effects.
+
 | Asset | Source | License | Used for |
 | --- | --- | --- | --- |
-| **KayKit Furniture Bits** (free base, 50+ models; optional "Extra" tier, $3.95, 20 more) | [kaylousberg.itch.io/furniture-bits](https://kaylousberg.itch.io/furniture-bits) | CC0 | Furniture: bed, desk, shelves, chairs, lamps, decor |
-| **Kenney Furniture Kit** (about 120 objects) | kenney.nl (also [OpenGameArt](https://opengameart.org/content/furniture-kit)) | CC0 (**confirm the current download includes GLB/glTF**) | Fill-ins the KayKit pack doesn't have |
+| *Optional upgrade, not used.* **KayKit Furniture Bits** (free base, 50+ models; optional "Extra" tier, $3.95, 20 more) | [kaylousberg.itch.io/furniture-bits](https://kaylousberg.itch.io/furniture-bits) | CC0 | Furniture: bed, desk, shelves, chairs, lamps, decor |
+| *Optional upgrade, not used.* **Kenney Furniture Kit** (about 120 objects) | kenney.nl (also [OpenGameArt](https://opengameart.org/content/furniture-kit)) | CC0 (**confirm the current download includes GLB/glTF**) | Fill-ins the KayKit pack doesn't have |
 | Indonesia outline | Natural Earth | Public domain | Wall map texture and the Travel panel map |
 | Fonts | Google Fonts | SIL Open Font License | UI typography |
-| Sound effects | To choose (e.g. Kenney's CC0 audio packs) | CC0 (record per file) | Hover tick, click pop, meow, printer, switch |
-| Music | To choose (royalty-free or CC0 cozy track) | Record the exact license | Radio |
+| Sound effects | Kenney Interface Sounds (6 files) and IgnasD's "Meow" on OpenGameArt (see `CREDITS.md`) | CC0 | Hover tick, click pop, modal whoosh, switch, printer, radio click, meow |
+| Music | *Pending (checklist C17):* no track yet | Record the exact license | Radio |
 
-- CC0 needs no attribution, but **KayKit, Kenney and every audio source are credited** in the Help sheet anyway.
-- Keep a `CREDITS.md` (or similar) listing every asset, its source URL and license.
-- **Compare pack styles side by side** in the style test before mixing them. If Kenney clashes with KayKit, prefer KayKit plus code-built objects.
+- CC0 needs no attribution, but the audio sources are credited anyway. `CREDITS.md` lists every asset with its source URL and license; keep it current when anything is added.
+- If a pack is ever added, **compare pack styles side by side** in a style test before mixing them.
 
-### Asset pipeline
+### Asset pipeline (only if the pack upgrade is ever done)
 
 1. Download the packs and pick only the models we use.
 2. Optimize with **gltf-transform**: prune, dedupe, weld, meshopt compression, and downsized textures (the KayKit atlas works down to 128×128).
@@ -85,17 +89,17 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 
 ### Code-built objects
 
-These are built from drei/three primitives using the clay recipe: photo frame, 3 education frames, book spines, Indonesia map board and pins, backpack and boots, dive mask and fins with their stand, 3 clocks with moving hands, mailbox, light switch, radio, **Oyen**. Pack models are used where they fit (desk, PC, TV, printer, bed); otherwise those are code-built too.
+Everything is built from drei/three primitives using the clay recipe: the room shell and decor, the PC, TV, printer, bed and desk, photo frame, 3 education frames, book spines, Indonesia map board and pins, backpack and boots, dive mask and fins with their stand, 3 clocks with moving hands, mailbox, light switch, radio, the window sky, and **Oyen**.
 
 ## Camera
 
 | Mode | Behavior |
 | --- | --- |
-| **Default** | Full-room isometric framing with margins; refits on resize |
-| **Focus** | Each section has a `cameraPose` (position, target, zoom) in the registry. Clicking glides there in **about 0.6s** with ease-in-out (drei `CameraControls`, `setLookAt(…, true)`) |
-| **Return** | Closing a panel glides back to the default pose |
-| **Parallax (desktop)** | The pointer position shifts the view slightly (about ±1.5° around, ±1° up/down), smoothed. Off while focused, on touch devices, and with reduced motion |
-| **Mobile** | Tighter framing so objects stay big enough to tap. **One-finger drag** rotates around the room within a clamp (about ±35° from default) and pans within the room's bounds. **Gentle pinch zoom** (about 1×–1.6×) with inertia. Clamped so you can never look behind a wall or lose the room |
+| **Default** | Full-room isometric framing with margins; refits on resize. camera-controls' `fitToBox` snaps the view to the nearest axis and would destroy the isometric angle, so the fit is our own `fitIsometric()` in `CameraDirector/cameraMath.ts` (it projects the room box onto the view plane and returns the look-at point and zoom) |
+| **Focus** | Each section has a `cameraPose` (`target`, `offset`, `zoomFactor`) in the registry. Clicking glides there with drei `CameraControls` (`setLookAt` and `zoomTo`, animated, `smoothTime` 0.35). Zoom limits are widened while a pose is applied (up to 4× the fitted zoom, against 1.6× in the room) so poses have headroom |
+| **Return** | The glide back to the default pose starts as soon as the panel begins closing, and continues through the idle state |
+| **Parallax (desktop)** | The pointer position shifts the view slightly (±0.026 rad, about 1.5°, around; ±0.017 rad, about 1°, up/down), smoothed. Off while a panel is open or focusing, on touch devices, and with reduced motion. Desktop has no drag or wheel zoom: all mouse buttons and the wheel are set to `NONE` |
+| **Mobile** | Tighter framing so objects stay big enough to tap: the fitted zoom is multiplied by `MOBILE_ZOOM_FACTOR` = 1.3 (Satriko kept 1.3 at the style test; portrait phones crop the sides a little). **One-finger drag** rotates around the room within a clamp (±0.61 rad, about ±35° from default; polar angle 0.75 to 1.25). **Two-finger gesture** zooms and trucks, limited to 0.9×–1.6× of the fitted zoom, inside the room's bounding box. **Touch rotate and pinch are disabled while a pose is applied** (a panel is open or focusing) and restored when the camera returns |
 | **Reduced motion** | Instant camera cuts instead of glides; no parallax |
 
 ## Interactions
@@ -103,16 +107,16 @@ These are built from drei/three primitives using the clay recipe: photo frame, 3
 - **Hit testing:** R3F pointer events on each interactive group, with `stopPropagation()` so the nearest object wins (this solves overlapping objects in the isometric view). Small objects (light switch, clocks, mailbox, radio) get **invisible, enlarged hit areas** so touch targets are **≥ 44 CSS px** at the default zoom.
 - **Hover (desktop):**
   - A springy lift (about 0.05–0.1 units up, about 1.03× scale), smoothed.
-  - A soft outline (drei `<Outlines>`, warm cream/terracotta).
+  - A soft **emissive highlight** on the object's own materials (lamp-glow color `#F2A65A`, intensity 0.18 on hover, 0.12 while hinted) instead of drei `<Outlines>`. `Outlines` must be a child of every mesh, while the emissive effect works for a whole object from one effect in `Interactive` (meshes can opt out with `userData.noHighlight`).
   - A stitched-style label (DOM via drei `<Html>`, so it uses the UI font).
   - A pointer cursor, and a tick sound effect if sound is on.
 - **Click / tap:** the open flow from [02](02-architecture.md#interaction-state-machine).
-- **Mobile labels:** since there's no hover, small floating label tags are **always visible** above clickable objects. Tapping a tag works the same as tapping the object.
+- **Mobile labels:** since there's no hover, small floating label tags (drei `Html`, the `HoverLabel` molecule) are **always visible** above clickable objects when the pointer is coarse. Tapping a tag works the same as tapping the object. On phones the tags can overlap each other (known, accepted).
 - **Idle hints:**
-  - **When:** on a first visit (`hasInteracted` not yet stored), after **about 8 seconds** without a click.
+  - **When:** on a first visit (`room:interacted` not yet stored), after **about 8 seconds** (`HINT_DELAY_MS`) without a click.
   - **What:** Oyen says a hint ("Psst… try the PC!") and the suggested object **sparkles** (small particle sprites).
   - **Order:** PC → bookshelf → printer → then unvisited objects.
-  - **Stops:** after the first click or after 3 hints. Never while a panel is open.
+  - **Stops:** after the first click or after 3 hints (`MAX_HINTS`). Never while a panel is open. Order and timing live in `src/constants/hints.ts`.
 - **Keyboard:** 3D objects aren't focusable. Keyboard users get the same functionality from the phone menu and on-screen buttons (see [07](07-quality.md#accessibility)).
 
 ## Oyen, the host
@@ -128,16 +132,17 @@ These are built from drei/three primitives using the clay recipe: photo frame, 3
 
 ## Performance tiers
 
-The starting tier is guessed from the device (`pointer: coarse` or a small screen → low). drei `PerformanceMonitor` **steps down** to low if the frame rate stays below about 45 fps for a few seconds. It doesn't step back up during the same visit, to avoid flicker.
+*Implementation note:* every visit **starts on the high tier** (there is no device guess). drei `PerformanceMonitor` (default thresholds, `flipflops={1}`) **steps down** to low when the frame rate declines, and it does not step back up during the same visit. The current tier is exposed as `data-tier` on `<main>` (`pages/Room`), which the tests and measurements read.
 
 | Setting | High (desktop) | Low (phones / weak GPUs) |
 | --- | --- | --- |
 | Resolution (device pixel ratio) | Up to 2 | Up to 1.5 |
 | Shadows | Soft directional shadow map + contact shadows | Contact shadows rendered once, then static |
-| Ambient occlusion | On (if within budget) | Off |
-| Hover outline | On hover | On tap only |
-| Parallax | On | Off |
-| Render loop | Continuous while things animate; paused when the tab is hidden | Same, plus on-demand rendering while a panel covers the room |
+| Contact shadows | 1024, continuous | 512, rendered once |
+| Ambient occlusion | Not built | Not built |
+| Modal backdrop blur | 4px | None |
+| Parallax | By input type, not tier: on for a fine pointer, off for touch and reduced motion | Same |
+| Render loop | `frameloop="always"` (browsers already pause rAF in hidden tabs) | Same. The low tier drops DPR, shadows and contact-shadow cost instead of switching to on-demand rendering; `frameloop="demand"` + `invalidate()` is the fallback if real-device measurements miss 30 fps |
 
 **Budget:** 3D assets ≤ **about 2 MB** compressed in total (see [07](07-quality.md#performance-budgets)).
 
@@ -146,5 +151,6 @@ The starting tier is guessed from the device (`pointer: coarse` or a small scree
 - **Before mounting the canvas:** a capability check tries to create a WebGL context. If that fails, `webgl = unsupported`.
 - **During the visit:** the `webglcontextlost` event and a **canvas error boundary** both set `webgl = lost`.
 - **In fallback mode:** the canvas is replaced by a **static poster** of the room. The phone menu, on-screen buttons and every panel keep working, and panels grow from the center of the screen.
-- **The poster:** screenshots of **our own scene** (day and night) captured with a Playwright script from the running site, served as responsive AVIF/WebP. The same images, cropped to 1200×630, are the **OG link-preview images**.
-- **A single model failing to load** (an error boundary per object) hides **only that object**; the rest of the room keeps working.
+- **The poster:** screenshots of **our own scene** (day and night) captured from the running site with `yarn poster` (`scripts/capture-poster.mts`, Playwright + SwiftShader + `sharp`). It opens `/?poster=1`, which renders the bare scene (no HUD, bubble or loader), and writes `public/poster/room-day.webp` and `room-night.webp` (1600 px WebP, shown by the `Poster` molecule with `unoptimized`). The day capture, cropped to 1200×630, is `public/poster/og.png`, the **OG link-preview image**. `POSTER_BASE_URL` points the script at a different server.
+- **Re-capture note:** the current captures were taken at about 04:20 WIB, so the window shows the night sky in both. Re-run `yarn poster` in Bogor daytime before launch (see the README launch checklist).
+- **Errors:** there are no external models to fail, so there is no per-object boundary. One `SceneErrorBoundary` around the Canvas sets `webgl = lost`, which swaps in the poster.

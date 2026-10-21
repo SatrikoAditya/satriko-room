@@ -1,6 +1,6 @@
 # Satriko's Room: Design Docs
 
-> **Status:** Design approved on 2026-10-21 (brainstorming session). Nothing has been built yet: there is no code and no implementation plan.
+> **Status:** Design approved on 2026-10-21 (brainstorming session). The site is built (implementation plan in `docs/plans/`, 28 tasks) and these documents were synced with the code on 2026-10-22: where the build differs from the original design, an *Implementation note* or the table in [08](08-decision-log.md#deviations-from-the-design-docs) says so. Remaining launch steps are in the repository `README.md`.
 > **Owner:** Satriko Aditya, Full Stack Software Engineer, Bogor, Indonesia
 
 ## The idea in one paragraph
@@ -18,14 +18,14 @@ This is a portfolio site that feels like visiting Satriko's room. The room is a 
 | 05 | [Content](05-content.md) | What each panel contains (from the CV), plus the **content checklist** of what's still needed |
 | 06 | [Extras & easter eggs](06-extras-and-easter-eggs.md) | Clocks, light switch / night mode, live sky, radio and sound; phase 2 terminal and Oyen antics |
 | 07 | [Quality](07-quality.md) | Error handling, accessibility, SEO, performance budgets, testing, deployment |
-| 08 | [Decision log](08-decision-log.md) | Every decision: the options, the choice, and why |
+| 08 | [Decision log](08-decision-log.md) | Every decision: the options, the choice, and why, plus the deviations from these docs found during the build |
 
 ## Decisions at a glance
 
 - **Audience:** a balanced mix. Recruiters come first, so information is never more than about 2 clicks away, but the site should still be a memorable showcase.
 - **Look:** Animal Crossing / clay-toy style, isometric, warm and cozy colors. It's *inspired by* the game: no Nintendo models, characters, logos, interface or fonts.
 - **Rendering:** real 3D with React Three Fiber and a fixed orthographic camera. Point-and-click only, no walking character.
-- **Art source:** free CC0 model packs (KayKit Furniture Bits, Kenney Furniture Kit) plus custom objects built in code. No 3D modeling needed from Satriko.
+- **Art source:** everything is built in code from rounded primitives (the style test approved it, so the CC0 model packs, KayKit and Kenney, are an optional upgrade that was not used). No 3D modeling needed from Satriko.
 - **Room:** a studio bedroom with **14 clickable things**: 11 objects that open panels, plus Oyen, the light switch and the radio.
 - **Click flow:** the camera glides in (about 0.6s), then the modal grows out of the object (about 80% of the screen on desktop, about 95% on mobile).
 - **URLs:** one URL per panel, using `history.pushState`. It feels like a single-page app, but direct links, the back button and SEO all work.
@@ -35,11 +35,11 @@ This is a portfolio site that feels like visiting Satriko's room. The room is a 
 - **Easter eggs (phase 2):** PC terminal commands and Oyen antics.
 - **Privacy:** only email, LinkedIn and GitHub are public. No phone number, no referees.
 - **Language:** English only.
-- **Fonts:** M PLUS Rounded 1c (a free font close to Animal Crossing's) and Nunito. JetBrains Mono inside the PC panel, VT323 inside the TV panel.
+- **Fonts:** M PLUS Rounded 1c (kept after the style test against Zen Maru Gothic) and Nunito. JetBrains Mono inside the PC panel, VT323 inside the TV panel.
 - **Projects:** skipped for now. The architecture leaves a slot for a Projects object later.
 - **Code structure:** follows Satriko's Jitera Next.js project, so it feels familiar: `src/` with path aliases, thin `app/` routes, atomic design components (atoms, molecules, organisms, templates, pages), one Zustand store per concern in `store/`, plus `constants/`, `hooks/`, `interfaces/`, `models/`, `utils/`, next-themes, shadcn/ui, and the same Prettier/ESLint conventions. Two additions: `components/three/` for the 3D scene and `content/` for site content ([02](02-architecture.md#project-structure)).
 
 ## What's next
 
-1. Fill in the [content checklist](05-content.md#content-checklist). Missing hobby content isn't blocking, since those panels have cozy placeholders.
-2. When implementation starts, the first build step should be the **style test**: one finished corner (desk, PC, lighting, materials) to confirm the Animal Crossing look before building the rest of the room. See [Risks](01-vision-and-scope.md#risks--mitigations).
+1. Work through the **Launch checklist** in the repository `README.md` (public PDF, real domain, optional music and hobby content, poster re-capture, real-device checks, deploy). Content status is in the [content checklist](05-content.md#content-checklist); missing hobby content isn't blocking, since those panels have cozy placeholders.
+2. Phase 2 (PC terminal and Oyen antics) gets its own plan after launch.

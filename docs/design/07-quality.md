@@ -7,7 +7,7 @@
 | No WebGL support | Capability check before mounting the canvas (`src/utils/webgl.ts`) | `useSceneStore.webgl = 'unsupported'`; the canvas is never mounted | A static room poster; the phone menu, buttons and panels work normally. The loader button reads **Enter (simple view)** |
 | WebGL context lost mid-visit | `webglcontextlost` event | `webgl = 'lost'`; the canvas is unmounted | The poster fades in; whatever panel was open stays open |
 | 3D crash (render error) | Error boundary around `three/SceneCanvas` | Same as context lost | Poster; the site keeps working |
-| One model fails to load | Suspense + an error boundary **per object** | That object isn't rendered; its section stays reachable through the phone menu | The room without that object |
+| One model fails to load | *Not applicable as built:* every object is code-built, so there are no model files to fail (an error boundary per object was never added). The single `SceneErrorBoundary` covers any render error | Same as "3D crash" | Poster |
 | Slow 3D load on a direct link | `useProgress` | The panel shows at once; the room loads behind it | A "Room loading… 63%" corner pill |
 | Audio fails to load or play (autoplay blocked, decode error) | Promise rejection from play/decode | Caught and ignored; the sound state stays as chosen | Silence, no error |
 | `localStorage` unavailable (private mode, blocked) | try/catch in `src/utils/storage.ts` | Fall back to defaults in memory | Preferences aren't remembered next visit; everything else works |
@@ -26,7 +26,7 @@
 
 - **Everything is reachable without the 3D scene and without a mouse:** the phone menu, the on-screen buttons and real `<a href>` links cover all 11 sections.
 - **The canvas is decorative:** `aria-hidden="true"` on the canvas wrapper, plus a visually hidden description ("An illustrated 3D room. Use the phone menu to explore sections.").
-- **Skip link:** "Skip to menu" as the first focusable element.
+- **Skip navigation:** as built, the first focusable element is a visually hidden `SectionNav` (`<nav aria-label="Sections">`, a list of links to all 11 sections) that appears when it receives focus; the loader has its own "Skip to my resume →" link.
 - **Modals and the Help sheet:** built on the Radix Dialog (via shadcn/ui), so they have `role="dialog"`, `aria-modal`, `aria-labelledby`, a focus trap, **Esc** to close, and focus returned to what opened them.
 - **Phone menu:** arrow-key grid navigation, Enter to open, Esc to close.
 - **Visible focus:** a 3 px accent-color focus outline with an offset on every focusable element, in both themes.
@@ -43,7 +43,7 @@
 
 | Key | Context | Action |
 | --- | --- | --- |
-| Tab / Shift+Tab | Anywhere | Skip link → name tag → mute → day/night → help → Resume → Contact → phone |
+| Tab / Shift+Tab | Anywhere | Section links → name tag → mute → day/night → help → Resume → phone → Contact (DOM order; the phone button sits between Resume and Contact) |
 | Enter / Space | Focused button or tile | Activate |
 | Arrow keys | Phone menu | Move through the app grid |
 | Esc | Modal, Help sheet, phone menu | Close |
@@ -52,22 +52,22 @@
 ## SEO
 
 - **Per-route metadata** from the registry: `title`, `description`, canonical URL, Open Graph and Twitter card tags ([copy in 05](05-content.md#seo-copy)).
-- **OG / Twitter image:** the room poster cropped to 1200×630 (day version). Optionally a per-section crop focused on that object.
-- **`sitemap.ts`** lists `/` and all 11 section URLs; **`robots.ts`** allows everything and points to the sitemap.
+- **OG / Twitter image:** the room poster cropped to 1200×630 (day version), `public/poster/og.png`, captured by `yarn poster`. All routes share it (no per-section crop). `twitter:card` is `summary_large_image`.
+- **`sitemap.ts`** lists `/` and all 11 section URLs; **`robots.ts`** allows everything and points to the sitemap. Both, the canonical URLs, the OG URLs and the JSON-LD `url` derive from `site.url` in `src/constants/site.ts`.
 - **Server-rendered panel text** on every section URL, so crawlers and no-JS visitors get real content.
 - **JSON-LD `Person`** on `/`:
   - `name`: Satriko Aditya; `jobTitle`: Full Stack Software Engineer
   - `address`: Bogor, Indonesia
   - `email`; `sameAs`: LinkedIn and GitHub URLs (checklist C3/C4)
   - `worksFor`: Jitera
-  - `alumniOf`: Hacktiv8, SMK Negeri 3 Bogor (and BINUS once graduated; until then, mention it in the description only)
-- **The canonical domain** is set once the domain is decided (checklist C18).
+  - `alumniOf`: computed from the education content, completed programs only (Hacktiv8, SMK Negeri 3 Bogor; BINUS is excluded while it is "present")
+- **The canonical domain** is set once the domain is decided (checklist C18). Until then `site.url` is the placeholder `https://example.com`, which must be replaced before the production launch.
 
 ## Performance budgets
 
 | Metric | Budget / target | Notes |
 | --- | --- | --- |
-| 3D assets (GLB + textures), compressed | **≤ 2 MB** total | KayKit's shared atlas keeps this small ([03](03-room-scene.md#asset-pipeline)) |
+| 3D assets (GLB + textures), compressed | **≤ 2 MB** total | As built there are no 3D model files (everything is code-built), so this is 0 KB; `yarn budgets` still checks `public/models/*.glb` if any appear |
 | Initial JS on a direct-link route (excluding the lazy 3D chunk) | ≤ 250 KB gzip | The 3D libraries live in the lazy `SceneCanvas` chunk. 250 KB: the design asked for ~200 KB, but React/Next runtime alone measured ~216 KB (analyzer, 2026-10-22); motion LazyMotion slimming is a tracked follow-up |
 | Lazy 3D chunk (three + R3F + drei) | ≤ about 350 KB gzip | Import only the drei helpers we use |
 | LCP on direct-link pages | ≤ 2.5s on mid-range mobile / 4G | The LCP element is the server-rendered panel text or the poster |
@@ -75,7 +75,7 @@
 | Room interactive after Enter (mid-range phone, 4G) | ≤ about 4s | Assets preloaded while the loader shows |
 | Frame rate | ≥ 50 fps desktop, ≥ 30 fps mid-range phone | Steps down a graphics tier automatically ([03](03-room-scene.md#performance-tiers)) |
 | Audio | Music loaded on first play only; each sound effect ≤ about 30 KB | Not part of the initial load |
-| Lighthouse | **Accessibility ≥ 95, SEO ≥ 95, Best Practices ≥ 95**; Performance ≥ 80 (mobile) on direct-link pages | The `/` route with 3D may score lower on Performance; that's accepted, since the loader is intentional |
+| Lighthouse | **Accessibility ≥ 95, SEO ≥ 95, Best Practices ≥ 95**; Performance ≥ 80 (mobile) on direct-link pages | The `/` route with 3D may score lower on Performance; that's accepted, since the loader is intentional. The Performance numbers under headless SwiftShader (below) are not representative; re-measure on production and on real devices |
 
 ### Measured (2026-10-22)
 
@@ -89,6 +89,17 @@
 | Assets | 3D models 0 KB, sound effects 15 KB, posters 59 KB (all within budget) |
 
 ## Testing strategy
+
+*Implementation note (as built):* Vitest runs with `yarn test`; Playwright specs live in `e2e/` and run with `yarn e2e`. `playwright.config.ts` starts `yarn build && yarn start` itself (`webServer`, reusing a server already on port 3000 when not in CI), uses 2 workers (software WebGL is CPU-bound and starves animation frames when more run in parallel), and launches Chromium with `--use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader` so the scene renders without a GPU. Projects:
+
+| Project | Config | Specs |
+| --- | --- | --- |
+| `desktop` | Desktop Chrome, 1440×900, SwiftShader | every spec except `mobile` and `no-webgl` |
+| `mobile` | Pixel 7, SwiftShader | `mobile`, `direct-links`, `a11y` |
+| `no-webgl` | Desktop Chrome with `--disable-3d-apis` | `no-webgl` |
+| `reduced-motion` | Desktop Chrome with `reducedMotion: 'reduce'`, SwiftShader | `navigation` |
+
+The axe suite (`a11y.spec.ts`) scans six routes (`/`, `/experience`, `/skills`, `/contact`, `/resume`, `/travel`) in both themes (12 scans per project) and fails on serious or critical violations. The visual check (`visual.spec.ts`) compares the scene to a baseline screenshot with `maxDiffPixelRatio: 0.08`; the committed baseline is **darwin-only** (`room-default-desktop-darwin.png`), so on Linux CI it needs its own baseline first. Setting `PLAYWRIGHT_BASE_URL` points the suite at a deployment instead (see [Deployment](#deployment)).
 
 | Level | Tool | What it covers |
 | --- | --- | --- |
@@ -109,12 +120,10 @@
 - **Vercel**, static output.
   - **Preview deployments** for every branch / PR.
   - **Production** from the main branch.
-- **Caching:** hashed JS/CSS files are cached indefinitely. Models and audio in `public/` use **versioned file names** (e.g. `room.v3.glb`) so they can also be cached long-term.
+- **Caching:** hashed JS/CSS files are cached indefinitely by Next. The files in `public/` are **not** versioned (`/audio`, `/poster`, `/images`), so `vercel.json` gives them `Cache-Control: public, max-age=86400, stale-while-revalidate=604800` (one day fresh, one week stale-while-revalidate) and not `immutable`. If a file ever gets versioned names, it can be made immutable.
 - **Environment variables:** none required (no backend).
-- **Domain:** to be decided (checklist C18). Set the canonical URL and sitemap base from a single constant.
+- **Domain:** to be decided (checklist C18). The canonical URL and sitemap base come from the single constant `site.url` in `src/constants/site.ts`; set it to the production domain and redeploy.
 - **Analytics:** none by default. Vercel Web Analytics is the option if wanted (checklist C19).
-- **Before launch:**
-  - every checklist item marked blocking for launch is done ([05](05-content.md#content-checklist));
-  - `CREDITS.md` is complete;
-  - no phone number or referee details anywhere (success criterion S7);
-  - the Lighthouse and axe targets above are met.
+- **Vercel setup:** import the git repository; framework preset Next.js (auto-detected); build command `yarn build`; Node.js 24 in the project settings (`.nvmrc` says 24, and `engines.node` is `>=22.22`); no environment variables. Then add the domain, set `site.url`, and redeploy. The step-by-step version is in the README "Deploy" section.
+- **Post-deploy checks:** `PLAYWRIGHT_BASE_URL=https://<deployment> yarn e2e` (when set, `playwright.config.ts` uses it as `baseURL` and does not start a local server); an OG preview check with https://www.opengraph.xyz; Lighthouse on the production URL.
+- **Before launch:** the checklist lives in the README, section "Launch checklist (for Satriko)". It covers the public PDF (C5), the real domain in `site.url` (C18), the optional music track (C17) and hobby content, re-capturing the posters in Bogor daytime, and the real-device checks. Also required: every checklist item marked blocking for launch is done ([05](05-content.md#content-checklist)); `CREDITS.md` is complete; no phone number or referee details anywhere (success criterion S7); the Lighthouse and axe targets above are met.

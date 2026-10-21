@@ -1,6 +1,6 @@
 # 08: Decision Log
 
-Every decision made during the brainstorming session on **2026-10-21**, in the order it was made.
+Every decision made during the brainstorming session on **2026-10-21**, in the order it was made. Rows 31 onwards were made during the build.
 
 **"Decided by"** means:
 
@@ -40,6 +40,12 @@ Every decision made during the brainstorming session on **2026-10-21**, in the o
 | 29 | Theme and dialog libraries | Custom theme script vs. next-themes; custom modal semantics vs. a Radix Dialog base | **next-themes** (`data-theme`, day/night) and **shadcn/ui Radix Dialog** as the modal base | Both already used in the reference project; they handle no-flash theming and accessible dialogs without custom code | Design (follows #28) |
 | 30 | State shape | One big store with slices vs. one store per concern | **One Zustand store per concern**: `useRoomStore`, `useSceneStore`, `useSoundStore` | Matches the reference project's store pattern | Design (follows #28) |
 | 31 | Style test (Task 19) | ACES vs Neutral tone mapping; M PLUS Rounded 1c vs Zen Maru Gothic; mobile zoom 1.3 vs 1.15 | Tuned room + Neutral tone mapping; M PLUS Rounded 1c; mobile zoom 1.3 | Neutral keeps the pastels vivid; M PLUS reads more game-like; tighter mobile framing keeps objects tappable | Satriko |
+| 32 | Controls while a panel is open (D11) | Keep the HUD and phone usable above the backdrop (original doc 04) vs. real modal semantics | **Modal semantics win:** the HUD and phone are not reachable while a section panel is open; close the panel first | A focus-trapped `aria-modal` dialog makes everything behind it inert, which is what screen-reader and keyboard users expect; mixing the two would break the trap | Design (found in the e2e work) |
+| 33 | Bundle analysis (D12) | `@next/bundle-analyzer` vs. Next 16.4's built-in `next analyze` | **`next analyze`** (`yarn analyze`, `yarn analyze:export`) | `@next/bundle-analyzer` is webpack-only and the project builds with Turbopack; no new dependency | Design |
+| 34 | First-load JS budget (D13) | Keep 200 KB vs. raise to 250 KB gzip | **250 KB** gzip, enforced by `yarn budgets` | The React/Next runtime alone measured about 216 KB. 250 KB is a regression guard above that floor; slimming `motion` with `LazyMotion` is a post-launch follow-up | Design |
+| 35 | Model-pack upgrade (Task 20) | Add KayKit/Kenney models vs. keep everything code-built | **Skipped:** all objects stay code-built | Satriko approved the code-built look at the style-test gate (#31); no download, no `room.glb`, no asset pipeline needed | Satriko |
+| 36 | Panel dialog and SSR | Radix `Dialog.Portal` vs. rendering the dialog inline | **Inline, no portal** for the section panels (`ModalHost`) | A portal renders nothing on the server, so direct links had no panel text in the HTML (success criterion S2). Found by the e2e SSR assertion | Design |
+| 37 | Poster images | Hand-made art vs. screenshots of our own scene | **Captured from our own scene** with `?poster=1` and `yarn poster` (`scripts/capture-poster.mts`); the day capture, cropped to 1200×630, is the OG image | The poster always matches the real room and can be regenerated after any art change. The current captures were taken at night, so they must be re-run in daytime before launch | Design |
 
 ## Design sections reviewed and approved
 
@@ -52,6 +58,28 @@ Every decision made during the brainstorming session on **2026-10-21**, in the o
 | 5 | Extras, phase 2, quality, docs structure | Approved |
 | Style test | Task 19 screenshots (docs/design/style-test/) | Approved 2026-10-22 with Neutral tone mapping |
 
+## Deviations from the design docs
+
+Found while building; the design docs have been updated to match (see the *Implementation note* lines in 02, 03 and 04). Kept here so the log is self-contained.
+
+| # | Design doc said | As built | Why |
+| --- | --- | --- | --- |
+| D1 | 04: `<html data-theme="day\|night">` set by next-themes | Same attribute values, but next-themes' internal names stay `light` / `dark` (mapped with its `value` prop); `resolvedTheme` is `'light' \| 'dark'` | next-themes resolves the system preference only to `light` / `dark` |
+| D2 | 02: `CameraPose { position, target, zoom }` | `CameraPose { target, offset, zoomFactor }` (position = target + offset; zoom relative to the fitted default) | Poses stay valid when the default fit changes with the viewport size |
+| D3 | 03: hover outline with drei `Outlines` | Emissive tint on the object's own materials (+ lift and label) | `Outlines` must be a child of each mesh; the emissive approach works per object with one effect |
+| D4 | 03: CC0 packs for furniture, custom objects in code | Everything is code-built; packs are an optional upgrade, and Task 20 was skipped after the style test approved the look | Fully executable without manual downloads; the style test decided |
+| D5 | 02 folder tree: `components/three/objects/` only | Adds `components/three/RoomObjects/` as the aggregator | `objects/` vs `Objects/` would collide on macOS |
+| D6 | 02: hooks read Next's router from anywhere | Scene code uses `openFromScene()` and `useSceneBridge()` | React contexts do not cross the R3F Canvas boundary |
+| D7 | 04: help icon `CircleHelp` | `CircleQuestionMark` | Canonical name in lucide-react 1.x (`CircleHelp` is an alias) |
+| D8 | 02: `useSceneStore` fields | Adds `sceneReady`, `progress`, `bubble`, `oyenAnchor`; no `pointer` (R3F's `state.pointer` is used instead). `useSoundStore` gains `hydrate()` | The loader stays free of drei; the bubble is DOM outside the Canvas; the saved sound flag is read after mount |
+| D9 | 04: backdrop blur on the modal backdrop | Blur only on the high tier | Doc 04 already allowed this; made explicit |
+| D10 | 03: low tier uses on-demand rendering while a panel covers the room | `frameloop="always"` on both tiers (browsers already pause rAF in hidden tabs); the low tier drops DPR, shadows and contact-shadow cost instead | Simpler; `frameloop="demand"` + `invalidate()` is the fallback if real-device measurements miss 30 fps |
+| D11 | 04: HUD and phone stay usable above the backdrop while a panel is open | They are not reachable while a panel is open (modal semantics) | See decision #32 |
+| D12 | 07: `@next/bundle-analyzer` | Built-in `next analyze` | See decision #33 |
+| D13 | 07: first-load JS ≤ 200 KB gzip | ≤ 250 KB gzip | See decision #34 |
+
+Smaller as-built differences recorded in the docs themselves: no ambient occlusion and no `Environment` (03); every visit starts on the high tier (03); a visually hidden section nav instead of a "Skip to menu" link (07); `src/assets/` was never needed (02); the window does not tint the room light (06).
+
 ## Still open
 
-These are tracked in the [content checklist](05-content.md#content-checklist): photo and intro, LinkedIn/GitHub URLs, the public CV PDF, labels for skills with no job link, certificates, hobby content, Oyen's markings, music track, domain name, analytics.
+Status of the [content checklist](05-content.md#content-checklist): **provided** C1 (photo), C2 (intro draft kept), C3 and C4 (LinkedIn and GitHub). **Pending:** C5 (public CV PDF), C17 (music track), C18 (domain name). **Default in use:** C6 (`'Side projects & learning'`), C19 (no analytics). **Hobby content** (games, Indonesia pins, hikes, dives; C10 to C13) is not written yet, so those panels show their empty states. The steps to finish are in the repository `README.md` (Launch checklist). Also open: re-capture the posters in Bogor daytime, real-device checks, and the Help-sheet credits update noted in [04](04-ui-and-visual-design.md#help-sheet).

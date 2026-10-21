@@ -17,8 +17,8 @@
 | Name | Satriko Aditya |
 | Title | Full Stack Software Engineer |
 | Location | Bogor, Indonesia |
-| Photo | 📝 One photo of Satriko (used on the desk frame texture and in the panel) |
-| Intro | 📝 A short, friendly first-person intro (2–4 sentences). *Draft to edit:* "Hi, I'm Satriko! I'm a full stack engineer from Bogor who loves building fast, friendly web and mobile apps with TypeScript, React, Next.js and NestJS. When I'm not coding you'll find me gaming, hiking a mountain, diving somewhere blue, or exploring Indonesia." |
+| Photo | ✅ Provided: `public/images/about/satriko.jpg` (`about.photo` in `src/content/about.ts`); used on the desk frame texture and in the panel |
+| Intro | ✅ The draft below is in use (Satriko kept it):  "Hi, I'm Satriko! I'm a full stack engineer from Bogor who loves building fast, friendly web and mobile apps with TypeScript, React, Next.js and NestJS. When I'm not coding you'll find me gaming, hiking a mountain, diving somewhere blue, or exploring Indonesia." |
 | Summary (CV) | Full Stack Software Engineer with 5+ years of professional experience specializing in Node.js, TypeScript, React.js, Next.js, and NestJS. Strong background in building, optimizing, and maintaining scalable web and mobile applications. Currently pursuing a Bachelor's degree in Computer Science at BINUS University. Passionate about continuous learning and delivering high-quality solutions in collaborative, and fast paced environments. |
 | Quick facts (stickers) | 5+ years experience · Remote across 3 time zones (Bogor, Singapore, Abu Dhabi) · Currently: Full Stack Developer @ Jitera · Studying: BSc Computer Science @ BINUS |
 
@@ -259,7 +259,7 @@ Drafts to edit. Keep every line short (≤ 90 characters).
 
 ## SEO copy
 
-Titles follow the pattern `<Section> · Satriko Aditya, Full Stack Engineer`.
+Synced with `src/constants/sections.ts` (the single source). Section titles follow the pattern `<Section> · Satriko Aditya`; the home page title is `Satriko Aditya · Full Stack Engineer` (`src/app/layout.tsx`). Each page also sets `og:image` to `/poster/og.png`, a canonical URL built from `site.url`, and `twitter:card` = `summary_large_image`.
 
 | Route | Title | Description (draft) |
 | --- | --- | --- |
@@ -271,7 +271,7 @@ Titles follow the pattern `<Section> · Satriko Aditya, Full Stack Engineer`.
 | `/gaming` | Gaming · Satriko Aditya | What Satriko is playing right now. |
 | `/travel` | Travel · Satriko Aditya | Places Satriko has explored around Indonesia. |
 | `/hiking` | Hiking · Satriko Aditya | Mountains and trails Satriko has hiked. |
-| `/diving` | Diving · Satriko Aditya | Satriko's dive log. |
+| `/diving` | Diving · Satriko Aditya | Dive sites and highlights from Satriko's dive log. (Lengthened from "Satriko's dive log." so the description is long enough for search snippets.) |
 | `/remote-work` | Remote work · Satriko Aditya | How Satriko works remotely across Bogor, Singapore and Abu Dhabi time zones. |
 | `/contact` | Contact · Satriko Aditya | Get in touch with Satriko by email, LinkedIn or GitHub. |
 | `/resume` | Resume · Satriko Aditya | Download Satriko Aditya's resume (PDF). |
@@ -284,12 +284,12 @@ Titles follow the pattern `<Section> · Satriko Aditya, Full Stack Engineer`.
 
 | # | Item | Needed for | Blocking for launch? | Notes |
 | --- | --- | --- | --- | --- |
-| C1 | Photo of Satriko | About panel, desk frame | **Yes** | Square-ish, good light; alt text included |
-| C2 | Friendly intro (2–4 sentences) | About | **Yes** | A draft is provided above |
-| C3 | LinkedIn URL | Contact, JSON-LD | **Yes** | |
-| C4 | GitHub URL | Contact, JSON-LD | **Yes** | |
-| C5 | Public CV PDF (no phone, no referees) | Resume | **Yes** | `Satriko-Aditya-Resume.pdf` |
-| C6 | Labels for skills with no job link (Redux, Vue.js, GraphQL, Redis, MongoDB) | Skills | **Yes** | See the Skills section |
+| C1 | Photo of Satriko | About panel, desk frame | **Yes** | ✅ Provided and applied |
+| C2 | Friendly intro (2–4 sentences) | About | **Yes** | ✅ The draft above is in use |
+| C3 | LinkedIn URL | Contact, JSON-LD | **Yes** | ✅ Provided (`site.linkedin`) |
+| C4 | GitHub URL | Contact, JSON-LD | **Yes** | ✅ Provided (`site.github`) |
+| C5 | Public CV PDF (no phone, no referees) | Resume | **Yes** | ⏳ **Pending.** `public/resume/Satriko-Aditya-Resume.pdf` does not exist yet; see the README launch checklist |
+| C6 | Labels for skills with no job link (Redux, Vue.js, GraphQL, Redis, MongoDB) | Skills | **Yes** | Default in use: `UNLINKED_SKILL_LABEL = 'Side projects & learning'` in `src/content/skills.ts`. Change it there if Satriko prefers other wording |
 | C7 | Add JavaScript to skills? | Skills | No | Default: not added |
 | C8 | Show "Presentation & Public Speaking" as a bookend? | Skills | No | Default: yes (proposal) |
 | C9 | Certificates / awards / talks | Education | No | Default: the 3 frames only |
@@ -300,6 +300,8 @@ Titles follow the pattern `<Section> · Satriko Aditya, Full Stack Engineer`.
 | C14 | Remote-work note | Remote work | No | A draft is provided above |
 | C15 | Oyen's markings (stripes? white paws/chest? eye color?) | 3D Oyen, loader SVG | No | Default: orange tabby, cream chest |
 | C16 | Review Oyen's lines | Speech bubble | No | Drafts above |
-| C17 | Music track(s) for the radio | Radio | No | Must be CC0 / royalty-free; license recorded |
-| C18 | Domain name | Deployment, canonical URLs | **Yes** (before the production launch) | e.g. a `.dev` / `.com` domain |
-| C19 | Analytics: yes or no (e.g. Vercel Web Analytics) | Deployment | No | Default: none |
+| C17 | Music track(s) for the radio | Radio | No | ⏳ Pending. `public/audio/music-cozy.mp3` is absent and the radio fails silently. Must be CC0 / royalty-free; license recorded in `CREDITS.md` |
+| C18 | Domain name | Deployment, canonical URLs | **Yes** (before the production launch) | ⏳ Pending. `site.url` is still the placeholder `https://example.com` in `src/constants/site.ts` |
+| C19 | Analytics: yes or no (e.g. Vercel Web Analytics) | Deployment | No | Decision: none (default) |
+
+**Status at the end of the build:** C1–C4 provided; C5, C17 and C18 pending (see the README launch checklist); C6 uses its default; C19 none. C7–C16 keep their defaults, and the hobby content (C10–C13) is still empty, so those panels show their empty states.

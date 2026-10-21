@@ -4,9 +4,9 @@
 
 | Layer | Choice | Role / notes |
 | --- | --- | --- |
-| Framework | **Next.js (App Router)**, TypeScript `strict` | Static generation for every route, metadata API, `next/font`, `next/image` |
-| Styling | **Tailwind CSS v4** + `clsx` / `tailwind-merge` (`cn` helper) | Design tokens from [04](04-ui-and-visual-design.md) as CSS variables; day/night themes switched with `data-theme` |
-| Theme | **next-themes** | Same library as the reference project. Handles the saved choice, the system preference and the no-flash script. Configured with `attribute="data-theme"` and values `day` / `night` |
+| Framework | **Next.js (App Router)**, TypeScript `strict` | Static generation for every route, metadata API, `next/font`, `next/image`. Built with Turbopack (the Next 16 default) and `reactCompiler: true` in `next.config.ts` |
+| Styling | **Tailwind CSS v4** + `clsx` / `tailwind-merge` (`cn` helper) | Design tokens from [04](04-ui-and-visual-design.md) as CSS variables; day/night themes switched with `data-theme`. Tailwind runs through the `@tailwindcss/turbopack` loader (a `turbopack.rules` entry for `*.css` in `next.config.ts`); there is no `postcss.config` |
+| Theme | **next-themes** | Same library as the reference project. Handles the saved choice, the system preference and the no-flash script. Configured with `attribute="data-theme"` and values `day` / `night`. *Implementation note:* next-themes' own theme names stay `light` / `dark` (it only resolves the system preference to those two); the `value` prop maps them to the `day` / `night` attribute values, so `resolvedTheme` is `'light' \| 'dark'` (see `src/components/templates/providers.tsx`) |
 | UI primitives | **shadcn/ui (Radix)**, *only the primitives we actually use* | Same setup as the reference project. Main use: **Dialog** as the accessible base of the modal and Help sheet (focus trap, Esc, `aria-modal`), with our own styling and `motion` animations on top |
 | 2D motion | **`motion`** (Framer Motion) | Modal grow/shrink, phone menu, buttons, speech bubble. Only for the 2D UI, not inside the 3D scene |
 | Icons | **Lucide React** | Phone app icons and on-screen controls |
@@ -14,8 +14,11 @@
 | 3D post-processing | `@react-three/postprocessing` (**optional**) | Ambient occlusion on the desktop high tier only. Kept only if it fits the performance budget |
 | Shared state | **Zustand**, one store per concern | Shared by the 2D UI and the 3D scene. Animation loops can read state with `getState()` without re-rendering React, which matters for 60 fps. Same pattern as the reference project |
 | Code style | **Prettier + ESLint**, using the reference project's conventions | See [Code conventions](#code-conventions) |
-| Testing | Vitest, React Testing Library, Playwright, `@axe-core/playwright` | See [07](07-quality.md#testing-strategy) |
+| Testing | Vitest, React Testing Library, Playwright, `@axe-core/playwright` | See [07](07-quality.md#testing-strategy). Vitest resolves the path aliases with Vite 8's built-in `resolve.tsconfigPaths` (`vitest.config.mts`), so `vite-tsconfig-paths` is not installed |
+| Runtime | **Node 24** (`.nvmrc` says `24`), yarn | `engines.node` in `package.json` is `>=22.22` |
 | Hosting | **Vercel** | Every route static; no server functions needed |
+
+**Agent notes:** `AGENTS.md` at the repo root is generated and re-added by `next dev`; commit it as-is instead of editing it.
 
 **Versions:** use the latest stable releases when implementation starts. `@react-three/fiber`'s major version must match React's (e.g. R3F v9 needs React 19), so check compatibility before pinning. The reference project is on Next 14 / React 18; this project can be newer, and the structure and conventions carry over the same.
 
@@ -86,7 +89,7 @@ Oyen, the light switch and the radio have **no URL**. They trigger in-place beha
 
 ### How it works
 
-1. **The URL is the source of truth for which panel is open.** The `Room` page reads `usePathname()` (in its co-located `useRoom.ts` hook) and maps it to `activeSection` through the registry.
+1. **The URL is the source of truth for which panel is open.** `useActiveSection()` (`src/hooks/useActiveSection.ts`) reads the pathname and maps it to the active section through the registry; the `Room` page's co-located `useRoom.ts` hook syncs the phases and transitions around it.
 2. **Opening a panel in the app** (clicking an object, a phone app, or the Resume/Contact buttons) goes through `useSectionNavigation()` (`src/hooks/`), which calls `window.history.pushState(null, '', '/experience')`. The Next.js App Router supports the native `pushState` / `replaceState` and keeps `usePathname()` in sync, so there's **no server round-trip and no remount**.
 3. **Every open and close is a reaction to the pathname changing.** Clicking ✕, pressing Esc, clicking outside, and pressing the browser back button all end up as "pathname became `/`", which plays the same close animation. So the back button closes a panel *with* animation.
 4. **On a direct load** (`/experience` opened from a link), the server-rendered HTML already contains the open panel and its text.
@@ -106,6 +109,8 @@ The rule for visitors: **"Back" always means close the panel and return to the r
 | Browser Forward to `/x` | (browser) | Pathname becomes `/x`, and the open animation plays |
 
 `useRoomStore` keeps an `openedInApp` flag to choose between `history.back()` and `replaceState('/')`.
+
+*Implementation note:* code inside the R3F `<Canvas>` cannot use Next's router context (React contexts do not cross the Canvas boundary), so scene objects call `openFromScene(slug)` from `src/utils/history.ts`, which reads the slug from `window.location`. Other scene-side needs (theme toggle, reduced motion, coarse pointer) are passed in through `SceneBridgeProvider` / `useSceneBridge()` in `src/components/three/SceneCanvas/SceneBridge.tsx`.
 
 ### Interaction state machine
 
@@ -131,35 +136,38 @@ The rule for visitors: **"Back" always means close the panel and return to the r
 
 When `focusing(x)` finishes, the scene projects the object's world-space bounding box (`Box3`, 8 corners → `Vector3.project(camera)`, helper in `src/utils/projectRect.ts`) into a **screen rectangle** and stores it as `originRect` in `useRoomStore`. `ModalHost` animates the panel frame from `originRect` to its final rectangle, then fades in the content. Closing does the reverse. If no `originRect` exists (fallback mode), the panel grows from the center of the screen.
 
+*Implementation note:* `ModalHost` renders the Radix `Dialog` **inline, without a `Dialog.Portal`** (see the comment in `src/components/organisms/ModalHost/index.tsx`). A portal would render nothing on the server, so a direct link such as `/experience` would have no panel text in its HTML. The final rectangle comes from `src/utils/modalRect.ts`.
+
 ## Section registry
 
 `src/constants/sections.ts` is the **single source of truth**. It works like the reference project's `constants/navItems.ts`: static app configuration lives in `constants/`. The scene, phone menu, on-screen buttons, sitemap, metadata and tests all read from it. Its types live in `src/interfaces/section.ts`.
 
 ```ts
-// Design sketch, not final code. Types in src/interfaces/section.ts
+// Types in src/interfaces/section.ts (CameraPose is the as-built shape: poses stay valid
+// when the default fit changes with the viewport size)
 export type SectionSlug =
   | 'about' | 'experience' | 'skills' | 'education' | 'gaming'
   | 'travel' | 'hiking' | 'diving' | 'remote-work' | 'contact' | 'resume'
 
 export interface CameraPose {
-  position: [number, number, number] // camera position when focused
-  target: [number, number, number]   // look-at point (the object)
-  zoom: number                       // orthographic zoom when focused
+  target: Vec3      // look-at point (the object)
+  offset: Vec3      // camera position = target + offset
+  zoomFactor: number // multiplied with the fitted default zoom (1 = default)
 }
 
 export interface Section {
   slug: SectionSlug
   title: string            // panel title, e.g. "Work Experience"
   label: string            // short hover/phone label, e.g. "Experience"
-  icon: LucideIconName     // phone app icon
-  objectId: string         // which 3D object opens it, e.g. 'pc'
+  icon: LucideIcon         // phone app icon (component from lucide-react)
+  objectId: string         // which 3D object opens it, e.g. 'pc' (an ObjectId)
   cameraPose: CameraPose
   theme: PanelTheme        // 'monitor' | 'tv' | 'scrapbook' | 'shelf' | ...
   seo: { title: string; description: string }
 }
 ```
 
-**Adding a section later (e.g. Projects)** takes one registry entry, one object in `three/objects/`, one content file in `src/content/`, one model type in `src/models/`, and one `organisms/<X>Panel`. Nothing else changes.
+**Adding a section later (e.g. Projects)** takes one registry entry, one object in `three/objects/` (plus its entry in `three/RoomObjects/index.tsx`), one content file in `src/content/`, one model type in `src/models/`, and one `organisms/<X>Panel`. Nothing else changes.
 
 ## State (Zustand stores)
 
@@ -167,12 +175,12 @@ Following the reference project's pattern: **one store per concern**, one file e
 
 | Store | State | Written by | Read by |
 | --- | --- | --- | --- |
-| **`useRoomStore`** | `phase` (`loading` · `gate` · `entering` · `ready`), `activeSection` (derived from the pathname), `transition` (`idle` · `focusing` · `open` · `closing`), `originRect`, `openedInApp` | Loader, Enter button, `useRoom` (pathname sync), `useSectionNavigation`, the scene (`originRect`) | Camera director, ModalHost, Hud |
-| **`useSceneStore`** | `hovered` (`objectId \| null`), `hint` (`objectId \| null`), `tier` (`high` · `low`), `webgl` (`supported` · `unsupported` · `lost`), `theme` (a mirror of next-themes' resolved theme, for the 3D lighting) | Scene pointer events, the idle hint hook, `PerformanceMonitor`, the capability check / context-lost handler, the theme sync | Labels, sound effects, sparkles, scene settings, `Room` (poster swap) |
-| **`useSoundStore`** | `master` (all audio), `music` (radio) | Mute button, radio | Audio manager (`src/utils/audio.ts`) |
+| **`useRoomStore`** | `phase` (`loading` · `gate` · `entering` · `ready`), `transition` (`idle` · `focusing` · `open` · `closing`), `originRect`, `openedInApp`. The active section is not stored: it is derived from the pathname by `useActiveSection()` | Loader, Enter button, `useRoom` (pathname sync), `useSectionNavigation`, the scene (`originRect`) | Camera director, ModalHost, Hud |
+| **`useSceneStore`** | `hovered` (`objectId \| null`), `hint` (`objectId \| null`), `tier` (`high` · `low`), `webgl` (`unknown` · `supported` · `unsupported` · `lost`), `theme` (`day` · `night`, a mirror of next-themes' resolved theme, for the 3D lighting), `sceneReady`, `progress` (loader progress, 0 to 100), `bubble` (speech-bubble text, a DOM element outside the Canvas), `oyenAnchor` (screen position of Oyen for the bubble). There is no `pointer` field: the scene uses R3F's own `state.pointer` | Scene pointer events, the idle hint hook, `PerformanceMonitor`, the capability check / context-lost handler, the theme sync, the loader | Labels, sound effects, sparkles, scene settings, `Room` (poster swap), `SpeechBubble`, `Loader` |
+| **`useSoundStore`** | `master` (all audio), `music` (radio), `hydrate()` (reads the saved `master` flag after mount, so the server and first client render agree) | Mute button, radio, `hydrate` | Audio manager (`src/utils/audio.ts`) |
 
 - **Theme** is owned by **next-themes** (the saved choice, the system preference, the no-flash script). A small sync effect copies `resolvedTheme` into `useSceneStore.theme`, so the 3D scene and `useFrame` loops can read it without React context.
-- **Other saved preferences** (`sound.master`, `hasInteracted`) go through `src/utils/storage.ts`, which wraps every `localStorage` read and write in **try/catch** and falls back to safe defaults when storage is unavailable.
+- **Other saved preferences** (`room:sound` and `room:interacted`, keys in `src/constants/storage.ts`) go through `src/utils/storage.ts`, which wraps every `localStorage` read and write in **try/catch** and falls back to safe defaults when storage is unavailable.
 
 ## Content layer
 
@@ -183,7 +191,7 @@ Following the reference project's pattern: **one store per concern**, one file e
 ## Rendering rules
 
 - **The canvas is client-only:** `three/SceneCanvas` is loaded with `next/dynamic` and `ssr: false`, as a separate lazy chunk. The server HTML shows the **poster image** in its place, which also gives a fast first paint.
-- **Panels render on the server** for direct loads, so their text is in the HTML.
+- **Panels render on the server** for direct loads, so their text is in the HTML (the dialog is rendered inline, see [the modal model](#grow-out-of-the-object)). Panels therefore import only server-safe helpers: for example `formatRange` lives in `src/utils/dates.ts`, not in a client module.
 - **Anything that depends on the current time** (clocks, the phone's Bogor time, window sky) renders **only after mount**, to avoid hydration mismatches. The server renders a neutral placeholder.
 - **No theme flash:** next-themes injects its script so `data-theme` is set before first paint. `<html>` gets `suppressHydrationWarning`, as in the reference project's root layout.
 
@@ -212,7 +220,7 @@ What the reference project does, and what this project adopts:
 | `src/interfaces/`: app/UI types; `src/models/`: data models with an `I` prefix (`IEvent`) | ✅ `interfaces/section.ts`; `models/job.ts` (`IJob`), … |
 | `src/utils/`: pure helpers, one file per topic | ✅ |
 | `src/styles/globals.css` | ✅ Tailwind v4 + theme tokens |
-| `src/assets/` (`icons/Svg.tsx`, `images/`, `index.ts`) | ✅ For custom 2D SVGs (Oyen doodles, paw prints, stitched shapes) |
+| `src/assets/` (`icons/Svg.tsx`, `images/`, `index.ts`) | ⚪ Planned for custom 2D SVGs; not needed in the build (the Oyen loader art is inline in `Loader/OyenWalk.tsx`), so the folder does not exist |
 | `next-themes` theme provider | ✅ With `attribute="data-theme"` |
 | Prettier + ESLint configuration | ✅ See [Code conventions](#code-conventions) |
 | `src/services/` (API clients, React Query), `src/providers/QueryProvider`, auth, i18n | ❌ Not needed: there's no backend, no auth, English only |
@@ -231,12 +239,15 @@ What the reference project does, and what this project adopts:
 ```text
 .
 ├── public/
-│   ├── models/          # room.glb (optimized, see 03)
+│   ├── models/          # not used: every object is built in code (see 03)
 │   ├── audio/           # sound effects + music (licenses in CREDITS.md)
 │   ├── images/          # about/, gaming/, travel/, hiking/, diving/
 │   ├── poster/          # room-day / room-night (fallback + OG images)
 │   └── resume/          # Satriko-Aditya-Resume.pdf (public version)
-├── e2e/                 # Playwright tests
+├── e2e/                 # Playwright specs: a11y, direct-links, keyboard, mobile, navigation,
+│                        # no-webgl, visual (+ helpers.ts)
+├── scripts/             # build-indonesia-map.mjs, convert-audio.mjs, capture-poster.mts,
+│                        # check-budgets.mjs
 ├── src/
 │   ├── app/
 │   │   ├── [[...section]]/
@@ -246,10 +257,8 @@ What the reference project does, and what this project adopts:
 │   │   ├── error.tsx        # → @components/pages/Page500
 │   │   ├── sitemap.ts
 │   │   └── robots.ts
-│   ├── assets/
-│   │   ├── icons/           # Svg.tsx: Oyen doodles, paw prints, stitched shapes
-│   │   ├── images/
-│   │   └── index.ts
+│   ├── assets/          # planned for custom 2D SVGs; the folder was never needed, so it does not
+│   │                    # exist (the `@assets/*` alias is still configured in tsconfig)
 │   ├── components/
 │   │   ├── atoms/           # Button, IconButton, StitchedLabel, Chip, ProgressBar,
 │   │   │                    # Typewriter, VisuallyHidden
@@ -267,37 +276,44 @@ What the reference project does, and what this project adopts:
 │   │   │   ├── Page404/
 │   │   │   └── Page500/
 │   │   ├── three/               # 3D only
-│   │   │   ├── SceneCanvas/     # <Canvas>, tiers, PerformanceMonitor, error boundary
+│   │   │   ├── SceneCanvas/     # <Canvas>, tiers, PerformanceMonitor, error boundary,
+│   │   │   │                    # SceneBridge (context bridge into the Canvas), SceneReady
 │   │   │   ├── Room/            # walls, floor, base, lighting presets, decor
 │   │   │   ├── CameraDirector/  # default/focus poses, glide, parallax, mobile limits
 │   │   │   ├── Interactive/     # shared hover / click / outline / label wrapper
 │   │   │   ├── Oyen/            # cat built from shapes, idle animation, day/night poses
+│   │   │   ├── RoomObjects/     # aggregator that mounts every object (named apart from
+│   │   │   │                    # objects/ because objects/ vs Objects/ collide on macOS)
 │   │   │   └── objects/         # Pc/, Bookshelf/, PhotoFrame/, EduFrames/, Tv/,
 │   │   │                        # IndonesiaMap/, HikingGear/, DiveGear/, Clocks/,
 │   │   │                        # Mailbox/, Printer/, LightSwitch/, Radio/, WindowSky/
 │   │   └── shadcn/
 │   │       ├── components/ui/   # only the primitives we use (dialog.tsx, …)
 │   │       └── utils.ts         # cn()
-│   ├── constants/       # sections.ts (registry), roomLayout.ts, camera.ts, fonts.ts,
-│   │                    # theme.ts, timezones.ts, sky.ts, audio.ts, storage.ts
+│   ├── constants/       # sections.ts (registry), site.ts, roomLayout.ts, roomPalette.ts,
+│   │                    # camera.ts, fonts.ts, timezones.ts, sky.ts, audio.ts, storage.ts,
+│   │                    # hints.ts, loader.ts, indonesiaMap.ts
 │   ├── content/         # about.ts, experience.ts, skills.ts, education.ts, gaming.ts,
 │   │                    # travel.ts, hiking.ts, diving.ts, remoteWork.ts, contact.ts,
 │   │                    # resume.ts, oyen.ts
-│   ├── hooks/           # useSectionNavigation.ts, useBogorTime.ts, useIdleHint.ts,
-│   │                    # useWebGLSupport.ts, useThemeSync.ts
+│   ├── hooks/           # useSectionNavigation.ts, useActiveSection.ts, useBogorTime.ts,
+│   │                    # useIdleHint.ts, useWebGLSupport.ts, useThemeSync.ts,
+│   │                    # useSoundEffects.ts, useViewportSize.ts, useIsCoarsePointer.ts,
+│   │                    # usePrefersReducedMotion.ts
 │   ├── interfaces/      # section.ts (Section, CameraPose, PanelTheme), scene.ts, ui.ts
 │   ├── models/          # about.ts (IAbout), job.ts (IJob), skill.ts (ISkillShelf),
 │   │                    # education.ts (IEducation), game.ts (IGame),
 │   │                    # travel.ts (ITravelPin), hike.ts (IHike), dive.ts (IDive)
 │   ├── store/           # useRoomStore.ts, useSceneStore.ts, useSoundStore.ts
 │   ├── styles/          # globals.css (Tailwind v4, day/night tokens)
-│   └── utils/           # time.ts, sky.ts, skills.ts, history.ts, storage.ts,
-│                        # webgl.ts, projectRect.ts, audio.ts
+│   └── utils/           # time.ts, dates.ts (formatRange, server-safe), sky.ts, skills.ts,
+│                        # history.ts, storage.ts, webgl.ts, projectRect.ts, modalRect.ts,
+│                        # map.ts, audio.ts
 ├── CREDITS.md           # every model / sound / music / font with source + license
 └── docs/design/         # these documents
 ```
 
-The component names above are the **planned starting set**. Small atoms and molecules may be added or merged during the build, but the folders and rules stay the same.
+The component names above are the **planned starting set**; the built tree is close to it. Additions during the build: molecules `Poster` and `ProgressPill`, organisms `JsonLd` and `SectionNav`, and the `scripts/` and `RoomObjects/` folders described above.
 
 ### Component folder anatomy
 

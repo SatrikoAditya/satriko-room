@@ -52,6 +52,18 @@ Animal Crossing is Nintendo's intellectual property. The site may use the *vibe*
 
 Detailed budgets are in [07: Quality](07-quality.md#performance-budgets).
 
+### Status at the end of the build (2026-10-22)
+
+| # | Status | Evidence / what is still open |
+| --- | --- | --- |
+| S1 | Verified by the automated suite | The HUD **Resume** link is one click from the room and opens `/resume` (`e2e/navigation.spec.ts`, also with WebGL off in `e2e/no-webgl.spec.ts`); the panel has the **Download PDF** button. The PDF file itself is still pending (checklist C5) |
+| S2 | Verified by the automated suite | `e2e/direct-links.spec.ts` fetches each of the 11 URLs and asserts the panel text is in the server HTML, then checks the dialog after hydration |
+| S3 | Partly automated | A keyboard-only spec opens a section through the phone menu (`e2e/keyboard.spec.ts`); the no-WebGL spec reaches Resume without the scene; all 11 sections are real links (phone menu, `SectionNav`) and each URL is covered by the direct-link spec. There is no single test that opens all 11 by keyboard |
+| S4 | Awaits real devices | Not measurable under headless SwiftShader (about 10 fps there, tier drops to `low` automatically). Needs iPhone Safari and a mid-range Android |
+| S5 | Verified by the build check | There are no 3D model files (0 KB); `yarn budgets` enforces the limit if any appear |
+| S6 | Partly measured | Lighthouse (headless, 2026-10-22) gave Accessibility 100 and SEO 100 on `/experience` and `/`; axe runs on 6 routes in both themes. Not run on every route, and not yet on the production URL |
+| S7 | Verified for the site; PDF pending | `src/content/content.test.ts` fails on forbidden patterns, and a repo-wide grep is clean. The public PDF does not exist yet, so its check (`pdftotext … | grep -ciE "[+]62|referee"` must print 0) waits for C5 |
+
 ## Scope
 
 ### Phase 1: launch
@@ -101,7 +113,7 @@ Details are in [06](06-extras-and-easter-eggs.md#phase-2-easter-eggs).
 
 | Risk | Impact | Mitigation |
 | --- | --- | --- |
-| **Art quality:** CC0 packs plus code-built objects don't reach the cozy Animal Crossing look, or pack styles clash | High: the look is the whole point | **Style test first:** build one finished corner (desk, PC, framed photo, lighting, materials, hover) and approve it before building the rest of the room. Mix packs only after comparing their styles side by side; all custom objects follow one shared "rounded, chunky, matte" recipe |
+| **Art quality:** CC0 packs plus code-built objects don't reach the cozy Animal Crossing look, or pack styles clash (outcome: the style test approved the all-code-built look, so no pack was needed) | High: the look is the whole point | **Style test first:** build one finished corner (desk, PC, framed photo, lighting, materials, hover) and approve it before building the rest of the room. Mix packs only after comparing their styles side by side; all custom objects follow one shared "rounded, chunky, matte" recipe |
 | **Mobile performance and battery** | Medium | Device tiers (lower resolution, no ambient occlusion on phones), throttled rendering, a ≤ 2 MB asset budget, a static poster fallback |
 | **Findability:** visitors don't realize what's clickable | High for recruiters | Phone menu, always-visible Resume/Contact buttons, hover labels, Oyen's idle hints with sparkles, always-visible floating labels on mobile |
 | **Empty hobby content at launch** | Low | Cozy placeholder panels ("Oyen is still sorting these photos…"), so hobby content can be filled in later without blocking launch |

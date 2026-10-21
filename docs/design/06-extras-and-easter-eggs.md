@@ -32,7 +32,7 @@ Three chunky wall clocks above the desk tell the "remote across three time zones
 | --- | --- |
 | Controls | The **wall light switch** (3D) and the **☀/🌙 button** (on-screen). Both call next-themes' `setTheme`; the resolved theme is mirrored into `useSceneStore` for the 3D lighting ([02](02-architecture.md#state-zustand-stores)) |
 | Initial value | Handled by **next-themes**: saved choice → otherwise the system preference (`prefers-color-scheme`) → otherwise `day` |
-| Room (3D) | Day ↔ night lighting presets, blended over about 0.8s ([03](03-room-scene.md#art-direction-the-animal-crossing--clay-toy-recipe)): lamps glow, the main light dims, monitor and TV glow, moonlight through the window |
+| Room (3D) | Day ↔ night lighting presets, blended over 0.8s ([03](03-room-scene.md#art-direction-the-animal-crossing--clay-toy-recipe)): lamps glow, the main light dims, monitor and TV glow, moonlight through the window. Night preset as built (`lightingPresets.ts`): hemisphere `#3a4a70` / `#2a2238` at 1.5, sun `#9fb4ff` at 0.21, ambient 0.16, lamps 2.2, screen glow 1.1, moon 0.5 (day: hemisphere 2.4, sun 1.3, ambient 0.3, lamps 0, screen glow 0.5, moon 0) |
 | UI | `<html data-theme="day|night">` switches the CSS tokens ([04](04-ui-and-visual-design.md#palette)) |
 | Oyen | Day: sitting on the rug. Night: curled asleep on the bed |
 | Switch feedback | The toggle flips; a "click" sound effect if sound is on |
@@ -53,8 +53,8 @@ The window shows **the real sky in Bogor right now**, whatever the visitor's own
 | Night | 18:45–05:00 | Deep blue, moon, twinkling stars |
 
 - **Why fixed windows are enough:** Bogor is about 6.6° south of the equator, so sunrise (about 05:30–06:10) and sunset (about 17:35–18:20) barely change through the year. **No astronomy library is needed.**
-- **Rendering:** a gradient plane behind the window glass, a sun or moon sprite whose height follows the time, 2–3 rounded cloud meshes by day, and stars at night. The light coming through the window is tinted to match the phase.
-- **Updates:** once a minute; phase changes blend over about 3s.
+- **Rendering:** a gradient plane behind the window glass (a 4×128 px canvas texture per phase, colors in `src/utils/sky.ts`), a sun or moon disc whose height follows the time (the sun follows an arc from about 05:50 to 18:00; the moon rides high), 2 rounded cloud meshes by day that drift slowly, and drei `Sparkles` as stars at night. *Implementation note:* the sky, sun and clouds are **unlit** (`meshBasicMaterial`, `toneMapped={false}`), so the window looks the same whatever the room lighting is, and a **two-plane crossfade** does the phase change: the new texture goes on the back plane while the previous one sits on a front plane that fades out (`WindowSky/index.tsx`). The window does **not** tint the room light (the per-phase `light` color in `sky.ts` is unused); this was left out.
+- **Updates:** once a minute (`SKY_UPDATE_MS`); phase changes blend over 3s (`SKY_BLEND_SECONDS`), instantly with reduced motion.
 - **Discoverability:** the Help sheet and one of Oyen's lines mention "the window shows the real sky in Bogor right now". The window **isn't clickable**, so it has no hover effect, which keeps "hover = clickable" consistent.
 
 ---
@@ -97,6 +97,8 @@ A native `HTMLAudioElement` for music, and the Web Audio API with decoded buffer
 | Radio static blip | Radio turned on |
 
 Each sound is ≤ about 30 KB, as **MP3 or M4A** for universal browser support. **Every audio file must be CC0 or royalty-free, with its license recorded** ([03](03-room-scene.md#assets--licenses)). Choosing the music track is checklist item C17 ([05](05-content.md#content-checklist)).
+
+*Implementation note:* the 7 sound effects ship as **MP3** in `public/audio/` (`tick`, `pop`, `whoosh`, `switch`, `printer`, `radio`, `meow`; 15 KB in total). The CC0 OGG originals were converted to mono, 32 kHz, 48 kbps MP3 with `ffmpeg-static` by `yarn audio:convert` (`scripts/convert-audio.mjs`), and each file's source is in `CREDITS.md`. The purr is phase 2 and not shipped. **The music track is pending (C17):** `/audio/music-cozy.mp3` (`MUSIC_SRC`) does not exist yet, so the radio is silent; the audio code catches the failure and stays quiet.
 
 ---
 

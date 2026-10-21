@@ -36,8 +36,8 @@
 └────────────────────────────────┘
 ```
 
-- **Desktop, while a panel is open:** the on-screen controls stay visible above the dimmed backdrop, so visitors can jump straight to Resume or Contact, or open the phone to switch sections.
-- **Mobile, while a panel is open:** the bottom bar is hidden behind the sheet, which has its own close control.
+- **While a panel is open (desktop and mobile):** the on-screen controls and the phone are **not reachable**. The panel is a real modal dialog (focus trap, `aria-modal`), so the controls behind it are inert. This is deviation D11: modal semantics win over this document's original idea of controls staying usable above the backdrop. To go elsewhere, close the panel (✕, Esc, backdrop, Back) and use the controls again.
+- **Mobile:** the panel is a bottom sheet with its own close control.
 
 ## Loader (on `/` only)
 
@@ -58,10 +58,10 @@
 
 | Control | Position (desktop / mobile) | Icon (Lucide) | Behavior |
 | --- | --- | --- | --- |
-| Name tag | Top-left / top-left (short form) | n/a | Stitched chip "Satriko Aditya · Full Stack Engineer". *Proposal:* clicking it opens `/about` |
+| Name tag | Top-left / top-left (short form) | n/a | Stitched chip "Satriko Aditya · Full Stack Engineer" (the title part is hidden on small screens). It is a link that opens `/about` |
 | Mute | Top-right | `Volume2` / `VolumeX` | Master sound on/off; **off by default**. See [06](06-extras-and-easter-eggs.md#radio--sound-phase-1) |
 | Day / night | Top-right | `Sun` / `Moon` | Same as the wall light switch, reachable by keyboard |
-| Help | Top-right | `CircleHelp` | Opens the **Help sheet** (below) |
+| Help | Top-right | `CircleQuestionMark` | Opens the **Help sheet** (below). *Implementation note (D7):* `CircleQuestionMark` is the canonical name in lucide-react 1.x; `CircleHelp` is only an alias |
 | Resume | Bottom-right / bottom bar | `FileDown` | Opens `/resume` |
 | Contact | Bottom-right / bottom bar | `Mail` | Opens `/contact` |
 | Phone | Bottom-right / bottom bar center | `Smartphone` | Opens the phone menu |
@@ -82,18 +82,19 @@ An **original** phone-shaped panel, inspired by the cozy-game phone idea but not
 | About | `UserRound` | Peach |
 | Experience | `Monitor` | Sky |
 | Skills | `BookOpen` | Mint |
-| Education | `GraduationCap` | Wood-light |
+| Education | `GraduationCap` | Wood-light (`wood` at 40%) |
 | Gaming | `Gamepad2` | Lavender-pastel |
 | Travel | `MapPin` | Peach |
 | Hiking | `Mountain` | Mint |
 | Diving | `Waves` | Sky |
 | Remote work | `Clock` | Wood-light |
-| Contact | `Mail` | Accent-light |
+| Contact | `Mail` | Accent-light (`accent` at 30%) |
 | Resume | `FileText` | Cream |
-| Help | `CircleHelp` | Grey-cream |
+| Help | `CircleQuestionMark` | Paper-2 (cream) |
 
 - **Behavior:** tapping an app slides the phone away, then runs the normal open flow (camera glide, then the modal grows from the object).
-- **Keyboard:** arrow keys move around the grid, Enter opens, Esc closes, and focus returns to the phone button on close.
+- **Keyboard:** arrow keys move around the grid, Enter opens, Esc closes. The grid is `role="grid"` with `role="row"` wrappers (rows of 3, `display: contents`) around the `gridcell`s, which keeps the ARIA valid for axe.
+- **Focus return:** when a panel closes, focus goes back to the element that opened it; if that element is gone (a phone tile, because the phone closes on open), focus falls back to the phone button (`PanelFrame`'s `onCloseAutoFocus`).
 
 ## Modal
 
@@ -102,10 +103,10 @@ An **original** phone-shaped panel, inspired by the cozy-game phone idea but not
 | Viewport | Size | Notes |
 | --- | --- | --- |
 | Desktop / tablet (≥ 640 px) | Width `min(80vw, 1100px)`, height up to `80vh`, centered | The room stays visible around it |
-| Mobile (< 640 px) | About 95% width × about 92% of the screen height, as a **bottom sheet** | A drag handle at the top; **swipe down to close** |
+| Mobile (< 640 px) | 95% width × 92% of the screen height, as a **bottom sheet** | A drag handle at the top; **swipe down to close** (a downward drag of more than 120 px). Sizes are computed in `src/utils/modalRect.ts` |
 
 - **Backdrop:** the room is dimmed (a 30–35% cocoa/plum overlay) and blurred (about 4 px `backdrop-filter`).
-- **On the low graphics tier**, the blur is dropped and only the dim is used, because blurring a live WebGL canvas is expensive on phones. The room also switches to on-demand rendering while covered.
+- **On the low graphics tier**, the blur is dropped and only the dim is used, because blurring a live WebGL canvas is expensive on phones (D9, made explicit: `PanelFrame` adds `backdrop-blur-[4px]` only when the tier is `high`). The dim is `#2b2238` at 35%. The room keeps rendering behind the panel on both tiers (D10, see [03](03-room-scene.md#performance-tiers)).
 - **Closing:** ✕, Esc, clicking the backdrop, the browser back button, or swiping down (mobile).
 
 ### The shared frame
@@ -149,7 +150,7 @@ The frame is always the same; what's inside depends on the object.
 
 ### Focus and semantics
 
-Built on the **shadcn/ui (Radix) Dialog** primitive (same setup as the reference project, see [02](02-architecture.md#stack)), restyled with our frame and animated with `motion`. `role="dialog"`, `aria-modal="true"`, `aria-labelledby` pointing to the title. On open, focus moves to the title; **focus is trapped** inside the modal; on close, focus returns to whatever opened it (a phone app, a button, or the canvas wrapper).
+Built on the **shadcn/ui (Radix) Dialog** primitive (same setup as the reference project, see [02](02-architecture.md#stack)), restyled with our frame and animated with `motion`. The section panel's dialog is rendered **inline, without a Radix portal**, so direct links are server-rendered ([02](02-architecture.md#grow-out-of-the-object)); the phone menu and Help sheet use portals as usual. `role="dialog"`, `aria-modal="true"`, `aria-labelledby` pointing to the title. On open, focus moves to the title; **focus is trapped** inside the modal; on close, focus returns to whatever opened it (a phone app, a button, or the canvas wrapper).
 
 ## Oyen's speech bubble
 
@@ -166,11 +167,11 @@ A small modal **with no URL**, opened by "?" or the Help app:
 - **How to explore:** mouse/trackpad and touch hints, drawn as our own simple icons.
 - **Keyboard tips.**
 - **Sound:** "sound is off by default; the radio or 🔊 turns it on".
-- **Credits & licenses:** KayKit, Kenney, fonts, audio sources ([03](03-room-scene.md#assets--licenses)).
+- **Credits & licenses:** the sheet lists its credits from `src/content/help.ts`; the full, current table is `CREDITS.md` (see [03](03-room-scene.md#assets--licenses)). *Known gap:* `help.ts` still names KayKit and Kenney (Kenney is used; KayKit is not, since no pack was adopted) and does not list the Indonesia outline or the meow sample; update it with the next content commit.
 
 ## Typography
 
-All fonts are loaded with `next/font/google`, which **hosts them with the site** (no requests to Google at runtime), using the `latin` subset.
+All fonts are loaded with `next/font/google` in `src/constants/fonts.ts`, which **hosts them with the site** (no requests to Google at runtime), using the `latin` subset. M PLUS Rounded 1c ships about 240 unicode-range shards for CJK, so it is loaded with `preload: false`; preloading them all stalled the load.
 
 | Role | Font | Weight | Size (desktop / mobile) |
 | --- | --- | --- | --- |
@@ -181,12 +182,12 @@ All fonts are loaded with `next/font/google`, which **hosts them with the site**
 | Monitor interior details | **JetBrains Mono** | 400 / 600 | 14 px |
 | TV interior | **VT323** | 400 | 22 px (pixel fonts need a larger size) |
 
-- **Style test:** compare **Zen Maru Gothic** against M PLUS Rounded 1c for display and labels, and pick one.
+- **Style test (done):** Zen Maru Gothic was compared against M PLUS Rounded 1c, and Satriko kept **M PLUS Rounded 1c**.
 - **Why not the real Animal Crossing font:** that font is **FOT-Seurat** (Fontworks, part of Monotype since 2025). Legal web use requires a paid Adobe Fonts subscription or a Monotype license, so it's parked. Fonts are defined in one place, so switching later is a small change. **Never** use the unlicensed "New Horizons" font files from free-font sites.
 
 ## Palette
 
-These hex values are a **starting proposal**, to be finalized in the style test. **All text/background pairs must pass WCAG AA** (4.5:1 for body text, 3:1 for large text and UI elements).
+These are the values **as built** in `src/styles/globals.css` (the original proposal was adjusted by the style test and by axe contrast fixes). **All text/background pairs must pass WCAG AA** (4.5:1 for body text, 3:1 for large text and UI elements), and the axe suite checks it in both themes.
 
 ### Day
 
@@ -196,13 +197,15 @@ These hex values are a **starting proposal**, to be finalized in the style test.
 | `--paper` | `#FFF7E8` | Panel background |
 | `--paper-2` | `#F6E7CC` | Cards inside panels |
 | `--ink` | `#4A3426` | Body text (dark cocoa instead of black) |
-| `--ink-muted` | `#7A6252` | Secondary text |
-| `--wood` / `--wood-dark` | `#B9875A` / `#7A5235` | Frames, stitching, tags |
+| `--ink-muted` | `#665040` | Secondary text (darkened from the proposed `#7A6252` for AA) |
+| `--wood` / `--wood-dark` | `#9A6A40` / `#7A5235` | Frames, stitching, tags (`--wood` darkened from `#B9875A` for AA) |
 | `--mint` | `#9FD8C3` | Tiles, accents |
 | `--sky` | `#A9D6F2` | Tiles, accents |
 | `--peach` | `#FFC8A2` | Tiles, accents |
+| `--lavender` | `#D9C8F0` | Gaming tile |
 | `--accent` | `#B8553A` | Terracotta: **primary buttons with white text** (about 4.7:1 ✓) |
 | `--accent-soft` | `#D2694A` | Decorative only (fails AA with white text, so never use it for text) |
+| `--on-accent` | `#FFFFFF` | Text on `--accent` |
 
 ### Night
 
@@ -213,10 +216,15 @@ These hex values are a **starting proposal**, to be finalized in the style test.
 | `--paper-2` | `#463A56` | Cards |
 | `--ink` | `#FFF1DC` | Body text |
 | `--ink-muted` | `#D9C7B0` | Secondary text |
-| `--accent` | `#F2A65A` | Lamp amber; **use dark text on it** |
-| `--mint` / `--sky` | `#7CC4AE` / `#24365C` | Accents |
+| `--wood` / `--wood-dark` | `#B9875A` / `#7A5235` | Frames, stitching, tags |
+| `--mint` | `#356E5A` | Tiles (darkened from `#7CC4AE` so the ink text passes AA) |
+| `--sky` | `#24365C` | Tiles |
+| `--peach` | `#8A4F3A` | Tiles (darkened for AA) |
+| `--lavender` | `#6E5C8F` | Gaming tile |
+| `--accent` / `--accent-soft` | `#F2A65A` / `#F2A65A` | Lamp amber; **use dark text on it** |
+| `--on-accent` | `#2B2238` | Dark text on `--accent` |
 
-Themes are applied by **next-themes** as `<html data-theme="day|night">`, with CSS variables (in `src/styles/globals.css`) that Tailwind consumes. The 3D scene reads the same theme, mirrored into `useSceneStore`, for its lighting presets.
+Themes are applied by **next-themes** as `<html data-theme="day|night">` (D1: next-themes' own names stay `light` / `dark` and its `value` prop maps them to these attribute values; the dark variant is `@custom-variant dark` on `[data-theme='night']`), with CSS variables (in `src/styles/globals.css`) that Tailwind consumes. The 3D scene reads the same theme, mirrored into `useSceneStore`, for its lighting presets.
 
 ## Iconography
 
@@ -244,7 +252,7 @@ When `prefers-reduced-motion: reduce` is set:
 | Camera glides | Instant cut |
 | Parallax | Off |
 | Modal grow / shrink | 0.15s fade |
-| Hover lift / bounce | Outline + label only |
+| Hover lift / bounce | Emissive highlight + label only |
 | Speech bubble typing | Full text at once |
 | Day ↔ night blend | Instant switch |
 | Sparkles, Oyen's idle animation | Kept minimal (blink only) |
