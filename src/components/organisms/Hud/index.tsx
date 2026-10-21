@@ -43,7 +43,7 @@ export default function Hud() {
   const night = mounted && resolvedTheme === 'dark'
   const about = linkProps('about')
   return (
-    <>
+    <div data-testid="hud">
       <a
         {...about}
         className="stitched bg-paper font-display fixed top-4 left-4 z-30 rounded-xl px-3 py-2 text-sm font-bold shadow-md"
@@ -90,6 +90,6 @@ export default function Hud() {
         onHelp={() => setHelpOpen(true)}
       />
       <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />
-    </>
+    </div>
   )
 }
