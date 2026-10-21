@@ -33,6 +33,7 @@ describe('useRoom', () => {
     nav.pathname = '/skills'
     rerender()
     expect(useRoomStore.getState().transition).toBe('focusing')
+    useRoomStore.setState({ transition: 'open' })
     useSceneStore.setState({ sceneReady: false })
     nav.pathname = '/'
     rerender()
@@ -51,5 +52,28 @@ describe('useRoom', () => {
       vi.advanceTimersByTime(1600)
     })
     expect(useRoomStore.getState().transition).toBe('open')
+  })
+  it('closing during focusing goes straight to idle', () => {
+    useSceneStore.setState({ sceneReady: true })
+    const { rerender } = renderHook(() => useRoom(null))
+    nav.pathname = '/skills'
+    rerender()
+    expect(useRoomStore.getState().transition).toBe('focusing')
+    nav.pathname = '/'
+    rerender()
+    expect(useRoomStore.getState().transition).toBe('idle')
+  })
+  it('never stays in closing longer than CLOSE_TIMEOUT_MS', () => {
+    vi.useFakeTimers()
+    useRoomStore.setState({ transition: 'open' })
+    nav.pathname = '/skills'
+    const { rerender } = renderHook(() => useRoom('skills'))
+    nav.pathname = '/'
+    rerender()
+    expect(useRoomStore.getState().transition).toBe('closing')
+    act(() => {
+      vi.advanceTimersByTime(1600)
+    })
+    expect(useRoomStore.getState().transition).toBe('idle')
   })
 })

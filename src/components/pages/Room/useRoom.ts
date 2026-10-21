@@ -6,7 +6,11 @@ import { useRoomStore } from '@store/useRoomStore'
 import { useSceneStore } from '@store/useSceneStore'
 import { useActiveSection } from '@hooks/useActiveSection'
 
-import { ENTER_TIMEOUT_MS, FOCUS_TIMEOUT_MS } from '@constants/camera'
+import {
+  CLOSE_TIMEOUT_MS,
+  ENTER_TIMEOUT_MS,
+  FOCUS_TIMEOUT_MS,
+} from '@constants/camera'
 import type { SectionSlug } from '@interfaces/section'
 
 export function useRoom(initialSection: SectionSlug | null) {
@@ -27,7 +31,10 @@ export function useRoom(initialSection: SectionSlug | null) {
     prev.current = active
     const { setTransition, setOriginRect } = useRoomStore.getState()
     if (active === null) {
-      setTransition('closing')
+      // Nothing is on screen while focusing, so there is nothing to animate out.
+      setTransition(
+        useRoomStore.getState().transition === 'focusing' ? 'idle' : 'closing',
+      )
       return
     }
     setOriginRect(null)
@@ -41,6 +48,14 @@ export function useRoom(initialSection: SectionSlug | null) {
       if (useRoomStore.getState().transition === 'focusing')
         useRoomStore.getState().setTransition('open')
     }, FOCUS_TIMEOUT_MS)
+    return () => window.clearTimeout(t)
+  }, [transition])
+  useEffect(() => {
+    if (transition !== 'closing') return
+    const t = window.setTimeout(() => {
+      if (useRoomStore.getState().transition === 'closing')
+        useRoomStore.getState().setTransition('idle')
+    }, CLOSE_TIMEOUT_MS)
     return () => window.clearTimeout(t)
   }, [transition])
   useEffect(() => {

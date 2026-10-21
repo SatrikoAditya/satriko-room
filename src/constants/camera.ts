@@ -12,3 +12,4 @@ export const POLAR_MIN = 0.75
 export const POLAR_MAX = 1.25
 export const PARALLAX_AZIMUTH = 0.026
 export const PARALLAX_POLAR = 0.017
+export const CLOSE_TIMEOUT_MS = 1500
