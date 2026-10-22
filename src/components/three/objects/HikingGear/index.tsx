@@ -13,14 +13,14 @@ export default function HikingGear() {
   return (
     <group
       position={[...roomLayout['hiking-gear'].position]}
-      rotation={[0, -0.4, 0]}
+      rotation={[0, roomLayout['hiking-gear'].rotationY ?? 0, 0]}
     >
       <Interactive
         id="hiking-gear"
         label="Hiking"
         hitSize={[1.0, 0.9, 0.8]}
         hitOffset={[0, 0.4, 0]}
-        labelHeight={1.0}
+        labelHeight={0.95}
         onActivate={() => openFromScene('hiking')}
       >
         <RoundedBox

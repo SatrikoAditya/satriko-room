@@ -8,14 +8,14 @@ A cozy **studio bedroom** (the room Satriko lives, works and games in), shown as
 
 ```text
               LEFT WALL                               RIGHT WALL
-   [Edu frames ×3]  [ WINDOW: live sky ]   [3 clocks]    [Indonesia map]   [Door + "Satriko's Room"]
-                    [curtains]            ┌───────────┐  ┌──────────┐      [Backpack + boots]
-   ┌───────────┐                          │ DESK + PC │  │BOOKSHELF │      [Mailbox]  [light switch]
-   │   BED     │  ← Oyen sleeps here      │ photo frame│  │ radio    │
-   │           │    at night              └───────────┘  └──────────┘
-   └───────────┘         [Dive mask + fins on a stand]   [printer on side table]
+   [Edu frames ×3]  [ WINDOW: live sky ] [Indonesia map]   [3 clocks]                  [Door + "Satriko's Room"]
+                    [curtains]                             ┌───────────┐  ┌──────────┐  [Mailbox]  [light switch]
+   ┌───────────┐  [Backpack + boots] [Dive mask + fins]    │ DESK + PC │  │BOOKSHELF │
+   │   BED     │   ↑ outdoor-hobby corner, under the map   │ photo frame│  │ radio    │
+   │           │  ← Oyen sleeps here   [printer on         └───────────┘  └──────────┘
+   └───────────┘    at night            side table]
                      ╭──────────────── rug ────────────────╮
-                     │   TV + console on low cabinet   ◉ beanbag │   ← Oyen sits here by day
+                     │   TV + console on low cabinet   ◉ beanbag │   ← Oyen starts here by day, then wanders
                      ╰─────────────────────────────────────╯
    [ reserved wall slot for a future Projects pinboard: left wall, between the frames and the window ]
 ```
@@ -35,9 +35,9 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 | 3 | `bookshelf` | Bookshelf with colored book spines | Right wall, next to the desk | Opens `/skills` | Pack (shelf) + code (books) | Skills |
 | 4 | `edu-frames` | 3 certificate frames | Left wall, above the bed | Opens `/education` | Code | Education |
 | 5 | `tv` | TV + game console on a low cabinet | Floor, on the rug | Opens `/gaming` | Pack or code | Gaming |
-| 6 | `indonesia-map` | Illustrated Indonesia map with pins | Right wall | Opens `/travel` | Code (plane + illustrated texture) | Travel |
-| 7 | `hiking-gear` | Backpack + hiking boots | By the door | Opens `/hiking` | Code | Hiking |
-| 8 | `dive-gear` | Dive mask + fins on a stand | Floor, near the bed | Opens `/diving` | Code | Diving |
+| 6 | `indonesia-map` | Illustrated Indonesia map with pins | Back (right) wall, in the outdoor-hobby corner above the hiking and dive gear; its bottom edge lines up with the window's | Opens `/travel` | Code (plane + illustrated texture) | Travel |
+| 7 | `hiking-gear` | Backpack + hiking boots | Outdoor-hobby corner, by the left wall | Opens `/hiking` | Code | Hiking |
+| 8 | `dive-gear` | Dive mask + fins on a stand | Outdoor-hobby corner, against the back wall | Opens `/diving` | Code | Diving |
 | 9 | `clocks` | 3 wall clocks: Bogor / Singapore / Abu Dhabi | Right wall, above the desk | Opens `/remote-work` | Code | Remote work |
 | 10 | `mailbox` | Little mailbox | By the door | Opens `/contact` | Code | Contact |
 | 11 | `printer` | Printer on a side table | Next to the desk | Opens `/resume` | Pack or code | Resume |

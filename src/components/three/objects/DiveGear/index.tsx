@@ -13,14 +13,16 @@ export default function DiveGear() {
   return (
     <group
       position={[...roomLayout['dive-gear'].position]}
-      rotation={[0, 0.5, 0]}
+      rotation={[0, roomLayout['dive-gear'].rotationY ?? 0, 0]}
     >
       <Interactive
         id="dive-gear"
         label="Diving"
         hitSize={[0.9, 1.1, 0.7]}
         hitOffset={[0, 0.5, 0]}
-        labelHeight={1.15}
+        // Higher than the backpack's tag beside it, so the two don't overlap on
+        // phones, where every tag is always shown.
+        labelHeight={1.95}
         onActivate={() => openFromScene('diving')}
       >
         <mesh position={[0, 0.45, 0]}>

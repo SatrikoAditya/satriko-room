@@ -29,7 +29,6 @@ export const roomLayout: Record<ObjectId | DecorId, Placement> = {
   bed: { position: [-3.8, 0, 2.0], size: [2.2, 0.6, 3.4] },
   nightstand: { position: [-4.3, 0, 4.3], size: [0.8, 0.6, 0.8] },
   bedsideLamp: { position: [-4.3, 0.6, 4.3] },
-  'dive-gear': { position: [-3.8, 0, -1.2] },
   // right wall (z = -5)
   desk: { position: [0, 0, -4.2], size: [3.0, 0.75, 1.2] },
   pc: { position: [0, 0.75, -4.5] },
@@ -41,11 +40,17 @@ export const roomLayout: Record<ObjectId | DecorId, Placement> = {
   printer: { position: [-2.2, 0.6, -4.3] },
   bookshelf: { position: [2.4, 0, -4.45], size: [1.6, 2.6, 0.5] },
   radio: { position: [2.0, 2.6, -4.45] },
-  'indonesia-map': { position: [2.4, 3.9, -4.965], size: [2.0, 1.0, 0.06] },
   'light-switch': { position: [3.5, 2.0, -4.995] },
   mailbox: { position: [3.5, 1.0, -4.995] },
   door: { position: [4.35, 0, -4.935], size: [1.1, 2.6, 0.12] },
-  'hiking-gear': { position: [4.4, 0, -3.6] },
+  // outdoor-hobby corner (where the walls meet): gear on the floor, map above.
+  // Both pieces turn to face the camera, which looks in from +x, +z.
+  // The backpack's boots sit on its right, so it takes the left-wall side where
+  // they stay in view; the narrow dive stand goes against the back wall.
+  'hiking-gear': { position: [-4.45, 0, -3.6], rotationY: Math.PI / 4 },
+  'dive-gear': { position: [-3.45, 0, -4.4], rotationY: Math.PI / 4 },
+  // y 2.76 lines the frame's bottom edge up with the window's (y 2.2).
+  'indonesia-map': { position: [-3.8, 2.76, -4.965], size: [2.0, 1.0, 0.06] },
   // floor
   rug: { position: [0.8, 0.02, 0.8], size: [5, 0.04, 4] },
   tv: { position: [-1.2, 0, 1.0], rotationY: Math.PI / 2 },

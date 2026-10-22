@@ -59,11 +59,13 @@ const boxes: Record<string, Box> = {
   bookshelf: footprint('bookshelf'),
   tv: [-1.45, -0.95, 0.3, 1.7],
 }
+const atFloor = (id: keyof typeof roomLayout, radius: number) =>
+  [roomLayout[id].position[0], roomLayout[id].position[2], radius] as const
 const circles: Record<string, readonly [number, number, number]> = {
-  beanbag: [1.8, 2.2, 0.6],
-  plant: [4.4, 4.2, 0.45],
-  diveGear: [-3.8, -1.2, 0.4],
-  hikingGear: [4.4, -3.6, 0.7],
+  beanbag: atFloor('beanbag', 0.6),
+  plant: atFloor('plant', 0.45),
+  diveGear: atFloor('dive-gear', 0.4),
+  hikingGear: atFloor('hiking-gear', 0.7),
 }
 // Oyen never stands in front of the desk, so it can't cover the PC.
 const deskFront: Box = [-1.6, 1.6, -3.6, -2.6]

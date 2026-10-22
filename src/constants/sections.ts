@@ -114,7 +114,7 @@ export const sections: readonly Section[] = [
     objectId: 'indonesia-map',
     theme: 'map',
     cameraPose: {
-      target: [2.4, 3.9, -4.93],
+      target: [-3.8, 2.76, -4.93],
       offset: [3.0, 1.6, 3.6],
       zoomFactor: 2.2,
     },
@@ -131,7 +131,7 @@ export const sections: readonly Section[] = [
     objectId: 'hiking-gear',
     theme: 'journal',
     cameraPose: {
-      target: [4.4, 0.5, -3.6],
+      target: [-4.25, 0.5, -3.75],
       offset: [3.0, 2.4, 3.4],
       zoomFactor: 2.6,
     },
@@ -148,7 +148,7 @@ export const sections: readonly Section[] = [
     objectId: 'dive-gear',
     theme: 'logbook',
     cameraPose: {
-      target: [-3.8, 0.6, -1.2],
+      target: [-3.45, 0.6, -4.4],
       offset: [3.2, 2.4, 3.4],
       zoomFactor: 2.6,
     },
