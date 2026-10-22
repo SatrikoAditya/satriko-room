@@ -36,7 +36,7 @@ Triaged on 2026-10-22 from the per-task reviews and the final whole-branch revie
 
 ## Tests
 
-- Unit gaps: `SkillBook` toggle, `Button` anchor vs button, `CertificateFrame`, `Loader` skip-link/`lost`-label cases, `ENTER_TIMEOUT_MS` safety net, `globals.test` asserts token presence not values, `stores.test` resets only the sound store (order-dependent), `ModalHost.test` spies are never restored.
+- Unit gaps: `Button` anchor vs button, `CertificateFrame`, `Loader` skip-link/`lost`-label cases, `ENTER_TIMEOUT_MS` safety net, `globals.test` asserts token presence not values, `stores.test` resets only the sound store (order-dependent), `ModalHost.test` spies are never restored.
 - e2e: visual baseline is darwin-only (other OSes need their own); `visual.spec` uses a fixed 1.5 s wait; `reuseExistingServer` on `localhost:3000` could pick up a dev server; keyboard spec opens only Experience (title overstates "every section"); add an audio smoke test that counts `AudioContext`s and a `webglcontextlost` mid-visit case.
 - Sound effects: no negative/in-flight cache for SFX fetches; hover tick not gated to fine pointers.
 

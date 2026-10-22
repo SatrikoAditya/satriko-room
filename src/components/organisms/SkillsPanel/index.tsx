@@ -1,3 +1,5 @@
+'use client'
+
 import SkillBook from '@components/molecules/SkillBook'
 
 import { jobs } from '@content/experience'
@@ -9,13 +11,14 @@ import {
 import type { ISkillShelf } from '@models/skill'
 import { usedAt } from '@utils/skills'
 
-import { shelvesWithUsage } from './useSkillsPanel'
+import { shelvesWithUsage, useSkillsPanel } from './useSkillsPanel'
 
 export default function SkillsPanel({
   shelves = defaultShelves,
 }: {
   shelves?: readonly ISkillShelf[]
 }) {
+  const { openId, toggle } = useSkillsPanel()
   return (
     <div className="space-y-6">
       {shelvesWithUsage(shelves).map((shelf) => (
@@ -29,7 +32,10 @@ export default function SkillsPanel({
           >
             {shelf.books.map((b) => (
               <SkillBook
-                key={b.skill}
+                key={b.id}
+                id={b.id}
+                open={openId === b.id}
+                onToggle={() => toggle(b.id)}
                 skill={b.skill}
                 color={shelf.color}
                 usedAt={b.usedAt}
