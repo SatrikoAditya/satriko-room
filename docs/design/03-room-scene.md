@@ -10,7 +10,7 @@ A cozy **studio bedroom** (the room Satriko lives, works and games in), shown as
               LEFT WALL                               RIGHT WALL
    [Edu frames ×3]  [ WINDOW: live sky ] [Indonesia map]   [3 clocks]                  [Door + "Satriko's Room"]
                     [curtains]                             ┌───────────┐  ┌──────────┐  [Mailbox]  [light switch]
-   ┌───────────┐  [Backpack + boots] [Dive mask + fins]    │DESK+PC+lap│  │BOOKSHELF │
+   ┌───────────┐  [Backpack + boots] [Scuba tank + fins]   │DESK+PC+lap│  │BOOKSHELF │
    │   BED     │   ↑ outdoor-hobby corner, under the map   │ photo frame│  │ radio    │
    │           │  ← Oyen sleeps here   [printer on         └───────────┘  └──────────┘
    └───────────┘    at night            side table]       [office chair, pulled out]
@@ -24,7 +24,7 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 
 ### Interactive objects
 
-**14 clickable things:** 11 that open panels, and 3 that do something in place.
+**16 clickable things:** 11 that open panels, and 5 that do something in place.
 
 *Implementation note:* every object is built in code (the "Source" column's pack options were not used; see [Assets & licenses](#assets--licenses)). Objects are mounted by `src/components/three/RoomObjects/index.tsx` and each one lives in `src/components/three/objects/<Name>/`.
 
@@ -37,15 +37,17 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 | 5 | `tv` | TV setup like Satriko's: a wide TV on a white low cabinet (two drawers, open shelf), a soundbar, a white PS5 standing on the left and two controllers on the right | Floor, on the rug | Opens `/gaming` | Pack or code | Gaming |
 | 6 | `indonesia-map` | Illustrated Indonesia map with pins | Back (right) wall, in the outdoor-hobby corner above the hiking and dive gear; its bottom edge lines up with the window's | Opens `/travel` | Code (plane + illustrated texture) | Travel |
 | 7 | `hiking-gear` | Backpack + hiking boots | Outdoor-hobby corner, by the left wall | Opens `/hiking` | Code | Hiking |
-| 8 | `dive-gear` | Dive mask + fins on a stand | Outdoor-hobby corner, against the back wall | Opens `/diving` | Code | Diving |
+| 8 | `dive-gear` | Yellow scuba tank with the mask hung on its neck, a snorkel beside it and the fins leaning on it; bubbles rise from the regulator on hover (not with reduced motion) | Outdoor-hobby corner, against the back wall | Opens `/diving` | Code | Diving |
 | 9 | `clocks` | 3 wall clocks: Bogor / Singapore / Abu Dhabi | Right wall, above the desk, level with the Indonesia map | Opens `/remote-work` | Code | Remote work |
 | 10 | `mailbox` | Little mailbox | By the door | Opens `/contact` | Code | Contact |
 | 11 | `printer` | Printer on a side table | Next to the desk | Opens `/resume` | Pack or code | Resume |
 | 12 | `oyen` | Oyen, the orange cat | Rug (day) / bed (night) | Speech bubble | Code | Oyen |
 | 13 | `light-switch` | Wall light switch | By the door | Toggles day/night | Code | Lights |
 | 14 | `radio` | Small retro radio | On the bookshelf | Toggles music | Code | Radio |
+| 15 | `bedside-lamp` | Bedside lamp | On the nightstand | Switches its own light on or off, with the switch sound | Code | Lamp: on / Lamp: off (no tag on phones) |
+| 16 | `desk-lamp` | Desk lamp | Printer end of the desk | Switches its own light on or off, with the switch sound | Code | Lamp: on / Lamp: off (no tag on phones) |
 
-**Decor (not clickable):** bed, rug, beanbag, desk chair, desk lamp and bedside lamp (they light up at night), curtains, plants, door with a wooden "Satriko's Room" nameplate, a mug on the desk (used by the phase 2 antics), small shelf trinkets.
+**Decor (not clickable):** bed, rug, beanbag, desk chair, curtains, plants, door with a wooden "Satriko's Room" nameplate, a mug on the desk (used by the phase 2 antics), small shelf trinkets.
 
 ## Art direction: the "Animal Crossing / clay toy" recipe
 
@@ -89,7 +91,7 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 
 ### Code-built objects
 
-Everything is built from drei/three primitives using the clay recipe: the room shell and decor, the PC, TV, printer, bed, desk and office chair (grey mesh and black, modelled on Satriko's real chair, pulled out and turned toward the room), photo frame, 3 education frames, book spines, Indonesia map board and pins, backpack and boots, dive mask and fins with their stand, 3 clocks with moving hands, mailbox, light switch, radio, the window sky, and **Oyen**.
+Everything is built from drei/three primitives using the clay recipe: the room shell and decor, the PC, TV, printer, bed, desk and office chair (grey mesh and black, modelled on Satriko's real chair, pulled out and turned toward the room), photo frame, 3 education frames, book spines, Indonesia map board and pins, backpack and boots, scuba tank with mask, snorkel and fins, 3 clocks with moving hands, mailbox, light switch, radio, the window sky, and **Oyen**.
 
 ## Camera
 

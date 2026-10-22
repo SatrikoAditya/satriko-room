@@ -76,7 +76,7 @@
 | `/gaming` | Gaming | TV + game console |
 | `/travel` | Travel | Indonesia map on the wall |
 | `/hiking` | Hiking | Backpack + boots by the door |
-| `/diving` | Diving | Dive mask + fins on a stand |
+| `/diving` | Diving | Scuba tank with mask, snorkel and fins |
 | `/remote-work` | Remote work | 3 wall clocks |
 | `/contact` | Contact | Mailbox by the door |
 | `/resume` | Resume | Printer |

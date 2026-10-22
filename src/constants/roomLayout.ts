@@ -50,7 +50,7 @@ export const roomLayout: Record<ObjectId | DecorId, Placement> = {
   // outdoor-hobby corner (where the walls meet): gear on the floor, map above.
   // Both pieces turn to face the camera, which looks in from +x, +z.
   // The backpack's boots sit on its right, so it takes the left-wall side where
-  // they stay in view; the narrow dive stand goes against the back wall.
+  // they stay in view; the narrow scuba tank goes against the back wall.
   'hiking-gear': { position: [-4.45, 0, -3.6], rotationY: Math.PI / 4 },
   'dive-gear': { position: [-3.45, 0, -4.4], rotationY: Math.PI / 4 },
   // y 2.76 lines the frame's bottom edge up with the window's (y 2.2).

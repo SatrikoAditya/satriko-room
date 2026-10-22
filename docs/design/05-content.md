@@ -194,7 +194,7 @@ Until it's filled in: [empty state](#empty-states).
 
 A trail journal. 📝 To fill in later: entries with **mountain / trail name, location, elevation (m), date, photos, short story**. Until then: [empty state](#empty-states).
 
-## Diving: `/diving` (dive mask + fins)
+## Diving: `/diving` (scuba tank, mask + fins)
 
 A dive logbook. 📝 To fill in later: **certification level** (e.g. which PADI/SSI level), and entries with **dive site, location, max depth (m), date, highlights (marine life), photos**. Until then: [empty state](#empty-states).
 

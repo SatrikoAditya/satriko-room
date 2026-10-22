@@ -23,4 +23,6 @@ export const palette = {
   // The office chair keeps its real cool greys on purpose: it's Satriko's chair, not set dressing.
   chairMesh: '#A4A6AD',
   chairFrame: '#2F3035',
+  // The classic yellow of a scuba tank.
+  tankYellow: '#F2C94C',
 } as const

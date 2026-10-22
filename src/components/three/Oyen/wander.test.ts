@@ -64,7 +64,8 @@ const atFloor = (id: keyof typeof roomLayout, radius: number) =>
 const circles: Record<string, readonly [number, number, number]> = {
   beanbag: atFloor('beanbag', 0.6),
   plant: atFloor('plant', 0.45),
-  diveGear: atFloor('dive-gear', 0.4),
+  // The fins stand up to about 0.57 from the tank's centre.
+  diveGear: atFloor('dive-gear', 0.6),
   hikingGear: atFloor('hiking-gear', 0.7),
   chair: atFloor('chair', 0.5),
 }

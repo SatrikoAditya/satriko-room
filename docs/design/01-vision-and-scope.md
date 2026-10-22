@@ -68,9 +68,9 @@ Detailed budgets are in [07: Quality](07-quality.md#performance-budgets).
 
 ### Phase 1: launch
 
-- The 3D studio bedroom with **14 clickable things** (see [03](03-room-scene.md#interactive-objects)):
+- The 3D studio bedroom with **16 clickable things** (see [03](03-room-scene.md#interactive-objects)):
   - 11 panel objects → 11 sections: About, Experience, Skills, Education, Gaming, Travel, Hiking, Diving, Remote work, Contact, Resume
-  - Oyen (speech bubble), the light switch (night mode), the radio (sound)
+  - Oyen (speech bubble), the light switch (night mode), the radio (sound), the desk and bedside lamps (each switches its own light)
 - The modal + URL model (one URL per panel, back button closes the panel)
 - Loader + Enter gate on `/`; no gate on direct links
 - On-screen controls: name tag, mute, day/night, help, phone menu, Resume and Contact buttons
