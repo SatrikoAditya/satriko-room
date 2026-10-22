@@ -74,7 +74,7 @@
 | CLS | < 0.1 | Fixed-size HUD; the poster reserves the canvas space |
 | Room interactive after Enter (mid-range phone, 4G) | ≤ about 4s | Assets preloaded while the loader shows |
 | Frame rate | ≥ 50 fps desktop, ≥ 30 fps mid-range phone | Steps down a graphics tier automatically ([03](03-room-scene.md#performance-tiers)) |
-| Audio | Music loaded on first play only; each sound effect ≤ about 30 KB | Not part of the initial load |
+| Audio | Music loaded on first play only, music loop ≤ 1.5 MB; each sound effect ≤ about 30 KB | Not part of the initial load; both limits are checked by `yarn budgets` |
 | Lighthouse | **Accessibility ≥ 95, SEO ≥ 95, Best Practices ≥ 95**; Performance ≥ 80 (mobile) on direct-link pages | The `/` route with 3D may score lower on Performance; that's accepted, since the loader is intentional. The Performance numbers under headless SwiftShader (below) are not representative; re-measure on production and on real devices |
 
 ### Measured (2026-10-22)
@@ -126,4 +126,4 @@ The axe suite (`a11y.spec.ts`) scans all 12 routes (`/` and the 11 sections) in 
 - **Analytics:** none by default. Vercel Web Analytics is the option if wanted (checklist C19).
 - **Vercel setup:** import the git repository; framework preset Next.js (auto-detected); build command `yarn build`; Node.js 24 in the project settings (`.nvmrc` says 24, and `engines.node` is `>=22.22`); no environment variables. Then add the domain, set `site.url`, and redeploy. The step-by-step version is in the README "Deploy" section.
 - **Post-deploy checks:** `PLAYWRIGHT_BASE_URL=https://<deployment> yarn e2e` (when set, `playwright.config.ts` uses it as `baseURL` and does not start a local server); an OG preview check with https://www.opengraph.xyz; Lighthouse on the production URL.
-- **Before launch:** the checklist lives in the README, section "Launch checklist (for Satriko)". It covers the public PDF (C5), the real domain in `site.url` (C18), the optional music track (C17) and hobby content, re-capturing the posters in Bogor daytime, and the real-device checks. Also required: every checklist item marked blocking for launch is done ([05](05-content.md#content-checklist)); `CREDITS.md` is complete; no phone number or referee details anywhere (success criterion S7); the Lighthouse and axe targets above are met.
+- **Before launch:** the checklist lives in the README, section "Launch checklist (for Satriko)". It covers the public PDF (C5), the real domain in `site.url` (C18), hobby content, re-capturing the posters in Bogor daytime, and the real-device checks. Also required: every checklist item marked blocking for launch is done ([05](05-content.md#content-checklist)); `CREDITS.md` is complete; no phone number or referee details anywhere (success criterion S7); the Lighthouse and axe targets above are met.

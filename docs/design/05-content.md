@@ -300,8 +300,8 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C14 | Remote-work note | Remote work | No | A draft is provided above |
 | C15 | Oyen's markings (stripes? white paws/chest? eye color?) | 3D Oyen, loader SVG | No | Default: orange tabby, cream chest |
 | C16 | Review Oyen's lines | Speech bubble | No | Drafts above |
-| C17 | Music track(s) for the radio | Radio | No | ⏳ Pending. `public/audio/music-cozy.mp3` is absent and the radio fails silently. Must be CC0 / royalty-free; license recorded in `CREDITS.md` |
+| C17 | Music track(s) for the radio | Radio | No | ✅ Provided: a 90 s loop of "Lofi Restaurant" by alex-morgan on Pixabay (Pixabay Content License; labelled AI-generated) in `public/audio/music-cozy.mp3`, recorded in `CREDITS.md` |
 | C18 | Domain name | Deployment, canonical URLs | **Yes** (before the production launch) | ⏳ Pending. `site.url` is still the placeholder `https://example.com` in `src/constants/site.ts` |
 | C19 | Analytics: yes or no (e.g. Vercel Web Analytics) | Deployment | No | Decision: none (default) |
 
-**Status at the end of the build:** C1–C4 provided; C5, C17 and C18 pending (see the README launch checklist); C6 uses its default; C19 none. C7–C16 keep their defaults, and the hobby content (C10–C13) is still empty, so those panels show their empty states.
+**Status at the end of the build:** C1–C4 provided; C17 provided after the build; C5 and C18 pending (see the README launch checklist); C6 uses its default; C19 none. C7–C16 keep their defaults, and the hobby content (C10–C13) is still empty, so those panels show their empty states.

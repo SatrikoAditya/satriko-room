@@ -19,7 +19,8 @@
     "analyze": "next analyze --output --snapshot latest",
     "analyze:export": "next analyze export --snapshot latest",
     "map:build": "node scripts/build-indonesia-map.mjs",
-    "audio:convert": "node scripts/convert-audio.mjs"
+    "audio:convert": "node scripts/convert-audio.mjs",
+    "music:loop": "node scripts/make-music-loop.mjs"
   },
   "engines": {
     "node": ">=22.22"

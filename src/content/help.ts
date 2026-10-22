@@ -31,6 +31,12 @@ export const helpContent = {
       license: 'CC0',
     },
     {
+      name: 'Lofi Restaurant (radio)',
+      by: 'alex-morgan on Pixabay',
+      url: 'https://pixabay.com/music/lofi-lofi-restaurant-568157/',
+      license: 'Pixabay Content License',
+    },
+    {
       name: 'Indonesia outline',
       by: 'world-atlas / Natural Earth',
       url: 'https://github.com/topojson/world-atlas',

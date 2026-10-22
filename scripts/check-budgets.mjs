@@ -20,6 +20,12 @@ const assetChecks = [
     7 * 30 * 1024,
     'sound effects',
   ],
+  [
+    'public/audio',
+    (n) => n.startsWith('music') && n.endsWith('.mp3'),
+    1.5 * 1024 * 1024,
+    'music',
+  ],
   ['public/poster', (n) => n.endsWith('.webp'), 2 * 300 * 1024, 'posters'],
 ]
 

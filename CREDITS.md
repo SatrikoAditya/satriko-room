@@ -11,3 +11,4 @@
 | public/audio/printer.mp3 (from scratch_004.ogg) | Kenney, Interface Sounds 1.0: https://kenney.nl/assets/interface-sounds | CC0 | Resume panel opening |
 | public/audio/radio.mp3 (from toggle_003.ogg) | Kenney, Interface Sounds 1.0: https://kenney.nl/assets/interface-sounds | CC0 | radio music on |
 | public/audio/meow.mp3 (from Meow.ogg) | IgnasD on OpenGameArt: https://opengameart.org/content/meow | CC0 | Oyen click (meow) |
+| public/audio/music-cozy.mp3 (90 s excerpt of "Lofi Restaurant", trimmed, faded, loudness-normalised; labelled AI-generated on Pixabay) | alex-morgan on Pixabay: https://pixabay.com/music/lofi-lofi-restaurant-568157/ | Pixabay Content License | radio music |

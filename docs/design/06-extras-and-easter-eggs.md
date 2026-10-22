@@ -70,14 +70,14 @@ The window shows **the real sky in Bogor right now**, whatever the visitor's own
 
 ### Rules
 
-- Clicking the radio while music is off → turns **master on** and **music on**, with a 1s fade-in.
-- Clicking the radio while music is on → music off, with a 1s fade-out.
+- Clicking the radio while music is off → turns **master on** and **music on**; the music starts right after the radio blip.
+- Clicking the radio while music is on → music off. It pauses straight away: as built there is no fade on toggle (the loop itself fades at its ends).
 - 🔊 mute while music is playing → everything goes silent. Unmuting resumes the music if `music` is still on.
 - Sound effects only play while `master` is on.
 - **Browser autoplay rules:** the `AudioContext` is unlocked by the **Enter** click on `/`, or by the first interaction on a direct link (a click, tap or key press anywhere; the mute button and the radio unlock it too). If the browser keeps it suspended (for example after an Esc press, which is not a user activation), the next interaction retries until it runs.
 - The music file is **loaded only the first time it's played** (not part of the initial load). It loops at volume about 0.35. Sound effects play at about 0.5.
 - Audio **pauses when the tab is hidden** and resumes when the visitor comes back.
-- **Radio feedback (3D):** while playing, the dial light is on, the radio gently bounces, and little music-note particles float up.
+- **Radio feedback (3D):** while playing, the dial light glows and the hover label reads "Radio: on". The gentle bounce and the music-note particles were not built.
 
 ### Approach
 
@@ -98,7 +98,7 @@ A native `HTMLAudioElement` for music, and the Web Audio API with decoded buffer
 
 Each sound is ≤ about 30 KB, as **MP3 or M4A** for universal browser support. **Every audio file must be CC0 or royalty-free, with its license recorded** ([03](03-room-scene.md#assets--licenses)). Choosing the music track is checklist item C17 ([05](05-content.md#content-checklist)).
 
-*Implementation note:* the 7 sound effects ship as **MP3** in `public/audio/` (`tick`, `pop`, `whoosh`, `switch`, `printer`, `radio`, `meow`; 15 KB in total). The CC0 OGG originals were converted to mono, 32 kHz, 48 kbps MP3 with `ffmpeg-static` by `yarn audio:convert` (`scripts/convert-audio.mjs`), and each file's source is in `CREDITS.md`. The purr is phase 2 and not shipped. **The music track is pending (C17):** `/audio/music-cozy.mp3` (`MUSIC_SRC`) does not exist yet, so the radio is silent; the audio code catches the failure and stays quiet.
+*Implementation note:* the 7 sound effects ship as **MP3** in `public/audio/` (`tick`, `pop`, `whoosh`, `switch`, `printer`, `radio`, `meow`; 15 KB in total). The CC0 OGG originals were converted to mono, 32 kHz, 48 kbps MP3 with `ffmpeg-static` by `yarn audio:convert` (`scripts/convert-audio.mjs`), and each file's source is in `CREDITS.md`. The purr is phase 2 and not shipped. **Music (C17):** `public/audio/music-cozy.mp3` (`MUSIC_SRC`) is a 90 s loop cut from "Lofi Restaurant" by alex-morgan on Pixabay (Pixabay Content License; Pixabay labels it AI-generated). `yarn music:loop` (`scripts/make-music-loop.mjs`) trims the source, fades 1.5 s in and out so the restart is soft, normalises loudness to −16 LUFS, and writes stereo 44.1 kHz 128 kbps MP3 with no tags (about 1.4 MB; `yarn budgets` allows up to 1.5 MB). A track from a YouTube video was considered first and rejected because it had no licence (decision #38 in [08](08-decision-log.md)).
 
 ---
 

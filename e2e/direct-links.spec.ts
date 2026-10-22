@@ -40,3 +40,9 @@ for (const [slug, title, text] of sections) {
 test('unknown slugs return 404', async ({ request }) => {
   expect((await request.get('/nope')).status()).toBe(404)
 })
+
+test('the radio music loop is served as MP3', async ({ request }) => {
+  const response = await request.get('/audio/music-cozy.mp3')
+  expect(response.status()).toBe(200)
+  expect(response.headers()['content-type']).toContain('audio/mpeg')
+})
