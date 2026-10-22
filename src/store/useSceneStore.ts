@@ -4,7 +4,7 @@
 import { create } from 'zustand'
 
 import type { ObjectId } from '@interfaces/section'
-import type { SceneTheme, Tier, WebglStatus } from '@interfaces/ui'
+import type { OyenState, SceneTheme, Tier, WebglStatus } from '@interfaces/ui'
 
 interface SceneState {
   hovered: ObjectId | null
@@ -25,6 +25,11 @@ interface SceneState {
   setBubble: (bubble: string | null) => void
   oyenAnchor: { x: number; y: number } | null
   setOyenAnchor: (oyenAnchor: { x: number; y: number } | null) => void
+  /** `performance.now()` of the visitor's last click, tap or key press. */
+  lastActivity: number
+  setLastActivity: (lastActivity: number) => void
+  oyenState: OyenState
+  setOyenState: (oyenState: OyenState) => void
 }
 
 export const useSceneStore = create<SceneState>((set) => ({
@@ -46,4 +51,8 @@ export const useSceneStore = create<SceneState>((set) => ({
   setBubble: (bubble) => set({ bubble }),
   oyenAnchor: null,
   setOyenAnchor: (oyenAnchor) => set({ oyenAnchor }),
+  lastActivity: 0,
+  setLastActivity: (lastActivity) => set({ lastActivity }),
+  oyenState: 'sitting',
+  setOyenState: (oyenState) => set({ oyenState }),
 }))

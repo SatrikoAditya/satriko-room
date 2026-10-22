@@ -18,6 +18,7 @@ import { useSceneStore } from '@store/useSceneStore'
 import { useIdleHint } from '@hooks/useIdleHint'
 import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useThemeSync } from '@hooks/useThemeSync'
+import { useVisitorActivity } from '@hooks/useVisitorActivity'
 import { useWebGLSupport } from '@hooks/useWebGLSupport'
 
 import { oyenLines } from '@content/oyen'
@@ -66,6 +67,7 @@ export default function Room({
   useIdleHint()
   useThemeSync()
   useSoundEffects()
+  useVisitorActivity()
   // Any user activation (pointer, key, click) unlocks audio; keep trying until it runs.
   useEffect(() => {
     const detach = () =>
@@ -85,6 +87,7 @@ export default function Room({
   }, [phase])
   const webgl = useSceneStore((s) => s.webgl)
   const tier = useSceneStore((s) => s.tier)
+  const oyenState = useSceneStore((s) => s.oyenState)
   const sceneReady = useSceneStore((s) => s.sceneReady)
   const enter = () => {
     audio.unlock()
@@ -100,6 +103,7 @@ export default function Room({
       data-transition={transition}
       data-webgl={webgl}
       data-tier={tier}
+      data-oyen={oyenState}
     >
       <h1 className="sr-only">{"Satriko's Room"}</h1>
       <p className="sr-only">

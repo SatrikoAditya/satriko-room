@@ -136,6 +136,8 @@ A **Terminal** tab inside the Experience panel (the monitor theme). Everything i
 | **At night** | Oyen is asleep | Petting gives "Zzz… *purr*". The mug push is disabled |
 | **Reduced motion** | n/a | No hop or bounce: the mug is simply on the floor with the note next to it |
 
+*Implementation note:* Oyen already wanders the room when the visitor is idle ([03](03-room-scene.md#oyen-the-host)). The mug push can reuse that controller (`useOyenWander` and the pure helpers in `Oyen/wander.ts`) to walk Oyen to the desk before the hop.
+
 - **Hidden note text:** 📝 to be written when phase 2 starts (e.g. a fun fact about Satriko, or a thank-you for exploring).
 - The mug resets on reload.
 

@@ -62,7 +62,7 @@ export default defineConfig({
         contextOptions: { reducedMotion: 'reduce' },
         launchOptions: { args: softwareGl },
       },
-      testMatch: /navigation/,
+      testMatch: /navigation|oyen/,
     },
   ],
 })

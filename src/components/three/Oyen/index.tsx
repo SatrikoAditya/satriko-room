@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { Html } from '@react-three/drei'
 
 import Interactive from '@components/three/Interactive'
@@ -12,7 +13,8 @@ import { roomLayout } from '@constants/roomLayout'
 import { palette } from '@constants/roomPalette'
 import { oyenLines } from '@content/oyen'
 
-import { useOyenAnimation } from './useOyenAnimation'
+import { PAW_BASE, useOyenAnimation } from './useOyenAnimation'
+import { useOyenWander } from './useOyenWander'
 
 let chatterIndex = 0
 const O = palette.orange
@@ -21,9 +23,19 @@ const OD = palette.orangeDark
 export default function Oyen() {
   const asleep = useSceneStore((s) => s.theme === 'night')
   const { reducedMotion } = useSceneBridge()
-  const { body, head, tail, eyes } = useOyenAnimation(asleep, reducedMotion)
+  const { root, wander } = useOyenWander(reducedMotion)
+  const { body, head, tail, eyes, paws } = useOyenAnimation(
+    asleep,
+    reducedMotion,
+    wander,
+  )
+  // By day Oyen wanders (the hook moves this group); at night it sleeps on the bed.
   const place = asleep ? roomLayout.oyenNight : roomLayout.oyen
+  useEffect(() => {
+    if (!asleep) wander.reset()
+  }, [asleep, wander])
   const speak = () => {
+    wander.faceCamera()
     const s = useSceneStore.getState()
     if (asleep) return s.setBubble(oyenLines.sleeping)
     s.setBubble(oyenLines.chatter[chatterIndex % oyenLines.chatter.length])
@@ -31,6 +43,7 @@ export default function Oyen() {
   }
   return (
     <group
+      ref={root}
       position={[...place.position]}
       rotation={[0, place.rotationY ?? 0, 0]}
     >
@@ -55,8 +68,15 @@ export default function Oyen() {
             <sphereGeometry args={[0.2, 16, 12]} />
             <meshStandardMaterial {...clay(palette.cream)} />
           </mesh>
-          {[-0.14, 0.14].map((x) => (
-            <mesh key={x} position={[x, 0.07, 0.32]} castShadow>
+          {PAW_BASE.map((at, i) => (
+            <mesh
+              key={i}
+              ref={(m) => {
+                if (m) paws.current[i] = m
+              }}
+              position={[...at]}
+              castShadow
+            >
               <sphereGeometry args={[0.08, 12, 8]} />
               <meshStandardMaterial {...clay(O)} />
             </mesh>
