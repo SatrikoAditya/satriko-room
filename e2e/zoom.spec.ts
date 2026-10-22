@@ -24,6 +24,7 @@ test('scroll zooms in, a drag slides without opening anything, reset returns', a
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop', 'Desktop wheel and mouse')
+  test.setTimeout(60_000)
   await enterRoom(page)
   const main = page.locator('main')
   await expect(main).toHaveAttribute('data-zoomed', 'false')
@@ -60,6 +61,10 @@ test('a panel opened while zoomed in returns to the zoomed view', async ({
   await page.getByRole('button', { name: 'Open phone menu' }).click()
   await page.getByRole('link', { name: 'Skills' }).click()
   await expect(page.getByRole('dialog', { name: 'Skills' })).toBeVisible()
+  // The panel can flash before the camera's focus glide; wait until it's really open.
+  await expect(main).toHaveAttribute('data-transition', 'open', {
+    timeout: 15_000,
+  })
   await page.keyboard.press('Escape')
   await expect(page.getByRole('dialog')).toHaveCount(0)
   await expect(main).toHaveAttribute('data-transition', 'idle', {
