@@ -3,7 +3,8 @@ import { expect, test } from '@playwright/test'
 test('the room renders (loose visual check)', async ({ page }) => {
   // Software WebGL is slow under parallel load; give the stable-screenshot loop room.
   test.setTimeout(60_000)
-  await page.goto('/')
+  // Random rain would change the window, so keep the weather clear.
+  await page.goto('/?weather=clear')
   await page.getByRole('button', { name: /Enter/ }).click()
   await expect(page.locator('main')).toHaveAttribute('data-phase', 'ready', {
     timeout: 15_000,

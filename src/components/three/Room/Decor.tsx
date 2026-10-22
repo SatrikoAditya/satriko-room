@@ -114,61 +114,75 @@ export default function Decor() {
   return (
     <group>
       <WindowSky />
-      <Box
-        args={bed.size!}
-        position={[bed.position[0], bed.size![1] / 2, bed.position[2]]}
-        color={palette.wood}
-      />
-      <Box
-        args={[2.0, 0.3, 3.2]}
-        position={[bed.position[0], 0.75, bed.position[2]]}
-        color={palette.cream}
-        radius={0.12}
-      />
-      <Box
-        args={[1.6, 0.2, 0.6]}
-        position={[bed.position[0], 0.98, bed.position[2] - 1.2]}
-        color={palette.peach}
-        radius={0.09}
-      />
-      <Box
-        args={[2.0, 0.16, 2.0]}
-        position={[bed.position[0], 0.95, bed.position[2] + 0.5]}
-        color={palette.sky}
-        radius={0.07}
-      />
+      {/* The pillow is at the bed's local back (-z); turning the bed moves the head. */}
+      <group position={[...bed.position]} rotation={[0, bed.rotationY ?? 0, 0]}>
+        <Box
+          args={bed.size!}
+          position={[0, bed.size![1] / 2, 0]}
+          color={palette.wood}
+        />
+        <Box
+          args={[2.0, 0.3, 3.2]}
+          position={[0, 0.75, 0]}
+          color={palette.cream}
+          radius={0.12}
+        />
+        <Box
+          args={[1.6, 0.2, 0.6]}
+          position={[0, 0.98, -1.2]}
+          color={palette.peach}
+          radius={0.09}
+        />
+        <Box
+          args={[2.0, 0.16, 2.0]}
+          position={[0, 0.95, 0.5]}
+          color={palette.sky}
+          radius={0.07}
+        />
+      </group>
       <Box
         args={ns.size!}
         position={[ns.position[0], ns.size![1] / 2, ns.position[2]]}
+        rotationY={ns.rotationY}
         color={palette.woodDark}
       />
       <Lamp id="bedside-lamp" />
       <Lamp id="desk-lamp" scale={0.7} />
       <OfficeChair />
-      <Box
-        args={[desk.size![0], 0.1, desk.size![2]]}
-        position={[desk.position[0], desk.size![1] - 0.05, desk.position[2]]}
-        color={palette.wood}
-      />
-      {[-1, 1].map((sx) => (
+      <group
+        position={[...desk.position]}
+        rotation={[0, desk.rotationY ?? 0, 0]}
+      >
         <Box
-          key={sx}
-          args={[0.12, desk.size![1] - 0.1, desk.size![2] - 0.2]}
-          position={[
-            desk.position[0] + sx * (desk.size![0] / 2 - 0.1),
-            (desk.size![1] - 0.1) / 2,
-            desk.position[2],
-          ]}
-          color={palette.woodDark}
-          radius={0.04}
+          args={[desk.size![0], 0.1, desk.size![2]]}
+          position={[0, desk.size![1] - 0.05, 0]}
+          color={palette.wood}
         />
-      ))}
+        {[-1, 1].map((sx) => (
+          <Box
+            key={sx}
+            args={[0.12, desk.size![1] - 0.1, desk.size![2] - 0.2]}
+            position={[
+              sx * (desk.size![0] / 2 - 0.1),
+              (desk.size![1] - 0.1) / 2,
+              0,
+            ]}
+            color={palette.woodDark}
+            radius={0.04}
+          />
+        ))}
+      </group>
       <Box
         args={st.size!}
         position={[st.position[0], st.size![1] / 2, st.position[2]]}
+        rotationY={st.rotationY}
         color={palette.woodDark}
       />
-      <group position={[...mug.position]} name="mug">
+      <group
+        position={[...mug.position]}
+        rotation={[0, mug.rotationY ?? 0, 0]}
+        name="mug"
+      >
         <mesh castShadow position={[0, 0.09, 0]}>
           <cylinderGeometry args={[0.09, 0.08, 0.18, 16]} />
           <meshStandardMaterial {...clay(palette.mint)} />
@@ -184,7 +198,7 @@ export default function Decor() {
         position={[...rug.position]}
         receiveShadow
       >
-        <meshStandardMaterial {...clay(palette.sky)} />
+        <meshStandardMaterial {...clay(palette.rugMint)} />
       </RoundedBox>
       <mesh
         position={[beanbag.position[0], 0.35, beanbag.position[2]]}

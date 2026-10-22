@@ -107,8 +107,9 @@ test('Escape and the close button close the panel', async ({ page }) => {
 test('clicking the PC in the scene opens Experience', async ({ page }) => {
   await expect(page.locator('[data-testid="scene"] canvas')).toBeVisible()
   const box = await page.getByTestId('scene').boundingBox()
-  const x = box!.x + box!.width * 0.6375
-  const y = box!.y + box!.height * 0.4644
+  // The monitor on the desk under the window, at both 1440×900 and 1280×720.
+  const x = box!.x + box!.width * 0.36
+  const y = box!.y + box!.height * 0.465
   // With reduced motion the phase is ready before the scene has settled, so
   // keep nudging the pointer until the hover tag proves the raycast hit the PC.
   await expect(async () => {

@@ -14,6 +14,7 @@ import {
 
 import { useSceneStore } from '@store/useSceneStore'
 
+import { roomLayout } from '@constants/roomLayout'
 import type { LampId } from '@interfaces/section'
 
 import { useSceneBridge } from '../SceneCanvas/SceneBridge'
@@ -98,7 +99,8 @@ export default function Lighting() {
       />
       <directionalLight
         ref={moon}
-        position={[-8, 6, -2]}
+        // Moonlight comes in through the window.
+        position={[-8, 6, roomLayout.window.position[2]]}
         intensity={0}
         color="#9fb4ff"
       />

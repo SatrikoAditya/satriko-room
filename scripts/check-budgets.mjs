@@ -16,9 +16,17 @@ const assetChecks = [
   ['public/models', (n) => n.endsWith('.glb'), 2 * 1024 * 1024, '3D models'],
   [
     'public/audio',
-    (n) => n.endsWith('.mp3') && !n.startsWith('music'),
+    (n) =>
+      n.endsWith('.mp3') && !n.startsWith('music') && !n.startsWith('rain'),
     7 * 30 * 1024,
     'sound effects',
+  ],
+  // The window's rain loop (decision 49).
+  [
+    'public/audio',
+    (n) => n.startsWith('rain') && n.endsWith('.mp3'),
+    150 * 1024,
+    'ambience',
   ],
   [
     'public/audio',

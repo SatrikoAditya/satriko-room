@@ -13,6 +13,7 @@ import PhotoFrame from '../objects/PhotoFrame'
 import Printer from '../objects/Printer'
 import Radio from '../objects/Radio'
 import Tv from '../objects/Tv'
+import UmbrellaStand from '../objects/UmbrellaStand'
 import Oyen from '../Oyen'
 
 // One line per clickable object; Tasks 12-18 added them.
@@ -32,6 +33,7 @@ export default function RoomObjects() {
       <HikingGear />
       <DiveGear />
       <Tv />
+      <UmbrellaStand />
       <Oyen />
     </group>
   )

@@ -26,6 +26,7 @@ export function useSoundEffects() {
         if (s.theme !== prev.theme) audio.playSfx('switch')
         if (s.bubble && s.bubble !== prev.bubble && s.hint === null)
           audio.playSfx('meow')
+        if (s.weather !== prev.weather) audio.setRain(s.weather === 'rain')
       }),
       useRoomStore.subscribe((s, prev) => {
         const t = s.transition
@@ -38,6 +39,7 @@ export function useSoundEffects() {
       }),
     ]
     audio.setMuted(!useSoundStore.getState().master)
+    audio.setRain(useSceneStore.getState().weather === 'rain')
     return () => unsubs.forEach((u) => u())
   }, [])
 

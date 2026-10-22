@@ -68,9 +68,9 @@ Detailed budgets are in [07: Quality](07-quality.md#performance-budgets).
 
 ### Phase 1: launch
 
-- The 3D studio bedroom with **16 clickable things** (see [03](03-room-scene.md#interactive-objects)):
+- The 3D studio bedroom with **17 clickable things** (see [03](03-room-scene.md#interactive-objects)):
   - 11 panel objects → 11 sections: About, Experience, Skills, Education, Gaming, Travel, Hiking, Diving, Remote work, Contact, Resume
-  - Oyen (speech bubble), the light switch (night mode), the radio (sound), the desk and bedside lamps (each switches its own light)
+  - Oyen (speech bubble), the light switch (night mode), the radio (sound), the desk and bedside lamps (each switches its own light), the umbrella stand (calls the rain)
 - The modal + URL model (one URL per panel, back button closes the panel)
 - Loader + Enter gate on `/`; no gate on direct links
 - On-screen controls: name tag, mute, day/night, help, phone menu, Resume and Contact buttons
@@ -96,7 +96,7 @@ Details are in [06](06-extras-and-easter-eggs.md#phase-2-easter-eggs).
 | Discovery counter ("7/14 found") | Not chosen; the hints and phone menu cover findability |
 | Rubber duck with debugging tips | Not chosen |
 | A message in the browser console for developers | Not chosen (cheap to add later) |
-| Bogor "Kota Hujan" rain in the window | Not chosen; the live sky system could support it later |
+| Bogor "Kota Hujan" rain in the window | Not chosen at first; built later with the umbrella stand (decision #49) |
 | 404 room easter egg | Not chosen; a simple cozy 404 page is in scope |
 | Bahasa Indonesia version | English only was chosen |
 | World map view for travel | Travel is mostly within Indonesia for now; the Travel panel can add a "World" tab later |

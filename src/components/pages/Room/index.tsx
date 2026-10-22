@@ -19,6 +19,7 @@ import { useIdleHint } from '@hooks/useIdleHint'
 import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useThemeSync } from '@hooks/useThemeSync'
 import { useVisitorActivity } from '@hooks/useVisitorActivity'
+import { useWeather } from '@hooks/useWeather'
 import { useWebGLSupport } from '@hooks/useWebGLSupport'
 
 import { oyenLines } from '@content/oyen'
@@ -68,6 +69,7 @@ export default function Room({
   useThemeSync()
   useSoundEffects()
   useVisitorActivity()
+  useWeather()
   // Any user activation (pointer, key, click) unlocks audio; keep trying until it runs.
   useEffect(() => {
     const detach = () =>
@@ -89,6 +91,7 @@ export default function Room({
   const tier = useSceneStore((s) => s.tier)
   const oyenState = useSceneStore((s) => s.oyenState)
   const zoomedIn = useSceneStore((s) => s.zoomedIn)
+  const weather = useSceneStore((s) => s.weather)
   const sceneReady = useSceneStore((s) => s.sceneReady)
   const enter = () => {
     audio.unlock()
@@ -106,6 +109,7 @@ export default function Room({
       data-tier={tier}
       data-oyen={oyenState}
       data-zoomed={zoomedIn}
+      data-weather={weather}
     >
       <h1 className="sr-only">{"Satriko's Room"}</h1>
       <p className="sr-only">

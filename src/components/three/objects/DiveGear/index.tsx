@@ -211,6 +211,7 @@ export default function DiveGear() {
         // Higher than the backpack's tag beside it, so the two don't overlap on
         // phones, where every tag is always shown.
         labelHeight={2.25}
+        touchLabelOffset={[0, 0.4, 0]}
         onActivate={() => openFromScene('diving')}
       >
         <Tank />

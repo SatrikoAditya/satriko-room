@@ -20,13 +20,17 @@ export default function Radio() {
     s.toggleMusic()
   }
   return (
-    <group position={[...roomLayout.radio.position]}>
+    <group
+      position={[...roomLayout.radio.position]}
+      rotation={[0, roomLayout.radio.rotationY ?? 0, 0]}
+    >
       <Interactive
         id="radio"
         label={music ? 'Radio: on' : 'Radio'}
         hitSize={[0.7, 0.5, 0.5]}
         hitOffset={[0, 0.15, 0]}
         labelHeight={0.5}
+        touchLabelOffset={[0.45, 0, 0]}
         onActivate={toggle}
       >
         <RoundedBox

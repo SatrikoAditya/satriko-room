@@ -29,6 +29,7 @@ export default function EduFrames() {
         hitSize={[2.4, 1.0, 0.3]}
         hitOffset={[0, 0, 0.05]}
         labelHeight={0.7}
+        touchLabelOffset={[-0.6, 0, 0]}
         onActivate={() => openFromScene('education')}
       >
         {education.map((e, i) => (

@@ -75,7 +75,7 @@
 | `/education` | Education | Picture frames on the wall |
 | `/gaming` | Gaming | TV + game console |
 | `/travel` | Travel | Indonesia map on the wall |
-| `/hiking` | Hiking | Backpack + boots by the door |
+| `/hiking` | Hiking | Backpack + boots in the outdoor-hobby corner |
 | `/diving` | Diving | Scuba tank with mask, snorkel and fins |
 | `/remote-work` | Remote work | 3 wall clocks |
 | `/contact` | Contact | Mailbox by the door |

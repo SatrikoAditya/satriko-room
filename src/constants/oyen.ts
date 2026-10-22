@@ -4,15 +4,17 @@ export type OyenSpotId =
   | 'home'
   | 'rugFront'
   | 'tvView'
-  | 'beanbag'
-  | 'rugCorner'
-  | 'frontEdge'
-  | 'bedSide'
-  | 'bedFoot'
-  | 'window'
-  | 'middleBack'
+  | 'hobbyCorner'
   | 'printer'
+  | 'deskCorner'
+  | 'deskSide'
   | 'bookshelf'
+  | 'bedFoot'
+  | 'bedSide'
+  | 'frontRight'
+  | 'middleRight'
+  | 'beanbag'
+  | 'clocks'
   | 'door'
 
 /** What Oyen does when it stops at a spot. */
@@ -48,17 +50,23 @@ export const oyenSpots: Readonly<
   Record<OyenSpotId, readonly [number, number]>
 > = {
   home: [roomLayout.oyen.position[0], roomLayout.oyen.position[2]],
-  rugFront: [1.6, 0.0],
-  tvView: [0.3, 2.4],
-  beanbag: [2.9, 2.9],
-  rugCorner: [3.0, 1.2],
-  frontEdge: [1.4, 4.0],
-  bedSide: [-2.1, 2.5],
-  bedFoot: [-2.0, 4.3],
-  window: [-1.8, -1.6],
-  middleBack: [0.6, -1.5],
-  printer: [-2.3, -3.1],
-  bookshelf: [2.6, -3.4],
+  // the rug, the TV and the hobby corner
+  rugFront: [0.4, 0.0],
+  tvView: [-1.0, -3.2],
+  hobbyCorner: [-1.6, -3.3],
+  // along the window wall: the printer, the desk, the bookshelf
+  printer: [-3.1, -2.7],
+  deskCorner: [-2.0, -1.3],
+  deskSide: [-2.4, 1.6],
+  bookshelf: [-3.3, 3.6],
+  // beside the bed, toward the front
+  bedFoot: [2.4, 0.6],
+  bedSide: [2.4, 2.6],
+  frontRight: [2.4, 4.0],
+  // the open right side: beanbag, clocks, door
+  middleRight: [3.0, -0.3],
+  beanbag: [2.6, -1.5],
+  clocks: [2.6, -3.8],
   door: [3.6, -2.3],
 }
 
@@ -70,21 +78,20 @@ export const oyenSpots: Readonly<
 export const oyenPaths: readonly (readonly [OyenSpotId, OyenSpotId])[] = [
   ['home', 'rugFront'],
   ['home', 'tvView'],
-  ['home', 'rugCorner'],
-  ['home', 'middleBack'],
-  ['rugFront', 'tvView'],
-  ['rugFront', 'rugCorner'],
-  ['rugFront', 'middleBack'],
-  ['rugFront', 'door'],
-  ['tvView', 'frontEdge'],
-  ['tvView', 'bedSide'],
-  ['tvView', 'bedFoot'],
-  ['beanbag', 'rugCorner'],
-  ['beanbag', 'frontEdge'],
-  ['bedSide', 'bedFoot'],
-  ['window', 'middleBack'],
-  ['window', 'printer'],
-  ['middleBack', 'bookshelf'],
-  ['middleBack', 'door'],
-  ['bookshelf', 'door'],
+  ['home', 'deskCorner'],
+  ['home', 'deskSide'],
+  ['rugFront', 'bedFoot'],
+  ['rugFront', 'middleRight'],
+  ['tvView', 'hobbyCorner'],
+  ['hobbyCorner', 'printer'],
+  ['printer', 'deskCorner'],
+  ['deskCorner', 'deskSide'],
+  ['deskSide', 'bookshelf'],
+  ['bedFoot', 'bedSide'],
+  ['bedFoot', 'middleRight'],
+  ['bedSide', 'frontRight'],
+  ['middleRight', 'beanbag'],
+  ['middleRight', 'door'],
+  ['beanbag', 'clocks'],
+  ['clocks', 'door'],
 ]

@@ -14,6 +14,9 @@ export const oyenLines = {
     'The window shows the real sky in Bogor right now.',
   ],
   sleeping: 'Zzz… (Oyen is asleep. Maybe check the map instead?)',
+  // The umbrella stand calls the rain.
+  rain: "Rain! Bogor isn't called the City of Rain for nothing.",
+  rainSleeping: 'Zzz… rain is the best sleeping weather.',
   empty: {
     gaming: 'Oyen is still choosing a game… check back soon!',
     travel: 'Oyen is still pinning the map… check back soon!',

@@ -36,6 +36,7 @@ export default function PhotoFrame() {
         hitSize={[0.7, 0.75, 0.5]}
         hitOffset={[0, 0.3, 0]}
         labelHeight={0.85}
+        touchLabelOffset={[1.53, -2.1, -0.98]}
         onActivate={() => openFromScene('about')}
       >
         <RoundedBox

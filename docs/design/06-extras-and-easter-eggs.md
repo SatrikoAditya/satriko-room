@@ -1,13 +1,13 @@
 # 06: Extras & Easter Eggs
 
-Phase 1 extras: **3 world clocks**, **light switch / night mode**, **live window sky**, **radio and sound**.
+Phase 1 extras: **3 world clocks**, **light switch / night mode**, **live window sky**, **radio and sound**. Added later: **rain in the window** and the **umbrella stand** (decision #49).
 Phase 2 easter eggs: **PC terminal** and **Oyen antics**.
 
 ---
 
 ## 3 world clocks (phase 1)
 
-Three chunky wall clocks above the desk tell the "remote across three time zones" story at a glance.
+Three chunky wall clocks centred above the TV tell the "remote across three time zones" story at a glance.
 
 | Clock | City | Time zone |
 | --- | --- | --- |
@@ -56,6 +56,7 @@ The window shows **the real sky in Bogor right now**, whatever the visitor's own
 - **Why fixed windows are enough:** Bogor is about 6.6° south of the equator, so sunrise (about 05:30–06:10) and sunset (about 17:35–18:20) barely change through the year. **No astronomy library is needed.**
 - **Rendering:** a gradient plane behind the window glass (a 4×128 px canvas texture per phase, colors in `src/utils/sky.ts`), a sun or moon disc whose height follows the time (the sun follows an arc from about 05:50 to 18:00; the moon rides high), 2 rounded cloud meshes by day that drift slowly, and drei `Sparkles` as stars at night. *Implementation note:* the sky, sun and clouds are **unlit** (`meshBasicMaterial`, `toneMapped={false}`), so the window looks the same whatever the room lighting is, and a **two-plane crossfade** does the phase change: the new texture goes on the back plane while the previous one sits on a front plane that fades out (`WindowSky/index.tsx`). The window does **not** tint the room light (the per-phase `light` color in `sky.ts` is unused); this was left out.
 - **Updates:** once a minute (`SKY_UPDATE_MS`); phase changes blend over 3s (`SKY_BLEND_SECONDS`), instantly with reduced motion.
+- **Weather (decision #49):** Bogor is *Kota Hujan*, the City of Rain, so the window sometimes rains. A visit opens with rain about one time in three, and every 3 minutes (`WEATHER_CHECK_MS`) rain may start (25%) or stop (50%), so it rains about a third of the time. Rain fades in and out over 3 s (`RAIN_FADE_SECONDS`): an overcast layer hides the sun or moon, the clouds turn grey, the stars hide, and 40 slanted streaks fall inside the frame, behind the bars (they stay still with reduced motion). Rain shows **only in the window**: the room light doesn't change. `?weather=clear` or `?weather=rain` fixes it, and the posters (`?poster=1`) are always clear. State in `useSceneStore` (`weather`, `callRain`), mirrored to `<main data-weather>`; the scheduler is `src/hooks/useWeather.ts`, the pure helpers `src/utils/weather.ts`, the layer `WindowSky/WindowRain.tsx`
 - **Discoverability:** the Help sheet and one of Oyen's lines mention "the window shows the real sky in Bogor right now". The window **isn't clickable**, so it has no hover effect, which keeps "hover = clickable" consistent.
 
 ---
@@ -96,10 +97,11 @@ A native `HTMLAudioElement` for music, and the Web Audio API with decoded buffer
 | Meow | Clicking Oyen |
 | Purr | Oyen petting (phase 2) |
 | Radio static blip | Radio turned on |
+| Soft rain | A loop while it rains in the window (only with sound on) |
 
 Each sound is ≤ about 30 KB, as **MP3 or M4A** for universal browser support. **Every audio file must be CC0 or royalty-free, with its license recorded** ([03](03-room-scene.md#assets--licenses)). Choosing the music track is checklist item C17 ([05](05-content.md#content-checklist)).
 
-*Implementation note:* the 7 sound effects ship as **MP3** in `public/audio/` (`tick`, `pop`, `whoosh`, `switch`, `printer`, `radio`, `meow`; 15 KB in total). The CC0 OGG originals were converted to mono, 32 kHz, 48 kbps MP3 with `ffmpeg-static` by `yarn audio:convert` (`scripts/convert-audio.mjs`), and each file's source is in `CREDITS.md`. The purr is phase 2 and not shipped. **Music (C17):** `public/audio/music-cozy.mp3` (`MUSIC_SRC`) is a 90 s loop cut from "Lofi Restaurant" by alex-morgan on Pixabay (Pixabay Content License; Pixabay labels it AI-generated). `yarn music:loop` (`scripts/make-music-loop.mjs`) trims the source, fades 1.5 s in and out so the restart is soft, normalises loudness to −16 LUFS, and writes stereo 44.1 kHz 128 kbps MP3 with no tags (about 1.4 MB; `yarn budgets` allows up to 1.5 MB). A track from a YouTube video was considered first and rejected because it had no licence (decision #38 in [08](08-decision-log.md)).
+*Implementation note:* the 7 sound effects ship as **MP3** in `public/audio/` (`tick`, `pop`, `whoosh`, `switch`, `printer`, `radio`, `meow`; 15 KB in total). The CC0 OGG originals were converted to mono, 32 kHz, 48 kbps MP3 with `ffmpeg-static` by `yarn audio:convert` (`scripts/convert-audio.mjs`), and each file's source is in `CREDITS.md`. The purr is phase 2 and not shipped. **Music (C17):** `public/audio/music-cozy.mp3` (`MUSIC_SRC`) is a 90 s loop cut from "Lofi Restaurant" by alex-morgan on Pixabay (Pixabay Content License; Pixabay labels it AI-generated). `yarn music:loop` (`scripts/make-music-loop.mjs`) trims the source, fades 1.5 s in and out so the restart is soft, normalises loudness to −16 LUFS, and writes stereo 44.1 kHz 128 kbps MP3 with no tags (about 1.4 MB; `yarn budgets` allows up to 1.5 MB). A track from a YouTube video was considered first and rejected because it had no licence (decision #38 in [08](08-decision-log.md)). **Rain (decision #49):** `public/audio/rain.mp3` (`RAIN_SRC`) is the CC0 "Rain on Window Loop" by alxl on OpenGameArt (about 11 s). `yarn rain:loop` (`scripts/make-rain-loop.mjs`) levels it to a soft average and writes mono 32 kHz 56 kbps MP3 with no tags (about 75 KB; `yarn budgets` has a separate 150 KB ambience budget). It loads the first time it rains with sound on, loops gaplessly in Web Audio (skipping 50 ms at both ends, past any encoder padding) and fades 1.5 s in and out at volume 0.3; muting or hiding the tab fades it out.
 
 ---
 
@@ -144,6 +146,16 @@ A **Terminal** tab inside the Experience panel (the monitor theme). Everything i
 
 ---
 
+## Umbrella stand (built, decision #49)
+
+| Aspect | Spec |
+| --- | --- |
+| Object | A brass umbrella stand by the door, left of the mailbox, holding one closed **pastel sky-blue umbrella** with a wooden J-handle (`objects/UmbrellaStand`) |
+| Click | Calls the rain: the window rains for a minute (`CALLED_RAIN_MS`), then goes back to the random weather. Oyen says "Rain! Bogor isn't called the City of Rain for nothing." (asleep at night: "Zzz… rain is the best sleeping weather."). The umbrella wiggles, except with reduced motion |
+| Tag | "Umbrella" on hover; no tag on phones (the right edge is already full), but tapping it works |
+
+---
+
 ## Parked ideas (not planned)
 
 Recorded so they aren't lost. Each would be a small addition later thanks to the section registry and the store.
@@ -154,6 +166,5 @@ Recorded so they aren't lost. Each would be a small addition later thanks to the
 | Discovery counter ("7/14 found") | A `visited` set in the store, a counter in the phone status bar, and a reward animation |
 | Rubber duck with debugging tips | One code-built object, a quack sound and a list of tips |
 | A message in the browser console for developers | A text-art Oyen + "Looking under the hood? Let's talk →" (very cheap) |
-| Bogor "Kota Hujan" rain in the window | A rain layer for the live sky (it fits the City of Rain nickname) |
 | 404 room | A 404 page showing an empty room with Oyen, instead of the simple cozy 404 |
 | Projects pinboard | A registry entry, a `three/objects/Pinboard` object in the reserved wall slot, `src/content/projects.ts`, an `IProject` model and an `organisms/ProjectsPanel` |

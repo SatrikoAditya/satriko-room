@@ -31,6 +31,12 @@ export const helpContent = {
       license: 'CC0',
     },
     {
+      name: 'Rain on Window Loop',
+      by: 'alxl on OpenGameArt',
+      url: 'https://opengameart.org/content/rain-on-window-loop',
+      license: 'CC0',
+    },
+    {
       name: 'Lofi Restaurant (radio)',
       by: 'alex-morgan on Pixabay',
       url: 'https://pixabay.com/music/lofi-lofi-restaurant-568157/',

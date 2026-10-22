@@ -32,3 +32,9 @@ export const skyColors: Record<
 export function fadeStep(opacity: number, dt: number, seconds: number) {
   return Math.min(1, Math.max(0, opacity - dt / seconds))
 }
+
+/** Moves `value` toward `target` by at most `step`, without overshooting. */
+export const approach = (value: number, target: number, step: number) =>
+  value < target
+    ? Math.min(target, value + step)
+    : Math.max(target, value - step)

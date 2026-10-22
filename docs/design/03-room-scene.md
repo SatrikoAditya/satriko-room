@@ -6,46 +6,54 @@ A cozy **studio bedroom** (the room Satriko lives, works and games in), shown as
 
 ### Layout
 
+Seen from above: the corner where the walls meet is top-left, and the camera looks in from the bottom-right. The left wall (window wall, x = -5) holds the work things; the right wall (door wall, z = -5) holds the hobbies; the rug, beanbag and bed fill the middle, facing the TV.
+
 ```text
-              LEFT WALL                               RIGHT WALL
-   [Edu frames ×3]  [ WINDOW: live sky ] [Indonesia map]   [3 clocks]                  [Door + "Satriko's Room"]
-                    [curtains]                             ┌───────────┐  ┌──────────┐  [Mailbox]  [light switch]
-   ┌───────────┐  [Backpack + boots] [Scuba tank + fins]   │DESK+PC+lap│  │BOOKSHELF │
-   │   BED     │   ↑ outdoor-hobby corner, under the map   │ photo frame│  │ radio    │
-   │           │  ← Oyen sleeps here   [printer on         └───────────┘  └──────────┘
-   └───────────┘    at night            side table]       [office chair, pulled out]
-                     ╭──────────────── rug ────────────────╮
-                     │   TV + console on low cabinet   ◉ beanbag │   ← Oyen starts here by day, then wanders
-                     ╰─────────────────────────────────────╯
-   [ reserved wall slot for a future Projects pinboard: left wall, between the frames and the window ]
+                    map                   3 clocks             switch  door   <- RIGHT WALL: hobbies
+        ######################################################
+        #    backpack  scuba     [TV + PS5 on white cabinet]  umbrella  mailbox
+        #    + boots   tank + fins
+ frames # [printer]     .~~~~~~~~~~~~~ rug ~~~~~~~~~~~~~.
+        #               :  Oyen (day)        o beanbag  :   <- Oyen starts here by day, then wanders
+ window # [DESK + PC]   '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+        # [+ laptop ]  chair
+        #
+        # [BOOKSHELF]           +-------------+
+        # [ + radio ]     [lamp]|     BED     |   <- Oyen sleeps here at night
+        #                       | head at the |
+        #                       | front edge  |                    plant
+         . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  open front
+   ^ LEFT WALL: work
+   [ reserved wall slot for a future Projects pinboard: right wall, between the clocks and the light switch ]
 ```
 
 This is a starting layout. **Exact positions, rotations and scales are tuned during the build** with screenshots from the dev server, and kept in one config file (`src/constants/roomLayout.ts`; see [02: Project structure](02-architecture.md#project-structure)). A dev-only tuning panel (e.g. Leva) is optional and must not ship in the production bundle.
 
 ### Interactive objects
 
-**16 clickable things:** 11 that open panels, and 5 that do something in place.
+**17 clickable things:** 11 that open panels, and 6 that do something in place.
 
 *Implementation note:* every object is built in code (the "Source" column's pack options were not used; see [Assets & licenses](#assets--licenses)). Objects are mounted by `src/components/three/RoomObjects/index.tsx` and each one lives in `src/components/three/objects/<Name>/`.
 
 | # | `objectId` | Object | Where | Click does | Source | Hover label |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `photo-frame` | Framed photo of Satriko | On the desk | Opens `/about` | Code (frame) + photo texture | About me |
-| 2 | `pc` | PC: monitor, keyboard, mouse, and the laptop open on a stand to its right (one hover and click group, like Satriko's real desk) | On the desk | Opens `/experience` | Pack or code | Work experience |
-| 3 | `bookshelf` | Bookshelf with colored book spines | Right wall, next to the desk | Opens `/skills` | Pack (shelf) + code (books) | Skills |
-| 4 | `edu-frames` | 3 certificate frames | Left wall, above the bed | Opens `/education` | Code | Education |
-| 5 | `tv` | TV setup like Satriko's: a wide TV on a white low cabinet (two drawers, open shelf), a soundbar, a white PS5 standing on the left and two controllers on the right | Floor, on the rug | Opens `/gaming` | Pack or code | Gaming |
+| 1 | `photo-frame` | Framed photo of Satriko | On the desk, by the desk lamp | Opens `/about` | Code (frame) + photo texture | About me |
+| 2 | `pc` | PC: monitor, keyboard, mouse, and the laptop open on a stand to its right (one hover and click group, like Satriko's real desk) | On the desk, under the window | Opens `/experience` | Pack or code | Work experience |
+| 3 | `bookshelf` | Bookshelf with colored book spines | Left wall, at the front end beside the desk | Opens `/skills` | Pack (shelf) + code (books) | Skills |
+| 4 | `edu-frames` | 3 certificate frames | Left wall, between the window and the corner, above the printer | Opens `/education` | Code | Education |
+| 5 | `tv` | TV setup like Satriko's: a wide TV on a white low cabinet (two drawers, open shelf), a soundbar, a white PS5 standing on the left and two controllers on the right | Right wall, between the hobby corner and the clocks, facing the rug and the bed | Opens `/gaming` | Pack or code | Gaming |
 | 6 | `indonesia-map` | Illustrated Indonesia map with pins | Back (right) wall, in the outdoor-hobby corner above the hiking and dive gear; its bottom edge lines up with the window's | Opens `/travel` | Code (plane + illustrated texture) | Travel |
-| 7 | `hiking-gear` | Backpack + hiking boots | Outdoor-hobby corner, by the left wall | Opens `/hiking` | Code | Hiking |
+| 7 | `hiking-gear` | Backpack + hiking boots | Outdoor-hobby corner, against the right wall, about a unit out of the corner | Opens `/hiking` | Code | Hiking |
 | 8 | `dive-gear` | Yellow scuba tank with the mask hung on its neck, a snorkel beside it and the fins leaning on it; bubbles rise from the regulator on hover (not with reduced motion) | Outdoor-hobby corner, against the back wall | Opens `/diving` | Code | Diving |
-| 9 | `clocks` | 3 wall clocks: Bogor / Singapore / Abu Dhabi | Right wall, above the desk, level with the Indonesia map | Opens `/remote-work` | Code | Remote work |
+| 9 | `clocks` | 3 wall clocks: Bogor / Singapore / Abu Dhabi | Right wall, above the TV | Opens `/remote-work` | Code | Remote work |
 | 10 | `mailbox` | Little mailbox | By the door | Opens `/contact` | Code | Contact |
-| 11 | `printer` | Printer on a side table | Next to the desk | Opens `/resume` | Pack or code | Resume |
+| 11 | `printer` | Printer on a side table | Next to the desk, on the corner side | Opens `/resume` | Pack or code | Resume |
 | 12 | `oyen` | Oyen, the orange cat | Rug (day) / bed (night) | Speech bubble | Code | Oyen |
 | 13 | `light-switch` | Wall light switch | By the door | Toggles day/night | Code | Lights |
 | 14 | `radio` | Small retro radio | On the bookshelf | Toggles music | Code | Radio |
 | 15 | `bedside-lamp` | Bedside lamp | On the nightstand | Switches its own light on or off, with the switch sound | Code | Lamp: on / Lamp: off (no tag on phones) |
-| 16 | `desk-lamp` | Desk lamp | Printer end of the desk | Switches its own light on or off, with the switch sound | Code | Lamp: on / Lamp: off (no tag on phones) |
+| 16 | `desk-lamp` | Desk lamp | Bookshelf end of the desk | Switches its own light on or off, with the switch sound | Code | Lamp: on / Lamp: off (no tag on phones) |
+| 17 | `umbrella-stand` | Brass umbrella stand with one closed pastel sky-blue umbrella (Bogor is the City of Rain) | Right wall, by the door, left of the mailbox | Calls the rain in the window for a minute, and Oyen says a line | Code | Umbrella (no tag on phones) |
 
 **Decor (not clickable):** bed, rug, beanbag, desk chair, curtains, plants, door with a wooden "Satriko's Room" nameplate, a mug on the desk (used by the phase 2 antics), small shelf trinkets.
 
@@ -114,7 +122,7 @@ Everything is built from drei/three primitives using the clay recipe: the room s
   - A stitched-style label (DOM via drei `<Html>`, so it uses the UI font).
   - A pointer cursor, and a tick sound effect if sound is on.
 - **Click / tap:** the open flow from [02](02-architecture.md#interaction-state-machine).
-- **Mobile labels:** since there's no hover, small floating label tags (drei `Html`, the `HoverLabel` molecule) are **always visible** above clickable objects when the pointer is coarse. Tapping a tag works the same as tapping the object. On phones the tags can overlap each other (known, accepted).
+- **Mobile labels:** since there's no hover, small floating label tags (drei `Html`, the `HoverLabel` molecule) are **always visible** above clickable objects when the pointer is coarse. Tapping a tag works the same as tapping the object. On phones the tags can overlap each other (known, accepted). Where the window wall's tags would hide each other, a phone-only nudge (`touchLabelOffset` on `Interactive`) moves the tag aside; desktop hover tags stay where they are.
 - **Idle hints:**
   - **When:** on a first visit (`room:interacted` not yet stored), after **about 8 seconds** (`HINT_DELAY_MS`) without a click.
   - **What:** Oyen says a hint ("Psst… try the PC!") and the suggested object **sparkles** (small particle sprites).
@@ -129,8 +137,8 @@ Everything is built from drei/three primitives using the clay recipe: the room s
 | **Identity** | An **orange cat named "Oyen"**. Exact markings (tabby stripes? white paws or chest?) are in the [content checklist](05-content.md#content-checklist) |
 | **Construction** | Built in code from rounded shapes: capsule body, slightly squashed sphere head, rounded triangle ears, a 5–6 segment tail chain, sphere paws, glossy oval eyes with highlights, a pink nose. No skeleton or rig |
 | **Idle animation** | Breathing (body scale ±2% over about 3s), a tail sway that ripples down the segments, random blinks every 3–6s, an occasional ear twitch, and **head turning toward the cursor** (clamped to ±30°; on mobile, toward the last tap) |
-| **Placement** | **Day:** starts sitting on the rug at the front, visible and inviting, then wanders when the room is quiet (below). **Night:** curled up asleep on the bed with a "Zzz" bubble. Toggling the theme switches poses with a quick hop/fade |
-| **Wandering** | By day, after **6 s with no click, tap or key press** (moving the mouse doesn't count), Oyen walks at about 0.7 units/s between 13 hand-placed floor spots (`oyenSpots` in `src/constants/oyen.ts`) along straight paths that clear the furniture, the floor edge and the strip in front of the desk, and never stops where furniture hides it from the default camera (all checked by `Oyen/wander.test.ts`). At each spot it pauses 3–8 s to look around, groom a paw or loaf; every 3–5 hops it lies down for 15–30 s and stretches when it gets up. Any click, tap or key press, an open panel, or a speech bubble makes it ease to a halt and sit; clicking Oyen also turns it to face the camera. It never walks at night (asleep on the bed), with reduced motion, or before the room is ready. Its state is mirrored to `<main data-oyen>` (`sitting`, `walking` or `resting`) for the e2e suite |
+| **Placement** | **Day:** starts sitting on the rug in front of the TV, visible and inviting, then wanders when the room is quiet (below). **Night:** curled up asleep on the bed with a "Zzz" bubble. Toggling the theme switches poses with a quick hop/fade |
+| **Wandering** | By day, after **6 s with no click, tap or key press** (moving the mouse doesn't count), Oyen walks at about 0.7 units/s between 15 hand-placed floor spots (`oyenSpots` in `src/constants/oyen.ts`) along straight paths that clear the furniture, the floor edge and the strip in front of the desk, and never stops where furniture hides it from the default camera (all checked by `Oyen/wander.test.ts`). At each spot it pauses 3–8 s to look around, groom a paw or loaf; every 3–5 hops it lies down for 15–30 s and stretches when it gets up. Any click, tap or key press, an open panel, or a speech bubble makes it ease to a halt and sit; clicking Oyen also turns it to face the camera. It never walks at night (asleep on the bed), with reduced motion, or before the room is ready. Its state is mirrored to `<main data-oyen>` (`sitting`, `walking` or `resting`) for the e2e suite |
 | **Click** | A speech bubble (see [04](04-ui-and-visual-design.md#oyens-speech-bubble)). The first click gives the greeting; later clicks rotate through fun lines and hints ([05](05-content.md#oyen-copy)). A purr sound effect if sound is on |
 | **Phase 2** | Petting reactions and the mug push ([06](06-extras-and-easter-eggs.md#oyen-antics)) |
 

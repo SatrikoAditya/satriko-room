@@ -26,13 +26,14 @@ const ROWS = 4,
 export default function Bookshelf() {
   const p = roomLayout.bookshelf
   return (
-    <group position={[...p.position]}>
+    <group position={[...p.position]} rotation={[0, p.rotationY ?? 0, 0]}>
       <Interactive
         id="bookshelf"
         label="Skills"
         hitSize={[W + 0.2, H, D + 0.3]}
         hitOffset={[0, H / 2, 0.1]}
         labelHeight={H + 0.35}
+        touchLabelOffset={[0.6, -1.35, 0]}
         onActivate={() => openFromScene('skills')}
       >
         <RoundedBox

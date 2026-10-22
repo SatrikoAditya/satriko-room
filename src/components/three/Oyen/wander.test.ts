@@ -10,7 +10,7 @@ import {
   oyenSpots,
   type OyenSpotId,
 } from '@constants/oyen'
-import { roomLayout } from '@constants/roomLayout'
+import { attach, roomLayout, type Placement } from '@constants/roomLayout'
 
 import {
   angleDelta,
@@ -38,26 +38,30 @@ const CAT_RADIUS = 0.45
 const FLOOR_MARGIN = 0.5
 type Box = readonly [number, number, number, number] // xmin, xmax, zmin, zmax
 
-function footprint(id: keyof typeof roomLayout): Box {
-  const { position, size } = roomLayout[id]
+/** The floor area a piece covers, turned by its rotationY (sizes are in its own axes). */
+function footprintOf({ position, rotationY = 0, size }: Placement): Box {
   const [sx, , sz] = size!
+  const [c, s] = [Math.abs(Math.cos(rotationY)), Math.abs(Math.sin(rotationY))]
+  const hx = (c * sx + s * sz) / 2
+  const hz = (s * sx + c * sz) / 2
   return [
-    position[0] - sx / 2,
-    position[0] + sx / 2,
-    position[2] - sz / 2,
-    position[2] + sz / 2,
+    position[0] - hx,
+    position[0] + hx,
+    position[2] - hz,
+    position[2] + hz,
   ]
 }
+const footprint = (id: keyof typeof roomLayout) => footprintOf(roomLayout[id])
 
-// Floor furniture with a size in roomLayout, plus the code-built pieces
-// measured from their components (TV stand 1.4 × 0.5 turned 90°, etc.).
+// Floor furniture with a size in roomLayout, plus the TV stand measured from
+// its component (Tv/index.tsx: 1.9 wide, 0.5 deep).
 const boxes: Record<string, Box> = {
   bed: footprint('bed'),
   nightstand: footprint('nightstand'),
   desk: footprint('desk'),
   sideTable: footprint('sideTable'),
   bookshelf: footprint('bookshelf'),
-  tv: [-1.45, -0.95, 0.05, 1.95],
+  tv: footprintOf({ ...roomLayout.tv, size: [1.9, 1.4, 0.5] }),
 }
 const atFloor = (id: keyof typeof roomLayout, radius: number) =>
   [roomLayout[id].position[0], roomLayout[id].position[2], radius] as const
@@ -68,9 +72,14 @@ const circles: Record<string, readonly [number, number, number]> = {
   diveGear: atFloor('dive-gear', 0.6),
   hikingGear: atFloor('hiking-gear', 0.7),
   chair: atFloor('chair', 0.5),
+  umbrellaStand: atFloor('umbrella-stand', 0.3),
 }
-// Oyen never stands in front of the desk, so it can't cover the PC.
-const deskFront: Box = [-1.6, 1.6, -3.6, -2.6]
+// Oyen never stands in the strip in front of the desk (1 unit deep, a little
+// wider than the desk), so it can't cover the PC.
+const { desk } = roomLayout
+const deskFront = footprintOf(
+  attach(desk, [0, 0, desk.size![2] / 2 + 0.5], 0, [desk.size![0] + 0.2, 0, 1]),
+)
 
 const inBox = ([x, z]: readonly [number, number], b: Box, grow = 0) =>
   x > b[0] - grow && x < b[1] + grow && z > b[2] - grow && z < b[3] + grow
@@ -147,9 +156,14 @@ describe('Oyen paths', () => {
         ([name, [x, z, r]]) =>
           [
             [x - r, x + r, z - r, z + r] as Box,
-            { beanbag: 0.77, plant: 1.1, diveGear: 1.0, hikingGear: 0.8 }[
-              name
-            ]!,
+            {
+              beanbag: 0.77,
+              plant: 1.1,
+              diveGear: 1.0,
+              hikingGear: 0.8,
+              chair: 1.6,
+              umbrellaStand: 1.0,
+            }[name]!,
           ] as [Box, number],
       ),
     ]
@@ -183,8 +197,8 @@ describe('nextSpot', () => {
   })
 
   it('goes back only from a dead end', () => {
-    expect(neighbours('printer')).toEqual(['window'])
-    expect(nextSpot('printer', 'window', seeded(2))).toBe('window')
+    expect(neighbours('bookshelf')).toEqual(['deskSide'])
+    expect(nextSpot('bookshelf', 'deskSide', seeded(2))).toBe('deskSide')
   })
 
   it('repeats the same choices for the same seed', () => {

@@ -44,6 +44,7 @@ export type ObjectId =
   | 'radio'
   | 'bedside-lamp'
   | 'desk-lamp'
+  | 'umbrella-stand'
 
 /** The two lamps a visitor can switch on and off. */
 export type LampId = Extract<ObjectId, 'bedside-lamp' | 'desk-lamp'>
@@ -64,7 +65,12 @@ export interface Section {
   icon: LucideIcon
   objectId: Exclude<
     ObjectId,
-    'oyen' | 'light-switch' | 'radio' | 'bedside-lamp' | 'desk-lamp'
+    | 'oyen'
+    | 'light-switch'
+    | 'radio'
+    | 'bedside-lamp'
+    | 'desk-lamp'
+    | 'umbrella-stand'
   >
   cameraPose: CameraPose
   theme: PanelTheme

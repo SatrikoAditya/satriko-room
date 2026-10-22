@@ -26,7 +26,7 @@ This is a portfolio site that feels like visiting Satriko's room. The room is a 
 - **Look:** Animal Crossing / clay-toy style, isometric, warm and cozy colors. It's *inspired by* the game: no Nintendo models, characters, logos, interface or fonts.
 - **Rendering:** real 3D with React Three Fiber and a fixed orthographic camera. Point-and-click only, no walking character.
 - **Art source:** everything is built in code from rounded primitives (the style test approved it, so the CC0 model packs, KayKit and Kenney, are an optional upgrade that was not used). No 3D modeling needed from Satriko.
-- **Room:** a studio bedroom with **16 clickable things**: 11 objects that open panels, plus Oyen, the light switch, the radio and the two lamps.
+- **Room:** a studio bedroom with **17 clickable things**: 11 objects that open panels, plus Oyen, the light switch, the radio, the two lamps and the umbrella stand.
 - **Click flow:** the camera glides in (about 0.6s), then the modal grows out of the object (about 80% of the screen on desktop, about 95% on mobile).
 - **URLs:** one URL per panel, using `history.pushState`. It feels like a single-page app, but direct links, the back button and SEO all work.
 - **Entry:** on `/`: loader, then an **Enter** button. Direct links skip the gate and show the panel text immediately.

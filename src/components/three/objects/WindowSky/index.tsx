@@ -3,10 +3,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { RoundedBox, Sparkles } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import type { CanvasTexture, Group, Mesh, MeshBasicMaterial } from 'three'
+import {
+  Color,
+  type CanvasTexture,
+  type Group,
+  type Mesh,
+  type MeshBasicMaterial,
+} from 'three'
 
 import { clay } from '@components/three/materials'
 import { useSceneBridge } from '@components/three/SceneCanvas/SceneBridge'
+
+import { useSceneStore } from '@store/useSceneStore'
 
 import { roomLayout } from '@constants/roomLayout'
 import { palette } from '@constants/roomPalette'
@@ -15,7 +23,12 @@ import { BASE_ZONE } from '@constants/timezones'
 import { fadeStep, skyPhase, sunHeight } from '@utils/sky'
 import { zonedTime } from '@utils/time'
 
+import { useRainAmount } from './useRainAmount'
 import { useSkyTexture } from './useSkyTexture'
+import WindowRain from './WindowRain'
+
+const CLOUD_CLEAR = new Color('#ffffff')
+const CLOUD_RAIN = new Color('#B9C2CF')
 
 const minutesNow = () => {
   const t = zonedTime(new Date(), BASE_ZONE)
@@ -33,6 +46,8 @@ export default function WindowSky() {
   const phase = skyPhase(minutes)
   const texture = useSkyTexture(phase)
   const { reducedMotion } = useSceneBridge()
+  const raining = useSceneStore((s) => s.weather === 'rain')
+  const rain = useRainAmount(reducedMotion)
   // keep the outgoing texture on a front plane that fades out over the new one
   const [shown, setShown] = useState<CanvasTexture>(texture)
   const [previous, setPrevious] = useState<CanvasTexture | null>(null)
@@ -57,6 +72,13 @@ export default function WindowSky() {
     }
     if (clouds.current) {
       clouds.current.position.x = Math.sin(state.clock.elapsedTime * 0.08) * 0.3
+      // Clouds turn grey while it rains.
+      for (const c of clouds.current.children)
+        ((c as Mesh).material as MeshBasicMaterial).color.lerpColors(
+          CLOUD_CLEAR,
+          CLOUD_RAIN,
+          rain.current,
+        )
     }
     if (sun.current) {
       sun.current.position.y = -H / 2 + 0.2 + height * (H - 0.5)
@@ -106,7 +128,7 @@ export default function WindowSky() {
           ))}
         </group>
       )}
-      {phase === 'night' && (
+      {phase === 'night' && !raining && (
         <Sparkles
           count={30}
           // Stars stay between the sky and the window bars too.
@@ -117,6 +139,13 @@ export default function WindowSky() {
           color="#ffffff"
         />
       )}
+      <WindowRain
+        width={W}
+        height={H}
+        night={phase === 'night'}
+        amount={rain}
+        reducedMotion={reducedMotion}
+      />
       <mesh position={[0, 0, 0.09]}>
         <boxGeometry args={[0.06, H, 0.02]} />
         <meshStandardMaterial {...clay(palette.cream)} />

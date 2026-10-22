@@ -19,7 +19,7 @@ const LID_LEAN = 0.35
  */
 export default function Laptop() {
   const frame = clay(palette.chairFrame)
-  // Left and forward enough that the bookshelf doesn't hide it from the camera.
+  // To the right of the monitor and a little forward, turned toward it.
   return (
     <group position={[0.88, 0, 0.2]} rotation={[0, -0.35, 0]}>
       <RoundedBox

@@ -25,4 +25,6 @@ export const palette = {
   chairFrame: '#2F3035',
   // The classic yellow of a scuba tank.
   tankYellow: '#F2C94C',
+  // A soft green mint for the rug: clearly apart from the sky-blue blanket, and orange Oyen stands out on it.
+  rugMint: '#BFE3C8',
 } as const

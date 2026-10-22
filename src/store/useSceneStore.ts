@@ -4,7 +4,13 @@
 import { create } from 'zustand'
 
 import type { LampId, ObjectId } from '@interfaces/section'
-import type { OyenState, SceneTheme, Tier, WebglStatus } from '@interfaces/ui'
+import type {
+  OyenState,
+  SceneTheme,
+  Tier,
+  Weather,
+  WebglStatus,
+} from '@interfaces/ui'
 
 interface SceneState {
   hovered: ObjectId | null
@@ -39,6 +45,11 @@ interface SceneState {
   /** Bumped to ask the camera to glide back to the full room. */
   resetViewTick: number
   requestResetView: () => void
+  weather: Weather
+  setWeather: (weather: Weather) => void
+  /** Bumped by the umbrella stand: rain for a while (see useWeather). */
+  rainCalls: number
+  callRain: () => void
 }
 
 const lampsFor = (theme: SceneTheme): Record<LampId, boolean> => {
@@ -76,4 +87,8 @@ export const useSceneStore = create<SceneState>((set) => ({
   setZoomedIn: (zoomedIn) => set({ zoomedIn }),
   resetViewTick: 0,
   requestResetView: () => set((s) => ({ resetViewTick: s.resetViewTick + 1 })),
+  weather: 'clear',
+  setWeather: (weather) => set({ weather }),
+  rainCalls: 0,
+  callRain: () => set((s) => ({ weather: 'rain', rainCalls: s.rainCalls + 1 })),
 }))

@@ -52,6 +52,16 @@ describe('audio manager', () => {
     a.unlock()
     expect(() => a.playSfx('tick')).not.toThrow()
   })
+  it('rain no-ops without an audio context', () => {
+    const fetchSpy = vi.fn()
+    vi.stubGlobal('fetch', fetchSpy)
+    const a = createAudioManager()
+    a.setMuted(false)
+    a.unlock()
+    expect(() => a.setRain(true)).not.toThrow()
+    expect(fetchSpy).not.toHaveBeenCalled()
+    vi.unstubAllGlobals()
+  })
 
   describe('with an AudioContext', () => {
     const contexts: { state: AudioContextState; resume: () => void }[] = []
@@ -89,6 +99,107 @@ describe('audio manager', () => {
       contexts[0].state = 'running'
       a.unlock()
       expect(contexts[0].resume).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('rain sound', () => {
+    const sources: {
+      loop: boolean
+      start: ReturnType<typeof vi.fn>
+      stop: ReturnType<typeof vi.fn>
+    }[] = []
+    const gains: { gain: { value: number; ramps: number[] } }[] = []
+    const fetchSpy = vi.fn(() =>
+      Promise.resolve({
+        arrayBuffer: () => Promise.resolve(new ArrayBuffer(8)),
+      }),
+    )
+    beforeEach(() => {
+      sources.length = 0
+      gains.length = 0
+      fetchSpy.mockClear()
+      vi.stubGlobal('fetch', fetchSpy)
+      vi.stubGlobal(
+        'AudioContext',
+        vi.fn(function () {
+          return {
+            state: 'running' as AudioContextState,
+            currentTime: 0,
+            destination: {},
+            resume: vi.fn(() => Promise.resolve()),
+            decodeAudioData: vi.fn(() => Promise.resolve({ duration: 10.9 })),
+            createBufferSource: vi.fn(() => {
+              const src = {
+                buffer: null,
+                loop: false,
+                loopStart: 0,
+                loopEnd: 0,
+                start: vi.fn(),
+                stop: vi.fn(),
+                connect: (node: unknown) => node,
+              }
+              sources.push(src)
+              return src
+            }),
+            createGain: vi.fn(() => {
+              const ramps: number[] = []
+              const g = {
+                gain: {
+                  value: 0,
+                  ramps,
+                  cancelScheduledValues: vi.fn(),
+                  setValueAtTime: vi.fn(),
+                  linearRampToValueAtTime: vi.fn((v: number) => ramps.push(v)),
+                },
+                connect: (node: unknown) => node,
+              }
+              gains.push(g)
+              return g
+            }),
+          }
+        }),
+      )
+    })
+    afterEach(() => vi.unstubAllGlobals())
+    const settle = () => new Promise((r) => setTimeout(r, 0))
+
+    it('stays silent while muted', async () => {
+      const a = createAudioManager()
+      a.unlock()
+      a.setRain(true)
+      await settle()
+      expect(fetchSpy).not.toHaveBeenCalled()
+      expect(sources).toHaveLength(0)
+    })
+
+    it('loads the loop once, then loops and fades in', async () => {
+      const a = createAudioManager()
+      a.setMuted(false)
+      a.unlock()
+      a.setRain(true)
+      a.setRain(true)
+      await settle()
+      expect(fetchSpy).toHaveBeenCalledTimes(1)
+      expect(sources).toHaveLength(1)
+      expect(sources[0].loop).toBe(true)
+      expect(sources[0].start).toHaveBeenCalled()
+      expect(gains[0].gain.ramps.at(-1)).toBeGreaterThan(0)
+    })
+
+    it('fades out and stops when the rain ends or sound goes off', async () => {
+      const a = createAudioManager()
+      a.setMuted(false)
+      a.unlock()
+      a.setRain(true)
+      await settle()
+      a.setRain(false)
+      expect(gains[0].gain.ramps.at(-1)).toBe(0)
+      expect(sources[0].stop).toHaveBeenCalled()
+      a.setRain(true)
+      expect(sources).toHaveLength(2)
+      a.setMuted(true)
+      expect(gains[1].gain.ramps.at(-1)).toBe(0)
+      expect(sources[1].stop).toHaveBeenCalled()
     })
   })
 })

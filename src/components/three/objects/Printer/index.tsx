@@ -21,13 +21,17 @@ export default function Printer() {
       (target - sheet.current.position.z) * Math.min(1, dt * 4)
   })
   return (
-    <group position={[...roomLayout.printer.position]}>
+    <group
+      position={[...roomLayout.printer.position]}
+      rotation={[0, roomLayout.printer.rotationY ?? 0, 0]}
+    >
       <Interactive
         id="printer"
         label="Resume"
         hitSize={[1.0, 0.6, 0.9]}
         hitOffset={[0, 0.2, 0.1]}
         labelHeight={0.7}
+        touchLabelOffset={[0, -1.0, 0]}
         onActivate={() => openFromScene('resume')}
       >
         <RoundedBox

@@ -25,6 +25,11 @@ export interface InteractiveProps {
   labelHeight: number
   /** Phones show every tag at all times; small extras (the lamps) opt out to keep the room readable. */
   alwaysLabelOnTouch?: boolean
+  /**
+   * Phones only: moves the tag (local units, added to [0, labelHeight, 0]) so
+   * it stays clear of its neighbours when every tag is shown at once.
+   */
+  touchLabelOffset?: Vec3
   onActivate: () => void
   children: ReactNode
 }
@@ -36,6 +41,7 @@ export default function Interactive({
   hitOffset = [0, 0, 0],
   labelHeight,
   alwaysLabelOnTouch = true,
+  touchLabelOffset = [0, 0, 0],
   onActivate,
   children,
 }: InteractiveProps) {
@@ -103,7 +109,15 @@ export default function Interactive({
       {(hovered || (coarsePointer && alwaysLabelOnTouch)) && (
         <Html
           center
-          position={[0, labelHeight, 0]}
+          position={
+            coarsePointer
+              ? [
+                  touchLabelOffset[0],
+                  labelHeight + touchLabelOffset[1],
+                  touchLabelOffset[2],
+                ]
+              : [0, labelHeight, 0]
+          }
           zIndexRange={[20, 0]}
           style={{ pointerEvents: coarsePointer ? 'auto' : 'none' }}
         >

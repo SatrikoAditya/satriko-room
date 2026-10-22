@@ -59,6 +59,7 @@ export default function Clocks() {
         hitSize={[2.4, 0.9, 0.3]}
         hitOffset={[0, -0.1, 0.05]}
         labelHeight={0.5}
+        touchLabelOffset={[1.2, 0, 0]}
         onActivate={() => openFromScene('remote-work')}
       >
         {clockZones.map((z, i) => (
