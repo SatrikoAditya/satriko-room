@@ -23,6 +23,7 @@ import {
 import { SceneBridgeProvider } from './SceneBridge'
 import SceneErrorBoundary from './SceneErrorBoundary'
 import SceneReady from './SceneReady'
+import ShadowRefresh from './ShadowRefresh'
 
 export default function SceneCanvas() {
   const tier = useSceneStore((s) => s.tier)
@@ -74,6 +75,7 @@ export default function SceneCanvas() {
               <RoomObjects />
               <CameraDirector />
               <SceneReady />
+              <ShadowRefresh />
             </Suspense>
           </SceneBridgeProvider>
         </Canvas>

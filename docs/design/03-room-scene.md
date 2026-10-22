@@ -60,7 +60,7 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 | **Lighting (night)** | Sun dimmed to 0.21 (about 16% of day, `#9fb4ff`); cool hemisphere light (sky `#3a4a70`, ground `#2a2238`, intensity 1.5, lifted once after the night screenshot check); ambient 0.16; warm point lights in the desk and bedside lamps with glowing shades (`lamp` 2.2); monitor and TV glow raised (screen glow 1.1 against 0.5); a bluish moon light (0.5). Day ↔ night blends over 0.8s (`THEME_BLEND_SECONDS`), instantly with reduced motion |
 | **Tone mapping** | `NeutralToneMapping` in `SceneCanvas`. R3F's default ACES greyed the pastels; Neutral keeps the palette close to its swatches (Satriko's decision at the style test) |
 | **Reflections / environment** | *Not used.* The materials are matte, so there is no `<Environment>`, and no HDR or other environment download |
-| **Shadows** | Contact shadows (drei `ContactShadows`) on every tier: continuous at 1024 on the high tier, rendered once at 512 on the low tier. A directional shadow map (`PCFShadowMap`, 1024) on the high tier only |
+| **Shadows** | Contact shadows (drei `ContactShadows`) on every tier: continuous at 1024 on the high tier; at 512 on the low tier, rendered once and again while Oyen walks, so its shadow follows it. A directional shadow map (`PCFShadowMap`, 1024) on the high tier only |
 | **Ambient occlusion** | *Not built.* `@react-three/postprocessing` is not installed; the look was approved without it |
 
 ## Assets & licenses
@@ -138,8 +138,8 @@ Everything is built from drei/three primitives using the clay recipe: the room s
 | Setting | High (desktop) | Low (phones / weak GPUs) |
 | --- | --- | --- |
 | Resolution (device pixel ratio) | Up to 2 | Up to 1.5 |
-| Shadows | Soft directional shadow map + contact shadows | Contact shadows rendered once, then static |
-| Contact shadows | 1024, continuous | 512, rendered once |
+| Shadows | Soft directional shadow map + contact shadows | Contact shadows rendered once, then only while Oyen walks |
+| Contact shadows | 1024, continuous | 512, rendered once and while Oyen walks |
 | Ambient occlusion | Not built | Not built |
 | Modal backdrop blur | 4px | None |
 | Parallax | By input type, not tier: on for a fine pointer, off for touch and reduced motion | Same |

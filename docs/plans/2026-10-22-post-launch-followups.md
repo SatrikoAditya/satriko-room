@@ -6,6 +6,7 @@ Triaged on 2026-10-22 from the per-task reviews and the final whole-branch revie
 
 - **Trim `motion` from the first load.** First-load JS on a direct link is 238 KB gzip against the 250 KB guard; `motion`/`framer-motion` is the largest app-chosen part (about 63 KB). Switch to `LazyMotion` + `m` with features loaded lazily (the panel sheet's drag needs `domMax`). Re-check with `yarn analyze` and `yarn budgets`.
 - **Per-frame work while the room is static.** `ContactShadows` re-renders every frame on the high tier (`frames={Infinity}`); `Lighting` walks the whole scene every frame (`scene.traverse`) and re-parses colour strings; the invisible hit boxes still render (`visible={false}` keeps raycasting). Cache the matched lamp/screen objects once and pause work while a panel covers the room.
+- ~~**Frozen shadows after the tier drops.**~~ Done with Oyen wandering: `SceneCanvas/ShadowRefresh.tsx` recompiles materials on every tier change, so the low tier really drops the shadow map instead of freezing its last frame.
 - ~~**Oyen anchor updates at 60 Hz.**~~ Done with Oyen wandering: the anchor is published only while a bubble is visible (and once at start).
 - **Loader progress is effectively 0 → 100.** `useProgress` only tracks drei loads; the real wait is the 3D chunk. Track the dynamic import (or a fetch of the chunk) to drive the bar.
 - **Panels ship as client code** because `panels.ts` is imported by the client `ModalHost`. Only worth revisiting if the budget tightens.
@@ -30,7 +31,7 @@ Triaged on 2026-10-22 from the per-task reviews and the final whole-branch revie
 
 ## Three.js hygiene
 
-- Dispose `CanvasTexture`s in `useMapTexture` and the sky's intermediate textures; `contextlost` listener is never removed; the scene bridge object is recreated each render (memoise); runtime shadow/DPR switch on tier decline may need a material refresh (check on a real device); `Printer` uses `side={2}` (use `DoubleSide`); `Bookshelf` colour map typed `Record<string, string>` and more than 11 books per shelf would overrun; `Sparkles` sit outside the lifted group.
+- Dispose `CanvasTexture`s in `useMapTexture` and the sky's intermediate textures; `contextlost` listener is never removed; the scene bridge object is recreated each render (memoise); `Printer` uses `side={2}` (use `DoubleSide`); `Bookshelf` colour map typed `Record<string, string>` and more than 11 books per shelf would overrun; `Sparkles` sit outside the lifted group.
 - `useIdleHint` listeners only attach while no section is open, so a deep-link first visit restarts hints after closing the panel.
 
 ## Tests

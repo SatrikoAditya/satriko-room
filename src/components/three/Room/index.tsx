@@ -13,6 +13,9 @@ export const ROOM = { size: 10, wallHeight: 6, wallThickness: 0.3 } as const
 
 export default function Room() {
   const tier = useSceneStore((s) => s.tier)
+  // The low tier draws contact shadows once; redraw while Oyen walks so its
+  // shadow follows it (drei draws one more frame when this flips back).
+  const oyenWalking = useSceneStore((s) => s.oyenState === 'walking')
   const half = ROOM.size / 2
   const t = ROOM.wallThickness
   return (
@@ -64,7 +67,7 @@ export default function Room() {
         blur={2.4}
         far={4}
         resolution={tier === 'high' ? 1024 : 512}
-        frames={tier === 'high' ? Infinity : 1}
+        frames={tier === 'high' || oyenWalking ? Infinity : 1}
       />
     </group>
   )

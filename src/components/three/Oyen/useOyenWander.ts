@@ -162,8 +162,11 @@ export function useOyenWander(reducedMotion: boolean): {
     if (!wandering) {
       // Ease to a halt on the current path, then sit and watch.
       speed.current = Math.max(0, speed.current - dt / OYEN_STOP_SECONDS)
-      if (w.mode === 'walk' && w.target && speed.current > 0) advance()
-      else {
+      if (w.mode === 'walk' && w.target && speed.current > 0) {
+        advance()
+        // Still moving while it eases to a halt.
+        report('walking')
+      } else {
         w.mode = 'idle'
         behaviour.current = 'sit'
         if (w.faceCamera) {
@@ -177,8 +180,8 @@ export function useOyenWander(reducedMotion: boolean): {
           const maxTurn = OYEN_TURN_SPEED * dt
           w.yaw += Math.max(-maxTurn, Math.min(maxTurn, turn))
         }
+        report('sitting')
       }
-      report('sitting')
     } else {
       w.faceCamera = false
       if (w.mode === 'idle') {
