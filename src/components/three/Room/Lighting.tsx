@@ -14,6 +14,8 @@ import {
 
 import { useSceneStore } from '@store/useSceneStore'
 
+import type { LampId } from '@interfaces/section'
+
 import { useSceneBridge } from '../SceneCanvas/SceneBridge'
 import { lightingPresets, THEME_BLEND_SECONDS } from './lightingPresets'
 
@@ -36,7 +38,10 @@ export default function Lighting() {
   )
 
   useFrame((state, dt) => {
-    const p = lightingPresets[useSceneStore.getState().theme]
+    const { theme, lampsOn } = useSceneStore.getState()
+    const p = lightingPresets[theme]
+    const lampTarget = (o: { userData: { lampId?: LampId } }) =>
+      o.userData.lampId && lampsOn[o.userData.lampId] ? p.lamp : 0
     const k = reducedMotion ? 1 : Math.min(1, dt / THEME_BLEND_SECONDS)
     if (hemi.current) {
       hemi.current.intensity += (p.hemiIntensity - hemi.current.intensity) * k
@@ -54,11 +59,11 @@ export default function Lighting() {
     state.scene.traverse((o) => {
       if (o.name === 'lampLight') {
         const l = o as PointLight
-        l.intensity += (p.lamp - l.intensity) * k
+        l.intensity += (lampTarget(o) - l.intensity) * k
       } else if (o.name === 'lampShade') {
         const m = (o as Mesh).material as MeshStandardMaterial
         m.emissiveIntensity +=
-          (p.lamp / lightingPresets.night.lamp - m.emissiveIntensity) * k
+          (lampTarget(o) / lightingPresets.night.lamp - m.emissiveIntensity) * k
       } else if (o.name === 'pcScreen' || o.name === 'tvScreen') {
         // Each screen keeps its own day glow; night scales it by the preset ratio.
         const m = (o as Mesh).material as MeshStandardMaterial

@@ -3,7 +3,7 @@
 
 import { create } from 'zustand'
 
-import type { ObjectId } from '@interfaces/section'
+import type { LampId, ObjectId } from '@interfaces/section'
 import type { OyenState, SceneTheme, Tier, WebglStatus } from '@interfaces/ui'
 
 interface SceneState {
@@ -16,7 +16,10 @@ interface SceneState {
   webgl: WebglStatus
   setWebgl: (webgl: WebglStatus) => void
   theme: SceneTheme
+  /** Also resets both lamps: on at night, off by day. */
   setTheme: (theme: SceneTheme) => void
+  lampsOn: Record<LampId, boolean>
+  toggleLamp: (id: LampId) => void
   sceneReady: boolean
   setSceneReady: (sceneReady: boolean) => void
   progress: number
@@ -38,6 +41,11 @@ interface SceneState {
   requestResetView: () => void
 }
 
+const lampsFor = (theme: SceneTheme): Record<LampId, boolean> => {
+  const on = theme === 'night'
+  return { 'bedside-lamp': on, 'desk-lamp': on }
+}
+
 export const useSceneStore = create<SceneState>((set) => ({
   hovered: null,
   setHovered: (hovered) => set({ hovered }),
@@ -48,7 +56,10 @@ export const useSceneStore = create<SceneState>((set) => ({
   webgl: 'unknown',
   setWebgl: (webgl) => set({ webgl }),
   theme: 'day',
-  setTheme: (theme) => set({ theme }),
+  setTheme: (theme) => set({ theme, lampsOn: lampsFor(theme) }),
+  lampsOn: lampsFor('day'),
+  toggleLamp: (id) =>
+    set((s) => ({ lampsOn: { ...s.lampsOn, [id]: !s.lampsOn[id] } })),
   sceneReady: false,
   setSceneReady: (sceneReady) => set({ sceneReady }),
   progress: 0,

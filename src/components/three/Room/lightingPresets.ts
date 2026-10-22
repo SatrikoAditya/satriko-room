@@ -7,6 +7,7 @@ export interface LightingPreset {
   sunIntensity: number
   sunColor: string
   ambient: number
+  /** Brightness of a lamp that's switched on (lamps are on by default only at night). */
   lamp: number
   screenGlow: number
   moon: number
@@ -22,7 +23,7 @@ export const lightingPresets: Record<SceneTheme, LightingPreset> = {
     sunIntensity: 1.3,
     sunColor: '#fffaf2',
     ambient: 0.3,
-    lamp: 0,
+    lamp: 1.2,
     screenGlow: 0.5,
     moon: 0,
   },

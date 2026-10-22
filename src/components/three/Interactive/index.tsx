@@ -23,6 +23,8 @@ export interface InteractiveProps {
   hitSize: Vec3
   hitOffset?: Vec3
   labelHeight: number
+  /** Phones show every tag at all times; small extras (the lamps) opt out to keep the room readable. */
+  alwaysLabelOnTouch?: boolean
   onActivate: () => void
   children: ReactNode
 }
@@ -33,6 +35,7 @@ export default function Interactive({
   hitSize,
   hitOffset = [0, 0, 0],
   labelHeight,
+  alwaysLabelOnTouch = true,
   onActivate,
   children,
 }: InteractiveProps) {
@@ -97,7 +100,7 @@ export default function Interactive({
           color={palette.lampGlow}
         />
       )}
-      {(hovered || coarsePointer) && (
+      {(hovered || (coarsePointer && alwaysLabelOnTouch)) && (
         <Html
           center
           position={[0, labelHeight, 0]}

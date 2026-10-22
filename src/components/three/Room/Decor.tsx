@@ -3,9 +3,15 @@
 import { Html, RoundedBox } from '@react-three/drei'
 import { DoubleSide } from 'three'
 
+import Interactive from '@components/three/Interactive'
+
+import { useSceneStore } from '@store/useSceneStore'
+
 import { roomLayout as L } from '@constants/roomLayout'
 import { palette } from '@constants/roomPalette'
 import { site } from '@constants/site'
+import type { LampId } from '@interfaces/section'
+import { audio } from '@utils/audio'
 
 import { clay } from '../materials'
 import WindowSky from '../objects/WindowSky'
@@ -38,46 +44,57 @@ const Box = ({
   </RoundedBox>
 )
 
-function Lamp({
-  position,
-  name,
-  scale = 1,
-}: {
-  position: V3
-  name: 'bedsideLamp' | 'deskLamp'
-  scale?: number
-}) {
+/** A table lamp the visitor can switch on and off (on by default at night). */
+function Lamp({ id, scale = 1 }: { id: LampId; scale?: number }) {
   const s = scale
+  const on = useSceneStore((state) => state.lampsOn[id])
+  const toggle = () => {
+    useSceneStore.getState().toggleLamp(id)
+    audio.playSfx('switch')
+  }
   return (
-    <group position={[...position]} name={name}>
-      <mesh position={[0, 0.02 * s, 0]}>
-        <cylinderGeometry args={[0.14 * s, 0.16 * s, 0.04 * s, 16]} />
-        <meshStandardMaterial {...clay(palette.woodDark)} />
-      </mesh>
-      <mesh position={[0, 0.3 * s, 0]}>
-        <cylinderGeometry args={[0.03 * s, 0.03 * s, 0.56 * s, 8]} />
-        <meshStandardMaterial {...clay(palette.woodDark)} />
-      </mesh>
-      <mesh
-        position={[0, 0.66 * s, 0]}
-        name="lampShade"
-        userData={{ noHighlight: true }}
+    <group position={[...L[id].position]}>
+      <Interactive
+        id={id}
+        label={on ? 'Lamp: on' : 'Lamp: off'}
+        hitSize={[0.5 * s, 0.85 * s, 0.5 * s]}
+        hitOffset={[0, 0.42 * s, 0]}
+        labelHeight={1.0 * s}
+        alwaysLabelOnTouch={false}
+        onActivate={toggle}
       >
-        <cylinderGeometry args={[0.16 * s, 0.24 * s, 0.26 * s, 16, 1, true]} />
-        <meshStandardMaterial
-          {...clay(palette.peach)}
-          side={DoubleSide}
-          emissive={palette.lampGlow}
-          emissiveIntensity={0}
+        <mesh position={[0, 0.02 * s, 0]}>
+          <cylinderGeometry args={[0.14 * s, 0.16 * s, 0.04 * s, 16]} />
+          <meshStandardMaterial {...clay(palette.woodDark)} />
+        </mesh>
+        <mesh position={[0, 0.3 * s, 0]}>
+          <cylinderGeometry args={[0.03 * s, 0.03 * s, 0.56 * s, 8]} />
+          <meshStandardMaterial {...clay(palette.woodDark)} />
+        </mesh>
+        <mesh
+          position={[0, 0.66 * s, 0]}
+          name="lampShade"
+          userData={{ noHighlight: true, lampId: id }}
+        >
+          <cylinderGeometry
+            args={[0.16 * s, 0.24 * s, 0.26 * s, 16, 1, true]}
+          />
+          <meshStandardMaterial
+            {...clay(palette.peach)}
+            side={DoubleSide}
+            emissive={palette.lampGlow}
+            emissiveIntensity={0}
+          />
+        </mesh>
+        <pointLight
+          name="lampLight"
+          userData={{ lampId: id }}
+          position={[0, 0.6 * s, 0]}
+          intensity={0}
+          distance={4}
+          color={palette.lampGlow}
         />
-      </mesh>
-      <pointLight
-        name="lampLight"
-        position={[0, 0.6 * s, 0]}
-        intensity={0}
-        distance={4}
-        color={palette.lampGlow}
-      />
+      </Interactive>
     </group>
   )
 }
@@ -125,8 +142,8 @@ export default function Decor() {
         position={[ns.position[0], ns.size![1] / 2, ns.position[2]]}
         color={palette.woodDark}
       />
-      <Lamp position={L.bedsideLamp.position} name="bedsideLamp" />
-      <Lamp position={L.deskLamp.position} name="deskLamp" scale={0.7} />
+      <Lamp id="bedside-lamp" />
+      <Lamp id="desk-lamp" scale={0.7} />
       <OfficeChair />
       <Box
         args={[desk.size![0], 0.1, desk.size![2]]}

@@ -42,6 +42,11 @@ export type ObjectId =
   | 'oyen'
   | 'light-switch'
   | 'radio'
+  | 'bedside-lamp'
+  | 'desk-lamp'
+
+/** The two lamps a visitor can switch on and off. */
+export type LampId = Extract<ObjectId, 'bedside-lamp' | 'desk-lamp'>
 
 export type Vec3 = readonly [number, number, number]
 
@@ -57,7 +62,10 @@ export interface Section {
   title: string // panel title, e.g. 'Work Experience'
   label: string // short label for hover tags / phone, e.g. 'Experience'
   icon: LucideIcon
-  objectId: Exclude<ObjectId, 'oyen' | 'light-switch' | 'radio'>
+  objectId: Exclude<
+    ObjectId,
+    'oyen' | 'light-switch' | 'radio' | 'bedside-lamp' | 'desk-lamp'
+  >
   cameraPose: CameraPose
   theme: PanelTheme
   seo: { title: string; description: string }

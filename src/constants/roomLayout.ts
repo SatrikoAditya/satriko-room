@@ -3,8 +3,6 @@ import type { ObjectId, Vec3 } from '@interfaces/section'
 export type DecorId =
   | 'bed'
   | 'nightstand'
-  | 'bedsideLamp'
-  | 'deskLamp'
   | 'desk'
   | 'sideTable'
   | 'mug'
@@ -29,14 +27,14 @@ export const roomLayout: Record<ObjectId | DecorId, Placement> = {
   window: { position: [-4.95, 3.1, -2.0], size: [0.08, 1.8, 2.4] },
   bed: { position: [-3.8, 0, 2.0], size: [2.2, 0.6, 3.4] },
   nightstand: { position: [-4.3, 0, 4.3], size: [0.8, 0.6, 0.8] },
-  bedsideLamp: { position: [-4.3, 0.6, 4.3] },
+  'bedside-lamp': { position: [-4.3, 0.6, 4.3] },
   // right wall (z = -5)
   desk: { position: [0, 0, -4.2], size: [3.0, 0.75, 1.2] },
   pc: { position: [0, 0.75, -4.5] },
   'photo-frame': { position: [-0.9, 0.75, -4.0], rotationY: 0.35 },
   mug: { position: [1.1, 0.75, -3.9] },
   // Moved to the printer side of the desk to make room for the laptop.
-  deskLamp: { position: [-1.3, 0.75, -4.5] },
+  'desk-lamp': { position: [-1.3, 0.75, -4.5] },
   // Pulled out from the desk and turned toward the room, as if just vacated.
   chair: { position: [0.7, 0, -3.15], rotationY: -0.6 },
   // Centred on the map's height (y 2.76) so the back wall reads as one row:
