@@ -89,6 +89,13 @@ export const roomLayout: Record<ObjectId | DecorId, Placement> = {
   window: { position: [-4.95, 3.1, 0.2], size: [0.08, 1.8, 2.4] },
   sideTable,
   printer: attach(sideTable, [0, sideTable.size![1], 0]),
+  // Projects: a rolling whiteboard in the free strip between the printer and
+  // the backpack, turned a little toward the camera. Size in its own axes.
+  whiteboard: {
+    position: [-4.5, 0, -3.25],
+    rotationY: FACE_ROOM - 0.35,
+    size: [1.0, 1.4, 0.5],
+  },
   desk,
   pc: attach(desk, [0, deskTop, -0.3]),
   // Turned toward the camera and the chair, not straight out from the wall.

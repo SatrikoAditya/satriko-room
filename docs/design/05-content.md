@@ -91,6 +91,12 @@ interface Job {
 
 ---
 
+## Projects: `/projects` (rolling whiteboard)
+
+Project cards in two groups, **Personal** first (public projects with links), then **Work** (NDA-safe: what was built and with what, no client secrets). Each card: a screenshot (`public/images/projects/`) or a pastel tile, title, role, one-line summary, tech chips (names as in `skills.ts`) and links. Model `IProject` in `src/models/project.ts`, content in `src/content/projects.ts`. 📝 For now: **Satriko's Room** (this site, real, with a screenshot) plus three cards marked "(placeholder)" to replace (C20).
+
+---
+
 ## Skills: `/skills` (bookshelf)
 
 Four shelves follow the CV's "Full Stack Technologies" groups, plus a **Toolbox** shelf for tools that appear in the job tool lists. **No skill-level bars or percentages.** Clicking a book shows **"Used at"**, computed from the experience tool lists.
@@ -266,6 +272,7 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | `/` | Satriko Aditya · Full Stack Engineer | Step into Satriko's cozy room and explore 5+ years of full stack work with Node.js, TypeScript, React, Next.js and NestJS. |
 | `/about` | About · Satriko Aditya | Full stack engineer from Bogor, Indonesia, working remotely across Singapore and Abu Dhabi. |
 | `/experience` | Experience · Satriko Aditya | Full stack roles at Jitera, Charcentric and PT Immobi Solusi Prima. |
+| `/projects` | Projects · Satriko Aditya | Projects Satriko Aditya has built, from work apps to personal ones like this 3D room. |
 | `/skills` | Skills · Satriko Aditya | Node.js, TypeScript, React, Next.js, NestJS, React Native, PostgreSQL, AWS, Docker and more. |
 | `/education` | Education · Satriko Aditya | BSc Computer Science at BINUS, Hacktiv8 Honors Graduate, SMK Negeri 3 Bogor. |
 | `/gaming` | Gaming · Satriko Aditya | What Satriko is playing right now. |
@@ -303,5 +310,6 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C17 | Music track(s) for the radio | Radio | No | ✅ Provided: a 90 s loop of "Lofi Restaurant" by alex-morgan on Pixabay (Pixabay Content License; labelled AI-generated) in `public/audio/music-cozy.mp3`, recorded in `CREDITS.md` |
 | C18 | Domain name | Deployment, canonical URLs | **Yes** (before the production launch) | ⏳ Pending. `site.url` is still the placeholder `https://example.com` in `src/constants/site.ts` |
 | C19 | Analytics: yes or no (e.g. Vercel Web Analytics) | Deployment | No | Decision: none (default) |
+| C20 | Projects: 2–4 or more projects (title, kind work or personal, role, one-line summary, tech, links, a screenshot), with an NDA check on work ones | Projects | No | ⏳ Placeholders in use: Satriko's Room plus three "(placeholder)" cards in `src/content/projects.ts` |
 
-**Status at the end of the build:** C1–C4 provided; C17 provided after the build; C5 and C18 pending (see the README launch checklist); C6 uses its default; C19 none. C7–C16 keep their defaults, and the hobby content (C10–C13) is still empty, so those panels show their empty states.
+**Status at the end of the build:** C1–C4 provided; C17 provided after the build; C5 and C18 pending (see the README launch checklist); C6 uses its default; C19 none. C7–C16 keep their defaults, and the hobby content (C10–C13) is still empty, so those panels show their empty states. C20 (projects, added with decision #50) uses placeholders.

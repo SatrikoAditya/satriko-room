@@ -8,6 +8,7 @@ import EducationPanel from './EducationPanel'
 import ExperiencePanel from './ExperiencePanel'
 import GamingPanel from './GamingPanel'
 import HikingPanel from './HikingPanel'
+import ProjectsPanel from './ProjectsPanel'
 import ResumePanel from './ResumePanel'
 import SkillsPanel from './SkillsPanel'
 import TravelPanel from './TravelPanel'
@@ -67,5 +68,68 @@ describe('panels', () => {
     )
     render(<AboutPanel />)
     expect(screen.getByText(/Hi, I'm Satriko!/)).toBeInTheDocument()
+  })
+  it('ProjectsPanel groups work and personal projects into cards', () => {
+    render(
+      <ProjectsPanel
+        items={[
+          {
+            id: 'room',
+            kind: 'personal',
+            title: "Satriko's Room",
+            summary: 'A cozy 3D room.',
+            role: 'Design and development',
+            tech: ['Next.js'],
+            screenshot: {
+              src: '/images/projects/satrikos-room.webp',
+              alt: 'The room',
+            },
+            links: [{ label: 'Visit', href: 'https://example.com' }],
+          },
+          {
+            id: 'app',
+            kind: 'work',
+            title: 'Team app',
+            summary: 'Internal tools.',
+            role: 'Full stack',
+            tech: ['NestJS', 'React.js'],
+            screenshot: null,
+            links: [],
+          },
+        ]}
+      />,
+    )
+    // Personal projects come first, then work.
+    expect(
+      screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent),
+    ).toEqual(['Personal', 'Work'])
+    expect(screen.getByRole('img', { name: 'The room' })).toBeInTheDocument()
+    expect(screen.getByText('NestJS')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Visit' })).toHaveAttribute(
+      'href',
+      'https://example.com',
+    )
+  })
+  it('ProjectsPanel leaves out an empty group and shows the empty state with none', () => {
+    const { unmount } = render(
+      <ProjectsPanel
+        items={[
+          {
+            id: 'app',
+            kind: 'work',
+            title: 'Team app',
+            summary: 'Internal tools.',
+            role: 'Full stack',
+            tech: [],
+            screenshot: null,
+            links: [],
+          },
+        ]}
+      />,
+    )
+    expect(screen.queryByRole('heading', { name: 'Personal' })).toBeNull()
+    unmount()
+    render(<ProjectsPanel items={[]} />)
+    expect(screen.getByText(/Oyen is still sticking notes/)).toBeInTheDocument()
   })
 })

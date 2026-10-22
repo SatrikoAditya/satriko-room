@@ -12,6 +12,7 @@ export const oyenLines = {
     'Turn on the radio if you want some cozy tunes.',
     "Use the phone if you're in a hurry. I won't be offended. Much.",
     'The window shows the real sky in Bogor right now.',
+    "The whiteboard by the printer has Satriko's projects.",
   ],
   sleeping: 'Zzz… (Oyen is asleep. Maybe check the map instead?)',
   // The umbrella stand calls the rain.
@@ -22,5 +23,7 @@ export const oyenLines = {
     travel: 'Oyen is still pinning the map… check back soon!',
     hiking: 'Oyen is still sorting the trail photos… check back soon!',
     diving: 'Oyen is drying off the dive photos… check back soon!',
+    projects:
+      'Oyen is still sticking notes on the whiteboard… check back soon!',
   },
 } as const

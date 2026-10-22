@@ -7,6 +7,7 @@ import EducationPanel from '@components/organisms/EducationPanel'
 import ExperiencePanel from '@components/organisms/ExperiencePanel'
 import GamingPanel from '@components/organisms/GamingPanel'
 import HikingPanel from '@components/organisms/HikingPanel'
+import ProjectsPanel from '@components/organisms/ProjectsPanel'
 import RemoteWorkPanel from '@components/organisms/RemoteWorkPanel'
 import ResumePanel from '@components/organisms/ResumePanel'
 import SkillsPanel from '@components/organisms/SkillsPanel'
@@ -17,6 +18,7 @@ import type { SectionSlug } from '@interfaces/section'
 export const panelComponents: Record<SectionSlug, ComponentType> = {
   about: AboutPanel,
   experience: ExperiencePanel,
+  projects: ProjectsPanel,
   skills: SkillsPanel,
   education: EducationPanel,
   gaming: GamingPanel,

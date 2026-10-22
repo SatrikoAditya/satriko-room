@@ -7,6 +7,7 @@ import type { Section } from '@interfaces/section'
 const tileColor: Record<Section['slug'], string> = {
   about: 'bg-peach',
   experience: 'bg-sky',
+  projects: 'bg-mint',
   skills: 'bg-mint',
   education: 'bg-wood/40',
   gaming: 'bg-lavender',

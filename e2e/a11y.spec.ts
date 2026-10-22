@@ -3,11 +3,12 @@ import { expect, test } from '@playwright/test'
 
 import { expectSettled } from './helpers'
 
-// The room and all 11 sections, in both themes.
+// The room and all 12 sections, in both themes.
 for (const path of [
   '/',
   '/about',
   '/experience',
+  '/projects',
   '/skills',
   '/education',
   '/gaming',

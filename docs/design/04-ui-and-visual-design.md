@@ -76,12 +76,13 @@ An **original** phone-shaped panel, inspired by the cozy-game phone idea but not
 - **Size:** about 320×560 px on desktop, rising out of the phone button. On mobile it rises from the bottom bar to about 90% of the screen height.
 - **Status bar:** live **Bogor time + "WIB"** (rendered client-side only), plus cute signal and battery glyphs.
 - **Header:** "Hi! Where to?" with a round ✕ button ("Close menu"). Focus starts on the first app when the phone opens.
-- **App grid:** 3 columns × 4 rows = **12 tiles**: 11 sections + Help. Each tile is a rounded pastel square with a Lucide icon and a label underneath.
+- **App grid:** 3 columns × 4 rows = **12 tiles**, one per section (Projects took the Help tile's place in decision #50; Help stays on the HUD's "?" button). Each tile is a rounded pastel square with a Lucide icon and a label underneath.
 
 | App | Icon | Tile color |
 | --- | --- | --- |
 | About | `UserRound` | Peach |
 | Experience | `Monitor` | Sky |
+| Projects | `FolderKanban` | Mint |
 | Skills | `BookOpen` | Mint |
 | Education | `GraduationCap` | Wood-light (`wood` at 40%) |
 | Gaming | `Gamepad2` | Lavender-pastel |
@@ -91,7 +92,6 @@ An **original** phone-shaped panel, inspired by the cozy-game phone idea but not
 | Remote work | `Clock` | Wood-light |
 | Contact | `Mail` | Accent-light (`accent` at 30%) |
 | Resume | `FileText` | Cream |
-| Help | `CircleQuestionMark` | Paper-2 (cream) |
 
 - **Behavior:** tapping an app slides the phone away, then runs the normal open flow (camera glide, then the modal grows from the object).
 - **Keyboard:** arrow keys move around the grid, Enter opens, Esc closes. The grid is `role="grid"` with `role="row"` wrappers (rows of 3, `display: contents`) around the `gridcell`s, which keeps the ARIA valid for axe.
@@ -126,6 +126,7 @@ The frame is always the same; what's inside depends on the object.
 | Section | Theme | Inside |
 | --- | --- | --- |
 | About | `scrapbook` | Taped photo, sticker-style facts, friendly intro |
+| Projects | `whiteboard` | Project cards grouped under **Personal**, then **Work**: a screenshot (or a pastel tile), title, role, one-line summary, tech chips and links |
 | Experience | `monitor` | A rounded **monitor bezel**. Inside, a cozy desktop window (title bar with 3 dots): a **sidebar of companies like files** (`jitera.md`, `charcentric.md`, …) and a detail pane. JetBrains Mono for file names and small "code-ish" details, Nunito for body text. In phase 2, a **Terminal** tab sits next to it |
 | Skills | `shelf` | Wooden shelf rows with **book spines** colored by group. Clicking a book opens a small card: "Used at: Jitera, Charcentric" |
 | Education | `frames` | Certificate cards in wooden frames; a ribbon on Hacktiv8's "Honors Graduate" |

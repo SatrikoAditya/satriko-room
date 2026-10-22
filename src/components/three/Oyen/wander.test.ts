@@ -61,6 +61,7 @@ const boxes: Record<string, Box> = {
   desk: footprint('desk'),
   sideTable: footprint('sideTable'),
   bookshelf: footprint('bookshelf'),
+  whiteboard: footprint('whiteboard'),
   tv: footprintOf({ ...roomLayout.tv, size: [1.9, 1.4, 0.5] }),
 }
 const atFloor = (id: keyof typeof roomLayout, radius: number) =>
@@ -152,6 +153,7 @@ describe('Oyen paths', () => {
       [boxes.bookshelf, 2.6],
       [boxes.nightstand, 1.1],
       [boxes.sideTable, 0.96],
+      [boxes.whiteboard, 1.4],
       ...Object.entries(circles).map(
         ([name, [x, z, r]]) =>
           [

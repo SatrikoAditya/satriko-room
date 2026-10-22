@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test'
 const sections: [string, string, RegExp][] = [
   ['about', 'About me', /Hi, I'm Satriko!/],
   ['experience', 'Work experience', /Agile Collaboration/],
+  ['projects', 'Projects', /Satriko's Room/],
   ['skills', 'Skills', /Languages & Runtimes/],
   ['education', 'Education', /Honors Graduate/],
   ['gaming', 'Gaming', /Oyen is still choosing/],

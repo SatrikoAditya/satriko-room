@@ -167,4 +167,3 @@ Recorded so they aren't lost. Each would be a small addition later thanks to the
 | Rubber duck with debugging tips | One code-built object, a quack sound and a list of tips |
 | A message in the browser console for developers | A text-art Oyen + "Looking under the hood? Let's talk →" (very cheap) |
 | 404 room | A 404 page showing an empty room with Oyen, instead of the simple cozy 404 |
-| Projects pinboard | A registry entry, a `three/objects/Pinboard` object in the reserved wall slot, `src/content/projects.ts`, an `IProject` model and an `organisms/ProjectsPanel` |

@@ -71,6 +71,7 @@
 | `/` | Room (no panel) | n/a |
 | `/about` | About me | Framed photo on the desk |
 | `/experience` | Work experience | PC / workstation |
+| `/projects` | Projects | Rolling whiteboard beside the printer |
 | `/skills` | Skills | Bookshelf |
 | `/education` | Education | Picture frames on the wall |
 | `/gaming` | Gaming | TV + game console |
@@ -146,7 +147,7 @@ When `focusing(x)` finishes, the scene projects the object's world-space boundin
 // Types in src/interfaces/section.ts (CameraPose is the as-built shape: poses stay valid
 // when the default fit changes with the viewport size)
 export type SectionSlug =
-  | 'about' | 'experience' | 'skills' | 'education' | 'gaming'
+  | 'about' | 'experience' | 'projects' | 'skills' | 'education' | 'gaming'
   | 'travel' | 'hiking' | 'diving' | 'remote-work' | 'contact' | 'resume'
 
 export interface CameraPose {
@@ -167,7 +168,7 @@ export interface Section {
 }
 ```
 
-**Adding a section later (e.g. Projects)** takes one registry entry, one object in `three/objects/` (plus its entry in `three/RoomObjects/index.tsx`), one content file in `src/content/`, one model type in `src/models/`, and one `organisms/<X>Panel`. Nothing else changes.
+**Adding a section** (as Projects was, decision #50) takes one registry entry, one object in `three/objects/` (plus its entry in `three/RoomObjects/index.tsx`), one content file in `src/content/`, one model type in `src/models/`, and one `organisms/<X>Panel`. Nothing else changes.
 
 ## State (Zustand stores)
 
@@ -268,7 +269,7 @@ What the reference project does, and what this project adopts:
 │   │   ├── organisms/       # Hud, PhoneMenu, Loader, HelpSheet, ModalHost, PanelFrame,
 │   │   │                    # AboutPanel, ExperiencePanel, SkillsPanel, EducationPanel,
 │   │   │                    # GamingPanel, TravelPanel, HikingPanel, DivingPanel,
-│   │   │                    # RemoteWorkPanel, ContactPanel, ResumePanel
+│   │   │                    # RemoteWorkPanel, ContactPanel, ResumePanel, ProjectsPanel
 │   │   ├── templates/
 │   │   │   └── providers.tsx    # next-themes ThemeProvider, motion MotionConfig
 │   │   ├── pages/
@@ -286,7 +287,8 @@ What the reference project does, and what this project adopts:
 │   │   │   │                    # objects/ because objects/ vs Objects/ collide on macOS)
 │   │   │   └── objects/         # Pc/, Bookshelf/, PhotoFrame/, EduFrames/, Tv/,
 │   │   │                        # IndonesiaMap/, HikingGear/, DiveGear/, Clocks/,
-│   │   │                        # Mailbox/, Printer/, LightSwitch/, Radio/, WindowSky/
+│   │   │                        # Mailbox/, Printer/, LightSwitch/, Radio/, WindowSky/,
+│   │   │                        # UmbrellaStand/, Whiteboard/
 │   │   └── shadcn/
 │   │       ├── components/ui/   # only the primitives we use (dialog.tsx, …)
 │   │       └── utils.ts         # cn()
@@ -295,7 +297,7 @@ What the reference project does, and what this project adopts:
 │   │                    # hints.ts, loader.ts, indonesiaMap.ts
 │   ├── content/         # about.ts, experience.ts, skills.ts, education.ts, gaming.ts,
 │   │                    # travel.ts, hiking.ts, diving.ts, remoteWork.ts, contact.ts,
-│   │                    # resume.ts, oyen.ts
+│   │                    # resume.ts, oyen.ts, projects.ts
 │   ├── hooks/           # useSectionNavigation.ts, useActiveSection.ts, useBogorTime.ts,
 │   │                    # useIdleHint.ts, useWebGLSupport.ts, useThemeSync.ts,
 │   │                    # useSoundEffects.ts, useViewportSize.ts, useIsCoarsePointer.ts,

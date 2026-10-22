@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { CircleQuestionMark, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { motion } from 'motion/react'
 
 import IconButton from '@components/atoms/IconButton'
@@ -19,21 +19,17 @@ import { useBogorTime } from '@hooks/useBogorTime'
 import { useSectionNavigation } from '@hooks/useSectionNavigation'
 
 import { sections } from '@constants/sections'
-import type { Section } from '@interfaces/section'
 import { formatHHMM } from '@utils/time'
 
 import { chunk, PHONE_COLUMNS, usePhoneGrid } from './usePhoneGrid'
 
-type Entry = { kind: 'section'; section: Section } | { kind: 'help' }
-
+// Every section has a tile; Help lives on the HUD's "?" button.
 export default function PhoneMenu({
   open,
   onOpenChange,
-  onHelp,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onHelp: () => void
 }) {
   const { linkProps } = useSectionNavigation()
   const time = useBogorTime()
@@ -79,43 +75,14 @@ export default function PhoneMenu({
               onKeyDown={onKeyDown}
               className="grid grid-cols-3 gap-2"
             >
-              {chunk<Entry>(
-                [
-                  ...sections.map((section) => ({
-                    kind: 'section' as const,
-                    section,
-                  })),
-                  { kind: 'help' as const },
-                ],
-                PHONE_COLUMNS,
-              ).map((row, r) => (
+              {chunk(sections, PHONE_COLUMNS).map((row, r) => (
                 <div key={r} role="row" className="contents">
-                  {row.map((entry) => {
-                    if (entry.kind === 'help')
-                      return (
-                        <div key="help" role="gridcell">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              onOpenChange(false)
-                              onHelp()
-                            }}
-                            className="focus-visible:ring-accent flex min-h-11 w-full flex-col items-center gap-1 rounded-2xl px-0 py-2 outline-none focus-visible:ring-4"
-                          >
-                            <span className="bg-paper-2 flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm">
-                              <CircleQuestionMark size={26} />
-                            </span>
-                            <span className="font-display text-center text-xs leading-tight font-bold">
-                              Help
-                            </span>
-                          </button>
-                        </div>
-                      )
-                    const p = linkProps(entry.section.slug)
+                  {row.map((section) => {
+                    const p = linkProps(section.slug)
                     return (
-                      <div key={entry.section.slug} role="gridcell">
+                      <div key={section.slug} role="gridcell">
                         <PhoneAppTile
-                          section={entry.section}
+                          section={section}
                           href={p.href}
                           onClick={(e) => {
                             p.onClick(e)

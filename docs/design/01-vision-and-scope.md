@@ -44,7 +44,7 @@ Animal Crossing is Nintendo's intellectual property. The site may use the *vibe*
 | --- | --- | --- |
 | S1 | From the room, a visitor can reach the resume download in **≤ 2 clicks** (HUD **Resume**, then **Download PDF**); with a section panel open it takes **3**, because the panel is closed first (deviation D11) | E2E test + manual |
 | S2 | A direct link (e.g. `/experience`) shows the panel **text before the 3D finishes loading** | E2E test; panel HTML is server-rendered |
-| S3 | All 11 sections are reachable **by keyboard alone and without WebGL** | E2E tests with keyboard and with WebGL disabled |
+| S3 | All 12 sections are reachable **by keyboard alone and without WebGL** | E2E tests with keyboard and with WebGL disabled |
 | S4 | Works and feels smooth on a **mid-range phone** (≥ 30 fps target; graphics drop to the low tier automatically) | Manual device QA |
 | S5 | 3D assets total **≤ about 2 MB** compressed | Build size check |
 | S6 | Lighthouse **Accessibility ≥ 95, SEO ≥ 95** on every route | Lighthouse CI / manual |
@@ -57,19 +57,19 @@ Detailed budgets are in [07: Quality](07-quality.md#performance-budgets).
 | # | Status | Evidence / what is still open |
 | --- | --- | --- |
 | S1 | Partly automated | The e2e suite checks the first click: the HUD **Resume** link opens `/resume` from the room (`e2e/navigation.spec.ts`, also with WebGL off in `e2e/no-webgl.spec.ts`), and the Resume panel serves the **Download PDF** button (`e2e/direct-links.spec.ts`). The download click itself and the 3-click path with a panel open are not tested end to end. The PDF file is still pending (checklist C5) |
-| S2 | Verified by the automated suite | `e2e/direct-links.spec.ts` fetches each of the 11 URLs and asserts the panel text is in the server HTML, then checks the dialog after hydration |
-| S3 | Partly automated | A keyboard-only spec opens a section through the phone menu (`e2e/keyboard.spec.ts`); the no-WebGL spec reaches Resume without the scene; all 11 sections are real links (phone menu, `SectionNav`) and each URL is covered by the direct-link spec. There is no single test that opens all 11 by keyboard |
+| S2 | Verified by the automated suite | `e2e/direct-links.spec.ts` fetches each of the 12 URLs and asserts the panel text is in the server HTML, then checks the dialog after hydration |
+| S3 | Partly automated | A keyboard-only spec opens a section through the phone menu (`e2e/keyboard.spec.ts`); the no-WebGL spec reaches Resume without the scene; all 12 sections are real links (phone menu, `SectionNav`) and each URL is covered by the direct-link spec. There is no single test that opens all 11 by keyboard |
 | S4 | Awaits real devices | Not measurable under headless SwiftShader (about 10 fps there, tier drops to `low` automatically). Needs iPhone Safari and a mid-range Android |
 | S5 | Verified by the build check | There are no 3D model files (0 KB); `yarn budgets` enforces the limit if any appear |
-| S6 | Partly measured | Lighthouse (headless, 2026-10-22) gave Accessibility 100 and SEO 100 on `/experience` and `/`; axe runs on all 12 routes (the room and the 11 sections) in both themes, on desktop and mobile. Lighthouse was not run on every route, and not yet on the production URL |
+| S6 | Partly measured | Lighthouse (headless, 2026-10-22) gave Accessibility 100 and SEO 100 on `/experience` and `/`; axe runs on all 13 routes (the room and the 12 sections) in both themes, on desktop and mobile. Lighthouse was not run on every route, and not yet on the production URL |
 | S7 | Verified for the site; PDF pending | `src/content/content.test.ts` fails on forbidden patterns, and a repo-wide grep is clean. The public PDF does not exist yet, so its check (`pdftotext … | grep -ciE "[+]62|referee"` must print 0) waits for C5 |
 
 ## Scope
 
 ### Phase 1: launch
 
-- The 3D studio bedroom with **17 clickable things** (see [03](03-room-scene.md#interactive-objects)):
-  - 11 panel objects → 11 sections: About, Experience, Skills, Education, Gaming, Travel, Hiking, Diving, Remote work, Contact, Resume
+- The 3D studio bedroom with **18 clickable things** (see [03](03-room-scene.md#interactive-objects)):
+  - 12 panel objects → 12 sections: About, Experience, Projects, Skills, Education, Gaming, Travel, Hiking, Diving, Remote work, Contact, Resume
   - Oyen (speech bubble), the light switch (night mode), the radio (sound), the desk and bedside lamps (each switches its own light), the umbrella stand (calls the rain)
 - The modal + URL model (one URL per panel, back button closes the panel)
 - Loader + Enter gate on `/`; no gate on direct links
@@ -90,7 +90,7 @@ Details are in [06](06-extras-and-easter-eggs.md#phase-2-easter-eggs).
 
 | Idea | Why it's parked |
 | --- | --- |
-| **Projects** object/section | No projects to show yet. The section registry and the room layout leave a slot (e.g. a pinboard) so it can be added later without rework |
+| **Projects** object/section | Added later (decision #50): a rolling whiteboard beside the printer opens `/projects`. Placeholder cards until Satriko adds the real projects (C20) |
 | Real **FOT-Seurat** font (the Animal Crossing font) | Commercial (Fontworks/Monotype). Legal web use needs a paid Adobe Fonts subscription or a Monotype license. Fonts are set in one place, so switching later is small |
 | Konami-code retro mini-game on the TV | Fun, but not chosen for phase 2 |
 | Discovery counter ("7/14 found") | Not chosen; the hints and phone menu cover findability |
@@ -106,7 +106,7 @@ Details are in [06](06-extras-and-easter-eggs.md#phase-2-easter-eggs).
 - A walking or controllable character, or free orbiting of the camera
 - A CMS. Content lives in typed files in the repo, and editing it means editing a file
 - A contact form or any backend
-- Blog, projects, or multiple languages (for now)
+- Blog or multiple languages (for now)
 - A pixel-perfect copy of worawork's hand-painted look
 
 ## Risks & mitigations

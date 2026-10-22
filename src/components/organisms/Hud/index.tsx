@@ -101,11 +101,7 @@ export default function Hud() {
           <Mail size={18} /> Contact
         </Button>
       </div>
-      <PhoneMenu
-        open={phoneOpen}
-        onOpenChange={setPhoneOpen}
-        onHelp={() => setHelpOpen(true)}
-      />
+      <PhoneMenu open={phoneOpen} onOpenChange={setPhoneOpen} />
       <HelpSheet open={helpOpen} onOpenChange={setHelpOpen} />
     </div>
   )

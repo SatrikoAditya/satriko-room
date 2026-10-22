@@ -14,6 +14,7 @@ Seen from above: the corner where the walls meet is top-left, and the camera loo
         #    backpack  scuba     [TV + PS5 on white cabinet]  umbrella  mailbox
         #    + boots   tank + fins
  frames # [printer]     .~~~~~~~~~~~~~ rug ~~~~~~~~~~~~~.
+        # [whiteboard]   (Projects, beside the printer)
         #               :  Oyen (day)        o beanbag  :   <- Oyen starts here by day, then wanders
  window # [DESK + PC]   '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
         # [+ laptop ]  chair
@@ -24,14 +25,13 @@ Seen from above: the corner where the walls meet is top-left, and the camera loo
         #                       | front edge  |                    plant
          . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  open front
    ^ LEFT WALL: work
-   [ reserved wall slot for a future Projects pinboard: right wall, between the clocks and the light switch ]
 ```
 
 This is a starting layout. **Exact positions, rotations and scales are tuned during the build** with screenshots from the dev server, and kept in one config file (`src/constants/roomLayout.ts`; see [02: Project structure](02-architecture.md#project-structure)). A dev-only tuning panel (e.g. Leva) is optional and must not ship in the production bundle.
 
 ### Interactive objects
 
-**17 clickable things:** 11 that open panels, and 6 that do something in place.
+**18 clickable things:** 12 that open panels, and 6 that do something in place.
 
 *Implementation note:* every object is built in code (the "Source" column's pack options were not used; see [Assets & licenses](#assets--licenses)). Objects are mounted by `src/components/three/RoomObjects/index.tsx` and each one lives in `src/components/three/objects/<Name>/`.
 
@@ -54,6 +54,7 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 | 15 | `bedside-lamp` | Bedside lamp | On the nightstand | Switches its own light on or off, with the switch sound | Code | Lamp: on / Lamp: off (no tag on phones) |
 | 16 | `desk-lamp` | Desk lamp | Bookshelf end of the desk | Switches its own light on or off, with the switch sound | Code | Lamp: on / Lamp: off (no tag on phones) |
 | 17 | `umbrella-stand` | Brass umbrella stand with one closed pastel sky-blue umbrella (Bogor is the City of Rain) | Right wall, by the door, left of the mailbox | Calls the rain in the window for a minute, and Oyen says a line | Code | Umbrella (no tag on phones) |
+| 18 | `whiteboard` | Rolling whiteboard covered in pastel sticky notes, with a marker tray | Floor, against the left wall between the printer and the backpack, turned a little toward the camera | Opens `/projects` | Code | Projects |
 
 **Decor (not clickable):** bed, rug, beanbag, desk chair, curtains, plants, door with a wooden "Satriko's Room" nameplate, a mug on the desk (used by the phase 2 antics), small shelf trinkets.
 

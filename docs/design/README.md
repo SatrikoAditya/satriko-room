@@ -26,7 +26,7 @@ This is a portfolio site that feels like visiting Satriko's room. The room is a 
 - **Look:** Animal Crossing / clay-toy style, isometric, warm and cozy colors. It's *inspired by* the game: no Nintendo models, characters, logos, interface or fonts.
 - **Rendering:** real 3D with React Three Fiber and a fixed orthographic camera. Point-and-click only, no walking character.
 - **Art source:** everything is built in code from rounded primitives (the style test approved it, so the CC0 model packs, KayKit and Kenney, are an optional upgrade that was not used). No 3D modeling needed from Satriko.
-- **Room:** a studio bedroom with **17 clickable things**: 11 objects that open panels, plus Oyen, the light switch, the radio, the two lamps and the umbrella stand.
+- **Room:** a studio bedroom with **18 clickable things**: 12 objects that open panels, plus Oyen, the light switch, the radio, the two lamps and the umbrella stand.
 - **Click flow:** the camera glides in (about 0.6s), then the modal grows out of the object (about 80% of the screen on desktop, about 95% on mobile).
 - **URLs:** one URL per panel, using `history.pushState`. It feels like a single-page app, but direct links, the back button and SEO all work.
 - **Entry:** on `/`: loader, then an **Enter** button. Direct links skip the gate and show the panel text immediately.
@@ -36,7 +36,7 @@ This is a portfolio site that feels like visiting Satriko's room. The room is a 
 - **Privacy:** only email, LinkedIn and GitHub are public. No phone number, no referees.
 - **Language:** English only.
 - **Fonts:** M PLUS Rounded 1c (kept after the style test against Zen Maru Gothic) and Nunito. JetBrains Mono inside the PC panel, VT323 inside the TV panel.
-- **Projects:** skipped for now. The architecture leaves a slot for a Projects object later.
+- **Projects:** added later (decision #50), on a rolling whiteboard beside the printer; placeholder cards until the real projects arrive (C20).
 - **Code structure:** follows Satriko's Jitera Next.js project, so it feels familiar: `src/` with path aliases, thin `app/` routes, atomic design components (atoms, molecules, organisms, templates, pages), one Zustand store per concern in `store/`, plus `constants/`, `hooks/`, `interfaces/`, `models/`, `utils/`, next-themes, shadcn/ui, and the same Prettier/ESLint conventions. Two additions: `components/three/` for the 3D scene and `content/` for site content ([02](02-architecture.md#project-structure)).
 
 ## What's next

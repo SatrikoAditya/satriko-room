@@ -30,6 +30,7 @@ export interface PanelFrameProps {
 const themeClass: Record<Section['theme'], string> = {
   scrapbook: 'bg-paper',
   monitor: 'bg-paper',
+  whiteboard: 'bg-paper',
   shelf: 'bg-paper',
   frames: 'bg-paper-2',
   tv: 'bg-paper',

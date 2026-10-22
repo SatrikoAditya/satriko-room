@@ -11,6 +11,7 @@ import { games, platforms } from './gaming'
 import { helpContent } from './help'
 import { hikes } from './hiking'
 import { oyenLines } from './oyen'
+import { projects } from './projects'
 import { remoteWork } from './remoteWork'
 import { resume } from './resume'
 import { skillShelves, SOFT_SKILL, UNLINKED_SKILL_LABEL } from './skills'
@@ -58,6 +59,7 @@ describe('content', () => {
       hikes,
       dives,
       certification,
+      projects,
     })
     for (const re of forbidden) expect(blob).not.toMatch(re)
   })

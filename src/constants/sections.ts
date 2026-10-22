@@ -2,6 +2,7 @@ import {
   BookOpen,
   Clock,
   FileText,
+  FolderKanban,
   Gamepad2,
   GraduationCap,
   Mail,
@@ -51,6 +52,24 @@ export const sections: readonly Section[] = [
       title: by('Experience'),
       description:
         'Full stack roles at Jitera, Charcentric and PT Immobi Solusi Prima.',
+    },
+  },
+  {
+    slug: 'projects',
+    title: 'Projects',
+    label: 'Projects',
+    icon: FolderKanban,
+    objectId: 'whiteboard',
+    theme: 'whiteboard',
+    cameraPose: {
+      target: [-4.45, 1.0, -3.25],
+      offset: [3.6, 2.2, 3.0],
+      zoomFactor: 2.4,
+    },
+    seo: {
+      title: by('Projects'),
+      description:
+        'Projects Satriko Aditya has built, from work apps to personal ones like this 3D room.',
     },
   },
   {

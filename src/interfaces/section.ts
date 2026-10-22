@@ -4,6 +4,7 @@ import type { LucideIcon } from 'lucide-react'
 export type SectionSlug =
   | 'about'
   | 'experience'
+  | 'projects'
   | 'skills'
   | 'education'
   | 'gaming'
@@ -17,6 +18,7 @@ export type SectionSlug =
 export type PanelTheme =
   | 'scrapbook'
   | 'monitor'
+  | 'whiteboard'
   | 'shelf'
   | 'frames'
   | 'tv'
@@ -45,6 +47,7 @@ export type ObjectId =
   | 'bedside-lamp'
   | 'desk-lamp'
   | 'umbrella-stand'
+  | 'whiteboard'
 
 /** The two lamps a visitor can switch on and off. */
 export type LampId = Extract<ObjectId, 'bedside-lamp' | 'desk-lamp'>
