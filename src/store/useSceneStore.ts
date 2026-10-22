@@ -30,6 +30,12 @@ interface SceneState {
   setLastActivity: (lastActivity: number) => void
   oyenState: OyenState
   setOyenState: (oyenState: OyenState) => void
+  /** True while the free view is zoomed in past VIEW_ZOOMED_AT. */
+  zoomedIn: boolean
+  setZoomedIn: (zoomedIn: boolean) => void
+  /** Bumped to ask the camera to glide back to the full room. */
+  resetViewTick: number
+  requestResetView: () => void
 }
 
 export const useSceneStore = create<SceneState>((set) => ({
@@ -55,4 +61,8 @@ export const useSceneStore = create<SceneState>((set) => ({
   setLastActivity: (lastActivity) => set({ lastActivity }),
   oyenState: 'sitting',
   setOyenState: (oyenState) => set({ oyenState }),
+  zoomedIn: false,
+  setZoomedIn: (zoomedIn) => set({ zoomedIn }),
+  resetViewTick: 0,
+  requestResetView: () => set((s) => ({ resetViewTick: s.resetViewTick + 1 })),
 }))

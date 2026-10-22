@@ -14,6 +14,9 @@ import type { ObjectId, Vec3 } from '@interfaces/section'
 
 import { useSceneBridge } from '../SceneCanvas/SceneBridge'
 
+/** Pointer travel (px) above which a click counts as the end of a drag. */
+const DRAG_CLICK_PX = 6
+
 export interface InteractiveProps {
   id: ObjectId
   label: string
@@ -72,6 +75,8 @@ export default function Interactive({
   }
   const click = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation()
+    // Ending a drag (sliding the zoomed-in room) over an object doesn't open it.
+    if (e.delta > DRAG_CLICK_PX) return
     onActivate()
   }
 

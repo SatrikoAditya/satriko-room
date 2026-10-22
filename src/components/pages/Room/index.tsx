@@ -88,6 +88,7 @@ export default function Room({
   const webgl = useSceneStore((s) => s.webgl)
   const tier = useSceneStore((s) => s.tier)
   const oyenState = useSceneStore((s) => s.oyenState)
+  const zoomedIn = useSceneStore((s) => s.zoomedIn)
   const sceneReady = useSceneStore((s) => s.sceneReady)
   const enter = () => {
     audio.unlock()
@@ -104,6 +105,7 @@ export default function Room({
       data-webgl={webgl}
       data-tier={tier}
       data-oyen={oyenState}
+      data-zoomed={zoomedIn}
     >
       <h1 className="sr-only">{"Satriko's Room"}</h1>
       <p className="sr-only">

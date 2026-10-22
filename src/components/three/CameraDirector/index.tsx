@@ -9,16 +9,14 @@ import { Box3, Vector3 } from 'three'
 import { useRoomStore } from '@store/useRoomStore'
 
 import {
-  AZIMUTH_LIMIT,
   CAMERA_SMOOTH_TIME,
   DEFAULT_CAMERA_OFFSET,
   DEFAULT_CAMERA_TARGET,
   ENTER_SWOOP_OFFSET,
   MOBILE_ZOOM_FACTOR,
-  PARALLAX_AZIMUTH,
-  PARALLAX_POLAR,
   POLAR_MAX,
   POLAR_MIN,
+  VIEW_MAX_ZOOM,
 } from '@constants/camera'
 import { sectionBySlug } from '@constants/sections'
 import type { SectionSlug } from '@interfaces/section'
@@ -27,6 +25,8 @@ import { objectScreenRect } from '@utils/projectRect'
 
 import { useSceneBridge } from '../SceneCanvas/SceneBridge'
 import { fitIsometric, lookAtArgs } from './cameraMath'
+import type { Home } from './freeView'
+import { useFreeView, type ViewFrame } from './useFreeView'
 
 const { ACTION } = CameraControlsImpl
 const ROOM_BOX = new Box3(
@@ -39,13 +39,19 @@ const PADDING = {
   paddingLeft: 0.3,
   paddingRight: 0.3,
 }
+const NO_TILT = { x: 0, y: 0 }
 
 export default function CameraDirector() {
   const controls = useRef<CameraControlsImpl>(null)
   const { reducedMotion, coarsePointer } = useSceneBridge()
   const { camera, size, scene } = useThree()
   const fittedZoom = useRef(60)
-  const defaultAngles = useRef({ azimuth: Math.PI / 4, polar: 1.0 })
+  const home = useRef<Home>({
+    target: DEFAULT_CAMERA_TARGET,
+    offset: DEFAULT_CAMERA_OFFSET,
+  })
+  // True while an animated glide (enter, return) owns the camera.
+  const gliding = useRef(false)
   const token = useRef(0)
   const phase = useRoomStore((s) => s.phase)
   const transition = useRoomStore((s) => s.transition)
@@ -64,45 +70,57 @@ export default function CameraDirector() {
     [size.width, size.height],
   )
 
-  // Pinch range in the room is narrow; focus poses need headroom (zoomFactor up to ~2.6).
+  // Free view: 1× to VIEW_MAX_ZOOM. Focus poses need headroom (zoomFactor up to ~2.8).
   const limitZoom = useCallback((wide: boolean) => {
     const c = controls.current
     if (!c) return
-    c.minZoom = fittedZoom.current * 0.9
-    c.maxZoom = fittedZoom.current * (wide ? 4 : 1.6)
+    c.minZoom = fittedZoom.current * (wide ? 0.9 : 0.999)
+    c.maxZoom = fittedZoom.current * (wide ? 4 : VIEW_MAX_ZOOM * 1.001)
   }, [])
 
-  // Touch rotate/pinch only in the room view; locked while a section is focused.
-  const setTouchLocked = useCallback(
-    (locked: boolean) => {
-      const c = controls.current
-      if (!c) return
-      c.touches.one =
-        coarsePointer && !locked ? ACTION.TOUCH_ROTATE : ACTION.NONE
-      c.touches.two =
-        coarsePointer && !locked ? ACTION.TOUCH_ZOOM_TRUCK : ACTION.NONE
-      c.touches.three = ACTION.NONE
-    },
-    [coarsePointer],
+  const frame = useCallback(
+    (): ViewFrame => ({
+      home: home.current,
+      baseZoom: fittedZoom.current,
+      half: {
+        x: size.width / (2 * fittedZoom.current),
+        y: size.height / (2 * fittedZoom.current),
+      },
+    }),
+    [size.width, size.height],
   )
 
-  const fitDefault = useCallback(
+  // The room with no panel open, once any glide has finished.
+  const isActive = useCallback(() => {
+    const s = useRoomStore.getState()
+    return (
+      !gliding.current &&
+      s.phase === 'ready' &&
+      s.transition === 'idle' &&
+      currentSlug() === null
+    )
+  }, [])
+
+  const freeView = useFreeView({ isActive, frame, reducedMotion })
+
+  // Glide to the saved free view: where the visitor was before a panel, or 1× after a reset.
+  const glideToView = useCallback(
     (animate: boolean, stillCurrent: () => boolean) => {
       const c = controls.current
       if (!c) return
-      const { args, zoom } = computeFit()
+      gliding.current = true
+      const { args, zoom } = freeView.target()
       return Promise.all([
         Promise.resolve(c.setLookAt(...args, animate)),
-        Promise.resolve(
-          c.zoomTo(zoom * (coarsePointer ? MOBILE_ZOOM_FACTOR : 1), animate),
-        ),
+        Promise.resolve(c.zoomTo(zoom, animate)),
       ]).then(() => {
         if (!stillCurrent()) return
         limitZoom(false)
-        setTouchLocked(false)
+        freeView.settle()
+        gliding.current = false
       })
     },
-    [computeFit, coarsePointer, limitZoom, setTouchLocked],
+    [freeView, limitZoom],
   )
 
   const applyPose = useCallback(
@@ -111,7 +129,6 @@ export default function CameraDirector() {
       if (!c) return Promise.resolve()
       const pose = sectionBySlug(slug).cameraPose
       limitZoom(true)
-      setTouchLocked(true)
       return Promise.all([
         Promise.resolve(
           c.setLookAt(...lookAtArgs(pose.target, pose.offset), animate),
@@ -121,10 +138,10 @@ export default function CameraDirector() {
         ),
       ])
     },
-    [limitZoom, setTouchLocked],
+    [limitZoom],
   )
 
-  // Input: desktop has no drag/zoom (parallax only); touch gets clamped rotate + pinch zoom.
+  // camera-controls only animates glides; wheel, drag and pinch go through useFreeView.
   useEffect(() => {
     const c = controls.current
     if (!c) return
@@ -133,27 +150,37 @@ export default function CameraDirector() {
     c.mouseButtons.middle = ACTION.NONE
     c.mouseButtons.right = ACTION.NONE
     c.mouseButtons.wheel = ACTION.NONE
-    setTouchLocked(currentSlug() !== null)
+    c.touches.one = ACTION.NONE
+    c.touches.two = ACTION.NONE
+    c.touches.three = ACTION.NONE
+    c.minAzimuthAngle = -Infinity
+    c.maxAzimuthAngle = Infinity
+    c.minPolarAngle = POLAR_MIN
+    c.maxPolarAngle = POLAR_MAX
     c.setBoundary(ROOM_BOX)
-  }, [setTouchLocked])
+  }, [])
 
-  // Default framing on mount and resize; then record the fitted zoom and set limits.
+  // Default framing on mount and resize; a direct link snaps to its object instead.
   useEffect(() => {
     const c = controls.current
     if (!c) return
     const { args, zoom } = computeFit()
     fittedZoom.current = zoom * (coarsePointer ? MOBILE_ZOOM_FACTOR : 1)
-    c.setLookAt(...args, false)
-    c.zoomTo(fittedZoom.current, false)
-    defaultAngles.current = { azimuth: c.azimuthAngle, polar: c.polarAngle }
-    c.minAzimuthAngle = c.azimuthAngle - AZIMUTH_LIMIT
-    c.maxAzimuthAngle = c.azimuthAngle + AZIMUTH_LIMIT
-    c.minPolarAngle = POLAR_MIN
-    c.maxPolarAngle = POLAR_MAX
-    limitZoom(false)
+    home.current = {
+      target: [args[3], args[4], args[5]],
+      offset: [args[0] - args[3], args[1] - args[4], args[2] - args[5]],
+    }
     const slug = currentSlug()
-    if (slug) applyPose(slug, false) // direct link: snap to the object
-  }, [computeFit, coarsePointer, applyPose, limitZoom])
+    if (slug) {
+      applyPose(slug, false)
+      return
+    }
+    limitZoom(false)
+    const view = freeView.target()
+    c.setLookAt(...view.args, false)
+    c.zoomTo(view.zoom, false)
+    freeView.settle()
+  }, [computeFit, coarsePointer, applyPose, limitZoom, freeView])
 
   // Enter swoop, focus glide, return.
   useEffect(() => {
@@ -162,33 +189,28 @@ export default function CameraDirector() {
     const mine = ++token.current
     const animate = !reducedMotion
     const slug = currentSlug()
-    const done = (fn: () => void) => {
-      if (mine === token.current) fn()
-    }
+    const stillCurrent = () => mine === token.current
 
     if (phase === 'entering') {
-      c.setLookAt(
-        ...lookAtArgs(DEFAULT_CAMERA_TARGET, ENTER_SWOOP_OFFSET),
-        false,
-      )
-      fitDefault(animate, () => mine === token.current)?.then(() =>
-        done(() => useRoomStore.getState().setPhase('ready')),
-      )
+      c.setLookAt(...lookAtArgs(home.current.target, ENTER_SWOOP_OFFSET), false)
+      freeView.reset()
+      glideToView(animate, stillCurrent)?.then(() => {
+        if (stillCurrent()) useRoomStore.getState().setPhase('ready')
+      })
       return
     }
     if (transition === 'focusing' && slug) {
-      applyPose(slug, animate).then(() =>
-        done(() => {
-          const target = scene.getObjectByName(sectionBySlug(slug).objectId)
-          const s = useRoomStore.getState()
-          s.setOriginRect(
-            target
-              ? objectScreenRect(target, camera, size.width, size.height)
-              : null,
-          )
-          s.setTransition('open')
-        }),
-      )
+      applyPose(slug, animate).then(() => {
+        if (!stillCurrent()) return
+        const target = scene.getObjectByName(sectionBySlug(slug).objectId)
+        const s = useRoomStore.getState()
+        s.setOriginRect(
+          target
+            ? objectScreenRect(target, camera, size.width, size.height)
+            : null,
+        )
+        s.setTransition('open')
+      })
       return
     }
     // Start the return as soon as the panel begins closing; it keeps gliding through 'idle'.
@@ -197,36 +219,31 @@ export default function CameraDirector() {
       slug === null &&
       phase === 'ready'
     )
-      fitDefault(animate, () => mine === token.current)
+      glideToView(animate, stillCurrent)
   }, [
     phase,
     transition,
     reducedMotion,
-    fitDefault,
+    glideToView,
     applyPose,
+    freeView,
     camera,
     scene,
     size.width,
     size.height,
   ])
 
-  // Desktop parallax while idle in the room.
-  useFrame((state) => {
+  // Free view: zoom, slide and the mouse-follow tilt (desktop only), eased every frame.
+  useFrame((state, dt) => {
     const c = controls.current
-    if (!c || coarsePointer || reducedMotion) return
-    const s = useRoomStore.getState()
-    if (
-      s.phase !== 'ready' ||
-      s.transition !== 'idle' ||
-      currentSlug() !== null
+    if (!c || !isActive()) return
+    const move = freeView.step(
+      dt,
+      coarsePointer || reducedMotion ? NO_TILT : state.pointer,
     )
-      return
-    const { azimuth, polar } = defaultAngles.current
-    c.rotateTo(
-      azimuth + state.pointer.x * PARALLAX_AZIMUTH,
-      polar - state.pointer.y * PARALLAX_POLAR,
-      true,
-    )
+    if (!move) return
+    c.setLookAt(...move.args, false)
+    c.zoomTo(move.zoom, false)
   })
 
   return <CameraControls ref={controls} makeDefault />

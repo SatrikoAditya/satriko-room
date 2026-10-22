@@ -5,6 +5,7 @@ import {
   CircleQuestionMark,
   FileDown,
   Mail,
+  Minimize2,
   Moon,
   Smartphone,
   Sun,
@@ -18,7 +19,9 @@ import IconButton from '@components/atoms/IconButton'
 import HelpSheet from '@components/organisms/HelpSheet'
 import PhoneMenu from '@components/organisms/PhoneMenu'
 
+import { useSceneStore } from '@store/useSceneStore'
 import { useSoundStore } from '@store/useSoundStore'
+import { useActiveSection } from '@hooks/useActiveSection'
 import { useSectionNavigation } from '@hooks/useSectionNavigation'
 
 import { site } from '@constants/site'
@@ -28,6 +31,8 @@ const subscribeNever = () => () => {}
 
 export default function Hud() {
   const { linkProps } = useSectionNavigation()
+  const active = useActiveSection()
+  const zoomedIn = useSceneStore((s) => s.zoomedIn)
   const { resolvedTheme, setTheme } = useTheme()
   const master = useSoundStore((s) => s.master)
   const toggleMaster = useSoundStore((s) => s.toggleMaster)
@@ -53,6 +58,14 @@ export default function Hud() {
         <span className="text-ink-muted hidden sm:inline">· {site.title}</span>
       </a>
       <div className="fixed top-4 right-4 z-30 flex gap-2">
+        {zoomedIn && active === null && (
+          <IconButton
+            label="Reset view"
+            onClick={() => useSceneStore.getState().requestResetView()}
+          >
+            <Minimize2 />
+          </IconButton>
+        )}
         <IconButton
           label="Sound"
           pressed={master}

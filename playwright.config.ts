@@ -45,7 +45,7 @@ export default defineConfig({
         ...devices['Pixel 7'],
         launchOptions: { args: softwareGl },
       },
-      testMatch: /mobile|direct-links|a11y/,
+      testMatch: /mobile|direct-links|a11y|zoom/,
     },
     {
       name: 'no-webgl',

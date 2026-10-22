@@ -59,6 +59,7 @@
 | Control | Position (desktop / mobile) | Icon (Lucide) | Behavior |
 | --- | --- | --- | --- |
 | Name tag | Top-left / top-left (short form) | n/a | Stitched chip "Satriko Aditya · Full Stack Engineer" (the title part is hidden on small screens). It is a link that opens `/about` |
+| Reset view | Top-right, first, only while zoomed in and no panel is open | `Minimize2` | Glides the camera back to the full-room view (1×). Double-click or double-tap on the room does the same |
 | Mute | Top-right | `Volume2` / `VolumeX` | Master sound on/off; **off by default**. One fixed label, "Sound", with `aria-pressed` for the state. See [06](06-extras-and-easter-eggs.md#radio--sound-phase-1) |
 | Day / night | Top-right | `Sun` / `Moon` | Same as the wall light switch, reachable by keyboard |
 | Help | Top-right | `CircleQuestionMark` | Opens the **Help sheet** (below). *Implementation note (D7):* `CircleQuestionMark` is the canonical name in lucide-react 1.x; `CircleHelp` is only an alias |

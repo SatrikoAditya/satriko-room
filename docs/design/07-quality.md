@@ -95,7 +95,7 @@
 | Project | Config | Specs |
 | --- | --- | --- |
 | `desktop` | Desktop Chrome, 1440×900, SwiftShader | every spec except `mobile` and `no-webgl` |
-| `mobile` | Pixel 7, SwiftShader | `mobile`, `direct-links`, `a11y` |
+| `mobile` | Pixel 7, SwiftShader | `mobile`, `direct-links`, `a11y`, `zoom` |
 | `no-webgl` | Desktop Chrome with `--disable-3d-apis` | `no-webgl` |
 | `reduced-motion` | Desktop Chrome with `reducedMotion: 'reduce'`, SwiftShader | `navigation`, `oyen` |
 
@@ -105,7 +105,7 @@ The axe suite (`a11y.spec.ts`) scans all 12 routes (`/` and the 11 sections) in 
 | --- | --- | --- |
 | **Unit** | Vitest (tests next to the code, e.g. `src/utils/time.test.ts`) | **Registry** (unique slugs and `objectId`s, every slug has a camera pose, SEO copy and a content file). **Time** (`time.ts`: Bogor / Singapore / Abu Dhabi conversion and overlap hours; `sky.ts`: phase boundaries). **`skills.ts`**: the "used at" mapping matches the table in [05](05-content.md#skills-skills-bookshelf). **`history.ts`**: push / back / replace decisions. **`storage.ts`**: works when `localStorage` throws |
 | **Component** | React Testing Library | **ModalHost / PanelFrame** (focus trap, Esc, focus returns, `aria-*`). **Each panel** renders its content and its empty state. **PhoneMenu** keyboard grid. **SpeechBubble** live region. **CopyEmailButton** fallback |
-| **End-to-end** | Playwright (`e2e/`) | **Direct links:** each of the 11 URLs shows its panel text in the server HTML and after hydration. **Back button** closes the panel and returns to `/`. **Panel switching** via the phone uses replace semantics. **Keyboard only:** reach and open every section. **No WebGL** (launched with WebGL disabled): poster plus everything still reachable. **Mobile viewports** (e.g. iPhone 14, Pixel 7): bottom bar and sheet modal, swipe-to-close. **Reduced motion** emulation: no glides. **Oyen** (`oyen.spec.ts`): wanders after 6 s of quiet and sits on a key press; stays seated with reduced motion and asleep at night |
+| **End-to-end** | Playwright (`e2e/`) | **Direct links:** each of the 11 URLs shows its panel text in the server HTML and after hydration. **Back button** closes the panel and returns to `/`. **Panel switching** via the phone uses replace semantics. **Keyboard only:** reach and open every section. **No WebGL** (launched with WebGL disabled): poster plus everything still reachable. **Mobile viewports** (e.g. iPhone 14, Pixel 7): bottom bar and sheet modal, swipe-to-close. **Reduced motion** emulation: no glides. **Zoom** (`zoom.spec.ts`): scroll zooms in and shows Reset view, a drag doesn't open a panel, reset returns to 1×, a panel opened while zoomed returns to the zoomed view, and a two-finger pinch zooms on a phone. **Oyen** (`oyen.spec.ts`): wanders after 6 s of quiet and sits on a key press; stays seated with reduced motion and asleep at night |
 | **Accessibility** | `@axe-core/playwright` | An axe scan on `/` and on every section with its modal open, in both themes: zero serious or critical violations |
 | **Visual** | Playwright screenshots | Room default view (day/night), one focused pose, the modal frame. Loose thresholds, because WebGL output varies a little |
 | **Manual QA** | Real devices | iPhone Safari, a mid-range Android on Chrome, desktop Chrome/Safari/Firefox, trackpad and mouse, keyboard only, VoiceOver smoke test, sound on/off, theme toggle, slow 4G throttling |
