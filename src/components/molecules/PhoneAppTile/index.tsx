@@ -32,7 +32,9 @@ export default function PhoneAppTile({
     <a
       href={href}
       onClick={onClick}
-      className="focus-visible:ring-accent flex min-h-11 flex-col items-center gap-1 rounded-2xl p-2 outline-none focus-visible:ring-4"
+      // No side padding: in the 320px phone the longest label ("Remote work")
+      // needs the tile's full width to stay on one line.
+      className="focus-visible:ring-accent flex min-h-11 flex-col items-center gap-1 rounded-2xl px-0 py-2 outline-none focus-visible:ring-4"
     >
       <span
         className={cn(
@@ -42,7 +44,9 @@ export default function PhoneAppTile({
       >
         <Icon size={26} />
       </span>
-      <span className="font-display text-xs font-bold">{section.label}</span>
+      <span className="font-display text-center text-xs leading-tight font-bold">
+        {section.label}
+      </span>
     </a>
   )
 }

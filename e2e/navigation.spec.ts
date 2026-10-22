@@ -123,3 +123,36 @@ test('clicking the PC in the scene opens Experience', async ({ page }) => {
     page.getByRole('dialog', { name: 'Work experience' }),
   ).toBeVisible({ timeout: 15_000 })
 })
+
+test('phone menu labels sit on one line, centred under their icons', async ({
+  page,
+}) => {
+  await page.getByRole('button', { name: 'Open phone menu' }).click()
+  const tiles = page
+    .getByRole('grid', { name: 'Sections' })
+    .locator('[role="gridcell"] > *')
+  await expect(tiles).toHaveCount(12)
+  const labels = await tiles.evaluateAll((els) =>
+    els.map((el) => {
+      const icon = el.firstElementChild!.getBoundingClientRect()
+      const label = el.lastElementChild!
+      // Measure the text itself: a wrapped label's box stays centred even when its lines don't.
+      const range = document.createRange()
+      range.selectNodeContents(label)
+      const lines = [...range.getClientRects()]
+      return {
+        text: label.textContent,
+        height: label.getBoundingClientRect().height,
+        offsets: lines.map(
+          (l) => l.left + l.width / 2 - (icon.left + icon.width / 2),
+        ),
+      }
+    }),
+  )
+  const oneLine = Math.min(...labels.map((l) => l.height))
+  for (const l of labels) {
+    expect(l.height, `${l.text} wraps`).toBeLessThanOrEqual(oneLine + 1)
+    for (const o of l.offsets)
+      expect(Math.abs(o), `${l.text} is off-centre`).toBeLessThanOrEqual(1.5)
+  }
+})

@@ -100,12 +100,12 @@ export default function PhoneMenu({
                               onOpenChange(false)
                               onHelp()
                             }}
-                            className="focus-visible:ring-accent flex min-h-11 w-full flex-col items-center gap-1 rounded-2xl p-2 outline-none focus-visible:ring-4"
+                            className="focus-visible:ring-accent flex min-h-11 w-full flex-col items-center gap-1 rounded-2xl px-0 py-2 outline-none focus-visible:ring-4"
                           >
                             <span className="bg-paper-2 flex h-14 w-14 items-center justify-center rounded-2xl shadow-sm">
                               <CircleQuestionMark size={26} />
                             </span>
-                            <span className="font-display text-xs font-bold">
+                            <span className="font-display text-center text-xs leading-tight font-bold">
                               Help
                             </span>
                           </button>
