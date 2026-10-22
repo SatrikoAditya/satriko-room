@@ -72,7 +72,6 @@ export const oyenPaths: readonly (readonly [OyenSpotId, OyenSpotId])[] = [
   ['home', 'tvView'],
   ['home', 'rugCorner'],
   ['home', 'middleBack'],
-  ['home', 'window'],
   ['rugFront', 'tvView'],
   ['rugFront', 'rugCorner'],
   ['rugFront', 'middleBack'],

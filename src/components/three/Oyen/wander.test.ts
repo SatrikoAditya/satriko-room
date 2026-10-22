@@ -57,7 +57,7 @@ const boxes: Record<string, Box> = {
   desk: footprint('desk'),
   sideTable: footprint('sideTable'),
   bookshelf: footprint('bookshelf'),
-  tv: [-1.45, -0.95, 0.3, 1.7],
+  tv: [-1.45, -0.95, 0.05, 1.95],
 }
 const atFloor = (id: keyof typeof roomLayout, radius: number) =>
   [roomLayout[id].position[0], roomLayout[id].position[2], radius] as const
@@ -136,7 +136,7 @@ describe('Oyen paths', () => {
     const [u, d] = view(oyenSpots[id])
     // Furniture tall enough to hide a cat, with its height (measured from the objects).
     const occluders: [Box, number][] = [
-      [boxes.tv, 1.35],
+      [boxes.tv, 1.4],
       [boxes.bed, 1.08],
       [boxes.desk, 1.45],
       [boxes.bookshelf, 2.6],

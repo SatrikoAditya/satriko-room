@@ -97,9 +97,9 @@ export const sections: readonly Section[] = [
     objectId: 'tv',
     theme: 'tv',
     cameraPose: {
-      target: [-1.2, 0.9, 1.0],
+      target: [-1.2, 1.0, 1.0],
       offset: [3.6, 2.2, 3.0],
-      zoomFactor: 2.2,
+      zoomFactor: 2.0,
     },
     seo: {
       title: by('Gaming'),

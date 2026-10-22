@@ -34,7 +34,7 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 | 2 | `pc` | PC: monitor, keyboard, mouse, and the laptop open on a stand to its right (one hover and click group, like Satriko's real desk) | On the desk | Opens `/experience` | Pack or code | Work experience |
 | 3 | `bookshelf` | Bookshelf with colored book spines | Right wall, next to the desk | Opens `/skills` | Pack (shelf) + code (books) | Skills |
 | 4 | `edu-frames` | 3 certificate frames | Left wall, above the bed | Opens `/education` | Code | Education |
-| 5 | `tv` | TV + game console on a low cabinet | Floor, on the rug | Opens `/gaming` | Pack or code | Gaming |
+| 5 | `tv` | TV setup like Satriko's: a wide TV on a white low cabinet (two drawers, open shelf), a soundbar, a white PS5 standing on the left and two controllers on the right | Floor, on the rug | Opens `/gaming` | Pack or code | Gaming |
 | 6 | `indonesia-map` | Illustrated Indonesia map with pins | Back (right) wall, in the outdoor-hobby corner above the hiking and dive gear; its bottom edge lines up with the window's | Opens `/travel` | Code (plane + illustrated texture) | Travel |
 | 7 | `hiking-gear` | Backpack + hiking boots | Outdoor-hobby corner, by the left wall | Opens `/hiking` | Code | Hiking |
 | 8 | `dive-gear` | Dive mask + fins on a stand | Outdoor-hobby corner, against the back wall | Opens `/diving` | Code | Diving |
