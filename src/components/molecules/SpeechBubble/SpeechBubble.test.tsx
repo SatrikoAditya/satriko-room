@@ -25,4 +25,31 @@ describe('SpeechBubble', () => {
     })
     expect(useSceneStore.getState().bubble).toBeNull()
   })
+
+  const tailCentre = () => {
+    const card = document.querySelector<HTMLElement>('button.stitched')!
+    const tail = card.querySelector<HTMLElement>('[data-bubble-tail]')!
+    return parseFloat(card.style.left) + parseFloat(tail.style.left) + 8
+  }
+  it('points its tail at Oyen', () => {
+    render(
+      <MotionConfig reducedMotion="always">
+        <SpeechBubble />
+      </MotionConfig>,
+    )
+    act(() => useSceneStore.getState().setBubble('Meow!'))
+    expect(tailCentre()).toBe(300)
+  })
+  it('keeps the tail on Oyen when the bubble is pushed in from a screen edge', () => {
+    useSceneStore.setState({
+      oyenAnchor: { x: window.innerWidth - 30, y: 400 },
+    })
+    render(
+      <MotionConfig reducedMotion="always">
+        <SpeechBubble />
+      </MotionConfig>,
+    )
+    act(() => useSceneStore.getState().setBubble('Meow!'))
+    expect(Math.abs(tailCentre() - (window.innerWidth - 30))).toBeLessThan(10)
+  })
 })

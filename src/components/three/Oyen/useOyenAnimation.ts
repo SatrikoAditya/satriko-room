@@ -12,6 +12,9 @@ import type { OyenWander } from './useOyenWander'
 const headWorld = new Vector3()
 
 /** Paw rest positions [x, y, z]: front left, front right, back left, back right. */
+
+/** From the head's centre to just above its ears, in world units. */
+const BUBBLE_ABOVE_HEAD = 0.38
 export const PAW_BASE = [
   [-0.14, 0.07, 0.32],
   [0.14, 0.07, 0.32],
@@ -125,7 +128,10 @@ export function useOyenAnimation(
       // (and once at the start), not on every frame Oyen moves.
       const scene = useSceneStore.getState()
       if (scene.bubble !== null || scene.oyenAnchor === null) {
-        head.current.getWorldPosition(headWorld).project(state.camera)
+        // The bubble points at the top of the head, just clear of the ears.
+        head.current.getWorldPosition(headWorld)
+        headWorld.y += BUBBLE_ABOVE_HEAD
+        headWorld.project(state.camera)
         const x = ((headWorld.x + 1) / 2) * state.size.width
         const y = ((1 - headWorld.y) / 2) * state.size.height
         if (
