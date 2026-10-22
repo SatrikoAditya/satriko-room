@@ -38,7 +38,7 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 | 6 | `indonesia-map` | Illustrated Indonesia map with pins | Back (right) wall, in the outdoor-hobby corner above the hiking and dive gear; its bottom edge lines up with the window's | Opens `/travel` | Code (plane + illustrated texture) | Travel |
 | 7 | `hiking-gear` | Backpack + hiking boots | Outdoor-hobby corner, by the left wall | Opens `/hiking` | Code | Hiking |
 | 8 | `dive-gear` | Dive mask + fins on a stand | Outdoor-hobby corner, against the back wall | Opens `/diving` | Code | Diving |
-| 9 | `clocks` | 3 wall clocks: Bogor / Singapore / Abu Dhabi | Right wall, above the desk | Opens `/remote-work` | Code | Remote work |
+| 9 | `clocks` | 3 wall clocks: Bogor / Singapore / Abu Dhabi | Right wall, above the desk, level with the Indonesia map | Opens `/remote-work` | Code | Remote work |
 | 10 | `mailbox` | Little mailbox | By the door | Opens `/contact` | Code | Contact |
 | 11 | `printer` | Printer on a side table | Next to the desk | Opens `/resume` | Pack or code | Resume |
 | 12 | `oyen` | Oyen, the orange cat | Rug (day) / bed (night) | Speech bubble | Code | Oyen |

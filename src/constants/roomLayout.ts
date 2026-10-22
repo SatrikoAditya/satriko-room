@@ -39,7 +39,9 @@ export const roomLayout: Record<ObjectId | DecorId, Placement> = {
   deskLamp: { position: [-1.3, 0.75, -4.5] },
   // Pulled out from the desk and turned toward the room, as if just vacated.
   chair: { position: [0.7, 0, -3.15], rotationY: -0.6 },
-  clocks: { position: [0, 4.2, -4.965] },
+  // Centred on the map's height (y 2.76) so the back wall reads as one row:
+  // the faces and the city plates under them span y 2.37 to 3.13.
+  clocks: { position: [0, 3.15, -4.965] },
   sideTable: { position: [-2.2, 0, -4.3], size: [0.9, 0.6, 0.7] },
   printer: { position: [-2.2, 0.6, -4.3] },
   bookshelf: { position: [2.4, 0, -4.45], size: [1.6, 2.6, 0.5] },

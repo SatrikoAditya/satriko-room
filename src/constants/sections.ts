@@ -165,7 +165,7 @@ export const sections: readonly Section[] = [
     objectId: 'clocks',
     theme: 'clocks',
     cameraPose: {
-      target: [0, 4.1, -4.93],
+      target: [0, 2.8, -4.93],
       offset: [3.0, 1.6, 3.6],
       zoomFactor: 2.8,
     },
