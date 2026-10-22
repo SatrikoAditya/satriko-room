@@ -93,10 +93,12 @@ export default function WindowSky() {
       {phase !== 'night' && (
         <group ref={clouds}>
           {[-0.5, 0.4].map((x, i) => (
+            // Flattened into a thin layer (z 0.061 to 0.079): in front of the
+            // sun at 0.06, behind the window bars, whose back face is at 0.08.
             <mesh
               key={i}
               position={[x, 0.3 - i * 0.5, 0.07]}
-              scale={[1.6, 0.6, 1]}
+              scale={[1.6, 0.6, 0.04]}
             >
               <sphereGeometry args={[0.22, 12, 8]} />
               <meshBasicMaterial color="#ffffff" toneMapped={false} />
@@ -107,8 +109,9 @@ export default function WindowSky() {
       {phase === 'night' && (
         <Sparkles
           count={30}
-          scale={[W - 0.3, H - 0.3, 0.05]}
-          position={[0, 0, 0.07]}
+          // Stars stay between the sky and the window bars too.
+          scale={[W - 0.3, H - 0.3, 0.02]}
+          position={[0, 0, 0.065]}
           size={2}
           speed={0.1}
           color="#ffffff"
