@@ -66,6 +66,7 @@ const circles: Record<string, readonly [number, number, number]> = {
   plant: atFloor('plant', 0.45),
   diveGear: atFloor('dive-gear', 0.4),
   hikingGear: atFloor('hiking-gear', 0.7),
+  chair: atFloor('chair', 0.5),
 }
 // Oyen never stands in front of the desk, so it can't cover the PC.
 const deskFront: Box = [-1.6, 1.6, -3.6, -2.6]

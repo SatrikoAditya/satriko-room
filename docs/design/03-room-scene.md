@@ -10,10 +10,10 @@ A cozy **studio bedroom** (the room Satriko lives, works and games in), shown as
               LEFT WALL                               RIGHT WALL
    [Edu frames ×3]  [ WINDOW: live sky ] [Indonesia map]   [3 clocks]                  [Door + "Satriko's Room"]
                     [curtains]                             ┌───────────┐  ┌──────────┐  [Mailbox]  [light switch]
-   ┌───────────┐  [Backpack + boots] [Dive mask + fins]    │ DESK + PC │  │BOOKSHELF │
+   ┌───────────┐  [Backpack + boots] [Dive mask + fins]    │DESK+PC+lap│  │BOOKSHELF │
    │   BED     │   ↑ outdoor-hobby corner, under the map   │ photo frame│  │ radio    │
    │           │  ← Oyen sleeps here   [printer on         └───────────┘  └──────────┘
-   └───────────┘    at night            side table]
+   └───────────┘    at night            side table]       [office chair, pulled out]
                      ╭──────────────── rug ────────────────╮
                      │   TV + console on low cabinet   ◉ beanbag │   ← Oyen starts here by day, then wanders
                      ╰─────────────────────────────────────╯
@@ -31,7 +31,7 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 | # | `objectId` | Object | Where | Click does | Source | Hover label |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `photo-frame` | Framed photo of Satriko | On the desk | Opens `/about` | Code (frame) + photo texture | About me |
-| 2 | `pc` | PC: monitor, keyboard, mouse | On the desk | Opens `/experience` | Pack or code | Work experience |
+| 2 | `pc` | PC: monitor, keyboard, mouse, and the laptop open on a stand to its right (one hover and click group, like Satriko's real desk) | On the desk | Opens `/experience` | Pack or code | Work experience |
 | 3 | `bookshelf` | Bookshelf with colored book spines | Right wall, next to the desk | Opens `/skills` | Pack (shelf) + code (books) | Skills |
 | 4 | `edu-frames` | 3 certificate frames | Left wall, above the bed | Opens `/education` | Code | Education |
 | 5 | `tv` | TV + game console on a low cabinet | Floor, on the rug | Opens `/gaming` | Pack or code | Gaming |
@@ -89,7 +89,7 @@ This is a starting layout. **Exact positions, rotations and scales are tuned dur
 
 ### Code-built objects
 
-Everything is built from drei/three primitives using the clay recipe: the room shell and decor, the PC, TV, printer, bed and desk, photo frame, 3 education frames, book spines, Indonesia map board and pins, backpack and boots, dive mask and fins with their stand, 3 clocks with moving hands, mailbox, light switch, radio, the window sky, and **Oyen**.
+Everything is built from drei/three primitives using the clay recipe: the room shell and decor, the PC, TV, printer, bed, desk and office chair (grey mesh and black, modelled on Satriko's real chair, pulled out and turned toward the room), photo frame, 3 education frames, book spines, Indonesia map board and pins, backpack and boots, dive mask and fins with their stand, 3 clocks with moving hands, mailbox, light switch, radio, the window sky, and **Oyen**.
 
 ## Camera
 

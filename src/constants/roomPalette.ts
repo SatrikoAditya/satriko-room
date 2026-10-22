@@ -20,4 +20,7 @@ export const palette = {
   lampGlow: '#F2A65A',
   nose: '#E58A8A',
   brass: '#D9B25F',
+  // The office chair keeps its real cool greys on purpose: it's Satriko's chair, not set dressing.
+  chairMesh: '#A4A6AD',
+  chairFrame: '#2F3035',
 } as const

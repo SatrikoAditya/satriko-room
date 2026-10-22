@@ -9,14 +9,17 @@ import { roomLayout } from '@constants/roomLayout'
 import { palette } from '@constants/roomPalette'
 import { openFromScene } from '@utils/history'
 
+import Laptop from './Laptop'
+
 export default function Pc() {
   return (
     <group position={[...roomLayout.pc.position]}>
       <Interactive
         id="pc"
         label="Work experience"
-        hitSize={[1.5, 1.1, 0.9]}
-        hitOffset={[0, 0.5, 0.2]}
+        // Wide enough to take in the laptop on the right.
+        hitSize={[2.1, 1.1, 0.9]}
+        hitOffset={[0.25, 0.5, 0.2]}
         labelHeight={1.25}
         onActivate={() => openFromScene('experience')}
       >
@@ -71,6 +74,7 @@ export default function Pc() {
         >
           <meshStandardMaterial {...clay(palette.cream)} />
         </RoundedBox>
+        <Laptop />
       </Interactive>
     </group>
   )

@@ -14,6 +14,7 @@ export type DecorId =
   | 'door'
   | 'window'
   | 'oyenNight'
+  | 'chair'
 
 export interface Placement {
   position: Vec3
@@ -34,7 +35,10 @@ export const roomLayout: Record<ObjectId | DecorId, Placement> = {
   pc: { position: [0, 0.75, -4.5] },
   'photo-frame': { position: [-0.9, 0.75, -4.0], rotationY: 0.35 },
   mug: { position: [1.1, 0.75, -3.9] },
-  deskLamp: { position: [1.25, 0.75, -4.5] },
+  // Moved to the printer side of the desk to make room for the laptop.
+  deskLamp: { position: [-1.3, 0.75, -4.5] },
+  // Pulled out from the desk and turned toward the room, as if just vacated.
+  chair: { position: [0.7, 0, -3.15], rotationY: -0.6 },
   clocks: { position: [0, 4.2, -4.965] },
   sideTable: { position: [-2.2, 0, -4.3], size: [0.9, 0.6, 0.7] },
   printer: { position: [-2.2, 0.6, -4.3] },

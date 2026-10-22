@@ -9,6 +9,7 @@ import { site } from '@constants/site'
 
 import { clay } from '../materials'
 import WindowSky from '../objects/WindowSky'
+import OfficeChair from './OfficeChair'
 
 type V3 = readonly [number, number, number]
 
@@ -126,6 +127,7 @@ export default function Decor() {
       />
       <Lamp position={L.bedsideLamp.position} name="bedsideLamp" />
       <Lamp position={L.deskLamp.position} name="deskLamp" scale={0.7} />
+      <OfficeChair />
       <Box
         args={[desk.size![0], 0.1, desk.size![2]]}
         position={[desk.position[0], desk.size![1] - 0.05, desk.position[2]]}
