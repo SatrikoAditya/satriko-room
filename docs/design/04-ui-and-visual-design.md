@@ -61,7 +61,7 @@
 | Name tag | Top-left / top-left (short form) | n/a | Stitched chip "Satriko Aditya · Full Stack Engineer" (the title part is hidden on small screens). It is a link that opens `/about` |
 | Reset view | Top-right, first, only while zoomed in and no panel is open | `Minimize2` | Glides the camera back to the full-room view (1×). Double-click or double-tap on the room does the same |
 | Settings (phones) | Top-right, before Help, below `sm` only | `Settings2` | Folds **Labels, Sound and Day / night** into a menu so the small top bar doesn't crowd the name tag (decision #58). Tapping it drops them down in a column, each fading and sliding in a moment after the one above; tapping outside or Esc closes it. `aria-expanded` / `aria-controls`; closed items are `invisible`, so they leave the tab order. From `sm` up the three sit in the row as before |
-| Labels (touch screens) | In the Settings menu, only with a coarse pointer and no panel open | `Tag` | Phones show every object's tag at once; this hides them to see the whole room, and shows them again (`aria-pressed`, dimmed when off). **On by default**, remembered in `localStorage` (`room:labels`, `useLabelStore`). Desktop tags only appear on hover, so there is no switch there |
+| Labels (touch screens) | In the Settings menu, only with a coarse pointer and no panel open | `Tag` | Shows every object's tag at once on phones, and hides them again (`aria-pressed`, dimmed when off). **Off by default** so the first view is the whole room (decision #66), remembered in `localStorage` (`room:labels`, `useLabelStore`). Desktop tags only appear on hover, so there is no switch there |
 | Mute | Top-right | `Volume2` / `VolumeX` | Master sound on/off; **on by default** (decision #60), so visitors notice the sound; a saved "off" is kept. On phones it sits in the Settings menu. One fixed label, "Sound", with `aria-pressed` for the state. See [06](06-extras-and-easter-eggs.md#radio--sound-phase-1) |
 | Day / night | Top-right | `Sun` / `Moon` | Same as the wall light switch, reachable by keyboard |
 | Help | Top-right, last; stays outside the phone Settings menu so it's one tap away | `CircleQuestionMark` | Opens the **Help sheet** (below). *Implementation note (D7):* `CircleQuestionMark` is the canonical name in lucide-react 1.x; `CircleHelp` is only an alias |
@@ -179,7 +179,7 @@ Each panel has **Oyen climbing it from outside** (decision #62): his face and tw
 
 A small modal **with no URL**, opened by "?" or the Help app, with a round ✕ button ("Close help") next to its title:
 
-- **How to explore:** mouse/trackpad and touch hints, drawn as our own simple icons, plus a phone tip that the tag button in the Settings menu hides the tags (decision #58).
+- **How to explore:** mouse/trackpad and touch hints, drawn as our own simple icons, plus a phone tip that the tag button in the Settings menu shows a name tag on every object (decisions #58, #66).
 - **Keyboard tips.**
 - **Sound:** "Sound is on: it starts with your first tap or click. The speaker button (in the Settings menu on phones) turns it off."
 - **Credits & licenses:** the sheet lists its credits from `src/content/help.ts`, kept in step with `CREDITS.md`.

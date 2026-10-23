@@ -14,9 +14,9 @@ export const oyenLines = {
     'The window shows the real sky in Bogor right now.',
     "The whiteboard by the printer has Satriko's projects.",
   ],
-  // Phones only, said first: tags show all the time there (decision #58).
+  // Phones only, last in the rotation, and only while the tags are off.
   touchChatter:
-    'Tags in the way? The tag button in the Settings menu hides them, so you can see the whole room.',
+    'Ran out of things to tap? Switch on the tags in Settings to spot what you missed.',
   sleeping: 'Zzz… (Oyen is asleep. Maybe check the map instead?)',
   // The umbrella stand calls the rain.
   rain: "Rain! Bogor isn't called the City of Rain for nothing.",

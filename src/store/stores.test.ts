@@ -69,16 +69,16 @@ describe('stores', () => {
       music: true,
     })
   })
-  it('label store shows phone tags by default, persists hiding them and hydrates', () => {
+  it('label store hides phone tags by default, persists showing them and hydrates', () => {
     localStorage.clear()
     useLabelStore.setState({ touchLabels: true })
     useLabelStore.getState().hydrate()
-    expect(useLabelStore.getState().touchLabels).toBe(true)
+    expect(useLabelStore.getState().touchLabels).toBe(false)
     useLabelStore.getState().toggleTouchLabels()
-    expect(useLabelStore.getState().touchLabels).toBe(false)
-    useLabelStore.setState({ touchLabels: true })
+    expect(useLabelStore.getState().touchLabels).toBe(true)
+    useLabelStore.setState({ touchLabels: false })
     useLabelStore.getState().hydrate()
-    expect(useLabelStore.getState().touchLabels).toBe(false)
+    expect(useLabelStore.getState().touchLabels).toBe(true)
     useLabelStore.getState().toggleTouchLabels()
   })
 })

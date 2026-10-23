@@ -123,7 +123,7 @@ Everything is built from drei/three primitives using the clay recipe: the room s
   - A stitched-style label (DOM via drei `<Html>`, so it uses the UI font).
   - A pointer cursor, and a tick sound effect if sound is on.
 - **Click / tap:** the open flow from [02](02-architecture.md#interaction-state-machine).
-- **Mobile labels:** since there's no hover, small floating label tags (drei `Html`, the `HoverLabel` molecule) are **always visible** above clickable objects when the pointer is coarse. Tapping a tag works the same as tapping the object. On phones the tags can overlap each other (known, accepted). Where the window wall's tags would hide each other, a phone-only nudge (`touchLabelOffset` on `Interactive`) moves the tag aside; desktop hover tags stay where they are.
+- **Mobile labels:** since there's no hover, small floating label tags (drei `Html`, the `HoverLabel` molecule) can be shown above clickable objects when the pointer is coarse, with the **Labels** switch in the phone Settings menu (**off by default**, decision #66). Tapping a tag works the same as tapping the object. On phones the tags can overlap each other (known, accepted). Where the window wall's tags would hide each other, a phone-only nudge (`touchLabelOffset` on `Interactive`) moves the tag aside; desktop hover tags stay where they are.
 - **Idle hints:**
   - **When:** on a first visit (`room:interacted` not yet stored), after **about 8 seconds** (`HINT_DELAY_MS`) without a click.
   - **What:** Oyen says a hint ("Psst… try the PC!") and the suggested object **sparkles** (small particle sprites).

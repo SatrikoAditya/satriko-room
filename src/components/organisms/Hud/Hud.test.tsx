@@ -107,7 +107,7 @@ describe('Hud', () => {
     for (const row of rows)
       expect(within(row).getAllByRole('gridcell')).toHaveLength(3)
   })
-  it('on a touch screen, shows a Labels switch that hides the tags', async () => {
+  it('on a touch screen, shows a Labels switch that shows the tags', async () => {
     const original = window.matchMedia
     window.matchMedia = ((query: string) => ({
       matches: query === '(pointer: coarse)',
@@ -118,9 +118,9 @@ describe('Hud', () => {
     try {
       render(<Hud />)
       const labels = await screen.findByRole('button', { name: 'Labels' })
-      expect(labels).toHaveAttribute('aria-pressed', 'true')
-      await userEvent.click(labels)
       expect(labels).toHaveAttribute('aria-pressed', 'false')
+      await userEvent.click(labels)
+      expect(labels).toHaveAttribute('aria-pressed', 'true')
       await userEvent.click(labels)
     } finally {
       window.matchMedia = original

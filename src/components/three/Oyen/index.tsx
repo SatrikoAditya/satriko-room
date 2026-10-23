@@ -7,6 +7,7 @@ import Interactive from '@components/three/Interactive'
 import { clay } from '@components/three/materials'
 import { useSceneBridge } from '@components/three/SceneCanvas/SceneBridge'
 
+import { useLabelStore } from '@store/useLabelStore'
 import { useSceneStore } from '@store/useSceneStore'
 
 import { roomLayout } from '@constants/roomLayout'
@@ -23,6 +24,7 @@ const OD = palette.orangeDark
 export default function Oyen() {
   const asleep = useSceneStore((s) => s.theme === 'night')
   const { reducedMotion, coarsePointer } = useSceneBridge()
+  const touchLabels = useLabelStore((s) => s.touchLabels)
   const { root, wander } = useOyenWander(reducedMotion)
   const { body, head, tail, eyes, paws } = useOyenAnimation(
     asleep,
@@ -38,9 +40,10 @@ export default function Oyen() {
     wander.faceCamera()
     const s = useSceneStore.getState()
     if (asleep) return s.setBubble(oyenLines.sleeping)
-    const lines = coarsePointer
-      ? [oyenLines.touchChatter, ...oyenLines.chatter]
-      : oyenLines.chatter
+    const lines =
+      coarsePointer && !touchLabels
+        ? [...oyenLines.chatter, oyenLines.touchChatter]
+        : oyenLines.chatter
     s.setBubble(lines[chatterIndex % lines.length])
     chatterIndex += 1
   }
