@@ -5,6 +5,7 @@ import { VIEW_EYE_ELEVATION, VIEW_MAX_ZOOM } from '@constants/camera'
 import {
   clampPan,
   clampZoom,
+  panRange,
   polarForZoom,
   viewLookAt,
   wheelZoom,
@@ -56,6 +57,14 @@ describe('clampPan', () => {
   it('allows up to half the default view at 2×', () => {
     expect(clampPan({ x: 99, y: -99 }, 2, half)).toEqual({ x: 5, y: -3 })
     expect(clampPan({ x: 1, y: 1 }, 2, half)).toEqual({ x: 1, y: 1 })
+  })
+
+  it('lets a cropped phone view pan to the whole room, even at 1×', () => {
+    // A phone's 1× shows a smaller part (half) of what it may reach.
+    const reach = { x: 13, y: 7 }
+    expect(clampPan({ x: 99, y: 99 }, 1, half, reach)).toEqual({ x: 3, y: 1 })
+    expect(clampPan({ x: -99, y: 0 }, 2, half, reach)).toEqual({ x: -8, y: 0 })
+    expect(panRange(1, half, reach)).toEqual({ x: 3, y: 1 })
   })
 })
 

@@ -51,15 +51,24 @@ export function wheelZoom(z: number, deltaY: number, pinch: boolean): number {
 }
 
 /**
- * The pan allowed at zoom z. `half` is half the world area visible at 1×, so the
- * view never leaves what the default framing shows, and at 1× it recentres.
+ * How far the view may pan at zoom z. `half` is half the world area visible at
+ * 1×; `reach` is half the area the view may show at most (by default the same,
+ * so the view never leaves what the default framing shows and recentres at 1×;
+ * phones pass the whole room, which their closer 1× view crops).
  */
-export function clampPan(p: Pan, z: number, half: Pan): Pan {
-  const f = Math.max(0, 1 - 1 / z)
-  if (f === 0) return { x: 0, y: 0 }
+export function panRange(z: number, half: Pan, reach: Pan = half): Pan {
   return {
-    x: clamp(p.x, -f * half.x, f * half.x),
-    y: clamp(p.y, -f * half.y, f * half.y),
+    x: Math.max(0, reach.x - half.x / z),
+    y: Math.max(0, reach.y - half.y / z),
+  }
+}
+
+export function clampPan(p: Pan, z: number, half: Pan, reach: Pan = half): Pan {
+  const r = panRange(z, half, reach)
+  // A plain 0 (not -0) when there's no room to pan.
+  return {
+    x: r.x === 0 ? 0 : clamp(p.x, -r.x, r.x),
+    y: r.y === 0 ? 0 : clamp(p.y, -r.y, r.y),
   }
 }
 

@@ -16,6 +16,7 @@ import {
   MOBILE_ZOOM_FACTOR,
   POLAR_MAX,
   POLAR_MIN,
+  TOUCH_PAN_MARGIN,
   VIEW_MAX_ZOOM,
 } from '@constants/camera'
 import { sectionBySlug } from '@constants/sections'
@@ -46,6 +47,8 @@ export default function CameraDirector() {
   const { reducedMotion, coarsePointer } = useSceneBridge()
   const { camera, size, scene } = useThree()
   const fittedZoom = useRef(60)
+  // The full-room fit, before the closer phone framing.
+  const roomZoom = useRef(60)
   const home = useRef<Home>({
     target: DEFAULT_CAMERA_TARGET,
     offset: DEFAULT_CAMERA_OFFSET,
@@ -86,8 +89,17 @@ export default function CameraDirector() {
         x: size.width / (2 * fittedZoom.current),
         y: size.height / (2 * fittedZoom.current),
       },
+      reach: coarsePointer
+        ? {
+            x: size.width / (2 * roomZoom.current) + TOUCH_PAN_MARGIN.x,
+            y: size.height / (2 * roomZoom.current) + TOUCH_PAN_MARGIN.y,
+          }
+        : {
+            x: size.width / (2 * fittedZoom.current),
+            y: size.height / (2 * fittedZoom.current),
+          },
     }),
-    [size.width, size.height],
+    [size.width, size.height, coarsePointer],
   )
 
   // The room with no panel open, once any glide has finished.
@@ -165,6 +177,7 @@ export default function CameraDirector() {
     const c = controls.current
     if (!c) return
     const { args, zoom } = computeFit()
+    roomZoom.current = zoom
     fittedZoom.current = zoom * (coarsePointer ? MOBILE_ZOOM_FACTOR : 1)
     home.current = {
       target: [args[3], args[4], args[5]],

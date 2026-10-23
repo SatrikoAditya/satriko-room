@@ -16,6 +16,7 @@ import {
 import {
   clampPan,
   clampZoom,
+  panRange,
   viewLookAt,
   wheelZoom,
   zoomTowardCursor,
@@ -31,6 +32,8 @@ export interface ViewFrame {
   baseZoom: number
   /** Half the world area visible at 1×. */
   half: Pan
+  /** Half the world area the view may reach by panning (see `panRange`). */
+  reach: Pan
 }
 
 export interface CameraMove {
@@ -86,9 +89,9 @@ export function useFreeView({
 
   /** Where the saved view sits, for an animated glide back to it. */
   const target = useCallback((): CameraMove => {
-    const { home, baseZoom, half } = frame()
+    const { home, baseZoom, half, reach } = frame()
     const v = view.current
-    v.pTarget = clampPan(v.pTarget, v.zTarget, half)
+    v.pTarget = clampPan(v.pTarget, v.zTarget, half, reach)
     return {
       args: viewLookAt(home, v.zTarget, v.pTarget),
       zoom: baseZoom * v.zTarget,
@@ -98,10 +101,10 @@ export function useFreeView({
   /** One frame of easing. Returns the camera to apply, or null when nothing changed. */
   const step = useCallback(
     (dt: number, pointer: Pan): CameraMove | null => {
-      const { home, baseZoom, half } = frame()
+      const { home, baseZoom, half, reach } = frame()
       const v = view.current
       const k = reducedMotion ? 1 : 1 - Math.exp(-dt / VIEW_SMOOTH_SECONDS)
-      v.pTarget = clampPan(v.pTarget, v.zTarget, half)
+      v.pTarget = clampPan(v.pTarget, v.zTarget, half, reach)
       v.z += (v.zTarget - v.z) * k
       if (Math.abs(v.zTarget - v.z) < 1e-4) v.z = v.zTarget
       v.p = clampPan(
@@ -111,6 +114,7 @@ export function useFreeView({
         },
         v.z,
         half,
+        reach,
       )
       const tk = reducedMotion ? 1 : 1 - Math.exp(-dt / CAMERA_SMOOTH_TIME)
       const t = tilt.current
@@ -118,7 +122,8 @@ export function useFreeView({
       t.polar += (-pointer.y * PARALLAX_POLAR - t.polar) * tk
 
       const scene = useSceneStore.getState()
-      const zoomedIn = v.z > VIEW_ZOOMED_AT
+      // Slid away from the centre counts too, so Reset view shows on phones.
+      const zoomedIn = v.z > VIEW_ZOOMED_AT || Math.hypot(v.p.x, v.p.y) > 0.05
       if (zoomedIn !== scene.zoomedIn) scene.setZoomedIn(zoomedIn)
 
       const args = viewLookAt(home, v.z, v.p, t)
@@ -155,12 +160,13 @@ export function useFreeView({
       }
     }
     const zoomAt = (z1: number, cursor: Pan) => {
-      const { baseZoom, half } = frame()
+      const { baseZoom, half, reach } = frame()
       const v = view.current
       v.pTarget = clampPan(
         zoomTowardCursor(v.pTarget, cursor, v.zTarget, z1, baseZoom),
         z1,
         half,
+        reach,
       )
       v.zTarget = z1
     }
@@ -193,9 +199,11 @@ export function useFreeView({
       const now = { x: e.clientX, y: e.clientY }
       if (isActive()) {
         const v = view.current
-        if (pointers.size === 1 && v.z > VIEW_ZOOMED_AT) {
-          // Drag slides the room under the pointer, 1:1.
-          const { baseZoom, half } = frame()
+        const { baseZoom, half, reach } = frame()
+        const room = panRange(v.z, half, reach)
+        // Drag slides the room under the pointer, 1:1, when there's room to
+        // slide: while zoomed in, and on phones (which start cropped) at 1× too.
+        if (pointers.size === 1 && (room.x > 0 || room.y > 0)) {
           const scale = 1 / (baseZoom * v.z)
           v.pTarget = clampPan(
             {
@@ -204,8 +212,9 @@ export function useFreeView({
             },
             v.zTarget,
             half,
+            reach,
           )
-          v.p = clampPan(v.pTarget, v.z, half)
+          v.p = clampPan(v.pTarget, v.z, half, reach)
         } else if (pointers.size === 2 && pinch && pinch.distance > 0) {
           pointers.set(e.pointerId, now)
           const { distance, mid } = twoPointers()

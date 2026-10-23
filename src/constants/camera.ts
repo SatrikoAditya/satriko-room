@@ -6,7 +6,13 @@ export const CAMERA_SMOOTH_TIME = 0.35
 export const FOCUS_TIMEOUT_MS = 1500
 export const ENTER_TIMEOUT_MS = 2500
 export const ENTER_SWOOP_OFFSET: Vec3 = [16, 14, 16] // the camera starts further out, then swoops to default
-export const MOBILE_ZOOM_FACTOR = 1.3
+export const MOBILE_ZOOM_FACTOR = 1.5
+/**
+ * Phones start closer than the full-room fit (MOBILE_ZOOM_FACTOR), so the
+ * sides are off-screen: the pan reaches the whole fitted room plus this margin
+ * (world units), so the edge objects and their always-on tags can be reached.
+ */
+export const TOUCH_PAN_MARGIN = { x: 1.4, y: 0.4 } as const
 // Polar limits (from straight up) cover every pose: the default view (about 1.05),
 // the section focus poses, and the lowered zoomed-in view (about 1.36), plus tilt.
 export const POLAR_MIN = 0.7

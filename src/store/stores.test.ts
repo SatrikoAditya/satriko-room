@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { STORAGE_KEYS } from '@constants/storage'
 
+import { useLabelStore } from './useLabelStore'
 import { useRoomStore } from './useRoomStore'
 import { useSceneStore } from './useSceneStore'
 import { useSoundStore } from './useSoundStore'
@@ -58,5 +59,17 @@ describe('stores', () => {
       master: false,
       music: true,
     })
+  })
+  it('label store shows phone tags by default, persists hiding them and hydrates', () => {
+    localStorage.clear()
+    useLabelStore.setState({ touchLabels: true })
+    useLabelStore.getState().hydrate()
+    expect(useLabelStore.getState().touchLabels).toBe(true)
+    useLabelStore.getState().toggleTouchLabels()
+    expect(useLabelStore.getState().touchLabels).toBe(false)
+    useLabelStore.setState({ touchLabels: true })
+    useLabelStore.getState().hydrate()
+    expect(useLabelStore.getState().touchLabels).toBe(false)
+    useLabelStore.getState().toggleTouchLabels()
   })
 })

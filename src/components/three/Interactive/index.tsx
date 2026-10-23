@@ -7,6 +7,7 @@ import type { Group, Mesh, MeshStandardMaterial } from 'three'
 
 import HoverLabel from '@components/molecules/HoverLabel'
 
+import { useLabelStore } from '@store/useLabelStore'
 import { useSceneStore } from '@store/useSceneStore'
 
 import { palette } from '@constants/roomPalette'
@@ -23,7 +24,10 @@ export interface InteractiveProps {
   hitSize: Vec3
   hitOffset?: Vec3
   labelHeight: number
-  /** Phones show every tag at all times; small extras (the lamps) opt out to keep the room readable. */
+  /**
+   * Phones show every tag at once (unless the visitor hides them with the
+   * Labels button); small extras (the lamps) opt out to keep the room readable.
+   */
   alwaysLabelOnTouch?: boolean
   /**
    * Phones only: moves the tag (local units, added to [0, labelHeight, 0]) so
@@ -49,6 +53,7 @@ export default function Interactive({
   const lift = useRef(0)
   const hovered = useSceneStore((s) => s.hovered === id)
   const hinted = useSceneStore((s) => s.hint === id)
+  const touchLabels = useLabelStore((s) => s.touchLabels)
   const { reducedMotion, coarsePointer } = useSceneBridge()
   useCursor(hovered)
 
@@ -106,7 +111,7 @@ export default function Interactive({
           color={palette.lampGlow}
         />
       )}
-      {(hovered || (coarsePointer && alwaysLabelOnTouch)) && (
+      {(hovered || (coarsePointer && alwaysLabelOnTouch && touchLabels)) && (
         <Html
           center
           position={

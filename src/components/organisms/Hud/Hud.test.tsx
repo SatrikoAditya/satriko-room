@@ -105,4 +105,43 @@ describe('Hud', () => {
     for (const row of rows)
       expect(within(row).getAllByRole('gridcell')).toHaveLength(3)
   })
+  it('on a touch screen, shows a Labels switch that hides the tags', async () => {
+    const original = window.matchMedia
+    window.matchMedia = ((query: string) => ({
+      matches: query === '(pointer: coarse)',
+      media: query,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    })) as unknown as typeof window.matchMedia
+    try {
+      render(<Hud />)
+      const labels = await screen.findByRole('button', { name: 'Labels' })
+      expect(labels).toHaveAttribute('aria-pressed', 'true')
+      await userEvent.click(labels)
+      expect(labels).toHaveAttribute('aria-pressed', 'false')
+      await userEvent.click(labels)
+    } finally {
+      window.matchMedia = original
+    }
+  })
+  it('has no Labels switch with a mouse', () => {
+    render(<Hud />)
+    expect(screen.queryByRole('button', { name: 'Labels' })).toBeNull()
+  })
+  it('the Settings menu opens and closes on Esc or a tap outside', async () => {
+    render(<Hud />)
+    const settings = screen.getByRole('button', { name: 'Settings' })
+    expect(settings).toHaveAttribute('aria-expanded', 'false')
+    await userEvent.click(settings)
+    expect(settings).toHaveAttribute('aria-expanded', 'true')
+    expect(document.getElementById('hud-settings')).toHaveAttribute(
+      'data-open',
+      'true',
+    )
+    await userEvent.keyboard('{Escape}')
+    expect(settings).toHaveAttribute('aria-expanded', 'false')
+    await userEvent.click(settings)
+    await userEvent.click(document.body)
+    expect(settings).toHaveAttribute('aria-expanded', 'false')
+  })
 })

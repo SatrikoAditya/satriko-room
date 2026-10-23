@@ -60,9 +60,11 @@
 | --- | --- | --- | --- |
 | Name tag | Top-left / top-left (short form) | n/a | Stitched chip "Satriko Aditya · Full Stack Engineer" (the title part is hidden on small screens). It is a link that opens `/about` |
 | Reset view | Top-right, first, only while zoomed in and no panel is open | `Minimize2` | Glides the camera back to the full-room view (1×). Double-click or double-tap on the room does the same |
+| Settings (phones) | Top-right, before Help, below `sm` only | `Settings2` | Folds **Labels, Sound and Day / night** into a menu so the small top bar doesn't crowd the name tag (decision #58). Tapping it drops them down in a column, each fading and sliding in a moment after the one above; tapping outside or Esc closes it. `aria-expanded` / `aria-controls`; closed items are `invisible`, so they leave the tab order. From `sm` up the three sit in the row as before |
+| Labels (touch screens) | In the Settings menu, only with a coarse pointer and no panel open | `Tag` | Phones show every object's tag at once; this hides them to see the whole room, and shows them again (`aria-pressed`, dimmed when off). **On by default**, remembered in `localStorage` (`room:labels`, `useLabelStore`). Desktop tags only appear on hover, so there is no switch there |
 | Mute | Top-right | `Volume2` / `VolumeX` | Master sound on/off; **off by default**. One fixed label, "Sound", with `aria-pressed` for the state. See [06](06-extras-and-easter-eggs.md#radio--sound-phase-1) |
 | Day / night | Top-right | `Sun` / `Moon` | Same as the wall light switch, reachable by keyboard |
-| Help | Top-right | `CircleQuestionMark` | Opens the **Help sheet** (below). *Implementation note (D7):* `CircleQuestionMark` is the canonical name in lucide-react 1.x; `CircleHelp` is only an alias |
+| Help | Top-right, last; stays outside the phone Settings menu so it's one tap away | `CircleQuestionMark` | Opens the **Help sheet** (below). *Implementation note (D7):* `CircleQuestionMark` is the canonical name in lucide-react 1.x; `CircleHelp` is only an alias |
 | Resume | Bottom-right / bottom bar | `FileDown` | Opens `/resume` |
 | Contact | Bottom-right / bottom bar | `Mail` | Opens `/contact` |
 | Phone | Bottom-right / bottom bar center | `Smartphone` | Opens the phone menu |
