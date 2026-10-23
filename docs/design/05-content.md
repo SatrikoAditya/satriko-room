@@ -3,7 +3,7 @@
 ## Principles
 
 - **Source of truth:** Satriko's CV. Facts are copied exactly: dates, titles, scores, tools.
-- **Privacy:** the site and the public PDF contain **only email, LinkedIn and GitHub**. **No phone number and no referee names or contact details**; the site says "References available on request" instead.
+- **Privacy:** the site contains **only email, LinkedIn and GitHub**: **no phone number and no referee names or contact details**; the site says "References available on request" instead. The **public PDF** also has no referees, but **may show the phone number** (Satriko's choice, decision #51).
 - **Tone:** friendly, first person ("I build…") in intros and Oyen's lines; factual and skimmable in Experience, Skills and Education.
 - **Storage:** one typed TS file per section in `src/content/` (typed with the models in `src/models/`), images in `public/images/<section>/`. Panels are pure presentation ([02](02-architecture.md#content-layer)).
 - Anything still needed is marked **📝** and listed in the [content checklist](#content-checklist).
@@ -45,7 +45,7 @@ Shown as a desktop window: a sidebar of companies like files, and a detail pane.
   - **Agile Collaboration and Coordination:** Work closely with cross-functional teams, including managers, team leads, designers, QA, and developers, to align project objectives, ensure clear communication, and deliver high-quality solutions within set timelines.
   - **Code Quality and Compliance:** Perform in-depth code reviews and automated/manual testing to validate that software adheres to functional requirements, coding standards, and architectural best practices, ensuring seamless deployment readiness.
   - **Security and Compliance:** Ensure applications adhere to industry security standards and compliance requirements by implementing robust measures during the development lifecycle.
-- **Tools:** Git, Node.js, TypeScript, NestJS, React.js, Next.js, React Native, Tailwind, Zustand, Zod, TypeORM, MySQL, Supabase, AWS, Docker, Jira, Presentation and Public Speaking
+- **Tools:** Git, Node.js, TypeScript, NestJS, React.js, Next.js, React Native, Tailwind, Zustand, Zod, TypeORM, MySQL, Supabase, AWS, Azure Cloud, Docker, Jira, Presentation and Public Speaking
 
 ### Charcentric: Software Engineer
 
@@ -55,7 +55,7 @@ Shown as a desktop window: a sidebar of companies like files, and a detail pane.
   - **Software Lifecycle Management:** Engage in researching, designing, and managing software programs, ensuring their seamless lifecycle progression.
   - **Code Enhancement and Testing:** Developing, modifying software to rectify errors and enhance performance, and rigorously test and evaluate new programs for optimal functionality.
   - **Collaborative Development and Support:** Collaborate with engineering staff, follow internal development processes, and communicate effectively within the team, clients, and stakeholders. Additionally, provide technical support to clients and monitor reported issues for swift resolution.
-- **Tools:** Git, Node.js, TypeScript, Python, React.js, Next.js, React Native, Ionic, Capacitor.js, Tailwind, Storybook, Prisma, PostgreSQL, AWS, Vercel, Sentry, Docker, Jira, Presentation and Public Speaking
+- **Tools:** Git, Node.js, TypeScript, Python, React.js, Next.js, React Native, Ionic, Capacitor.js, Tailwind, Storybook, Prisma, PostgreSQL, AWS, Azure Cloud, Vercel, Sentry, Docker, Jira, Presentation and Public Speaking
 
 ### PT Immobi Solusi Prima: Full Stack Developer
 
@@ -123,6 +123,7 @@ Four shelves follow the CV's "Full Stack Technologies" groups, plus a **Toolbox*
 | | MongoDB | n/a 📝 |
 | **DevOps & Cloud** | Docker | Jitera, Charcentric |
 | | AWS | Jitera, Charcentric |
+| | Azure Cloud | Jitera, Charcentric |
 | | Vercel | Charcentric |
 | | Sentry | Charcentric |
 | **Toolbox** | Tailwind | Jitera, Charcentric |
@@ -236,7 +237,7 @@ No contact form, no phone number.
 
 - **Animation:** the printer "prints": a sheet slides out and becomes the panel.
 - **Contents:** name and title, the summary, a compact timeline (4 roles) and top skills, plus a big **Download PDF** button.
-- **The PDF:** 📝 a **public version** of the CV **without the phone number and without the referee page**, saved as `public/resume/Satriko-Aditya-Resume.pdf`.
+- **The PDF:** a **public version** of the CV **without the referee page** (the phone number stays, decision #51), saved as `public/resume/Satriko-Aditya-Resume.pdf`.
 
 ---
 
@@ -273,7 +274,7 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | `/about` | About · Satriko Aditya | Full stack engineer from Bogor, Indonesia, working remotely across Singapore and Abu Dhabi. |
 | `/experience` | Experience · Satriko Aditya | Full stack roles at Jitera, Charcentric and PT Immobi Solusi Prima. |
 | `/projects` | Projects · Satriko Aditya | Projects Satriko Aditya has built, from work apps to personal ones like this 3D room. |
-| `/skills` | Skills · Satriko Aditya | Node.js, TypeScript, React, Next.js, NestJS, React Native, PostgreSQL, AWS, Docker and more. |
+| `/skills` | Skills · Satriko Aditya | Node.js, TypeScript, React, Next.js, NestJS, React Native, PostgreSQL, AWS, Azure, Docker and more. |
 | `/education` | Education · Satriko Aditya | BSc Computer Science at BINUS, Hacktiv8 Honors Graduate, SMK Negeri 3 Bogor. |
 | `/gaming` | Gaming · Satriko Aditya | What Satriko is playing right now. |
 | `/travel` | Travel · Satriko Aditya | Places Satriko has explored around Indonesia. |
@@ -295,7 +296,7 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C2 | Friendly intro (2–4 sentences) | About | **Yes** | ✅ The draft above is in use |
 | C3 | LinkedIn URL | Contact, JSON-LD | **Yes** | ✅ Provided (`site.linkedin`) |
 | C4 | GitHub URL | Contact, JSON-LD | **Yes** | ✅ Provided (`site.github`) |
-| C5 | Public CV PDF (no phone, no referees) | Resume | **Yes** | ⏳ **Pending.** `public/resume/Satriko-Aditya-Resume.pdf` does not exist yet; see the README launch checklist |
+| C5 | Public CV PDF (no referees; the phone number is allowed, decision #51) | Resume | **Yes** | ✅ Provided on 2026-10-22: `public/resume/Satriko-Aditya-Resume.pdf` (2 pages, no referee page) |
 | C6 | Labels for skills with no job link (Redux, Vue.js, GraphQL, Redis, MongoDB) | Skills | **Yes** | Default in use: `UNLINKED_SKILL_LABEL = 'Side projects & learning'` in `src/content/skills.ts`. Change it there if Satriko prefers other wording |
 | C7 | Add JavaScript to skills? | Skills | No | Default: not added |
 | C8 | Show "Presentation & Public Speaking" as a bookend? | Skills | No | Default: yes (proposal) |

@@ -87,7 +87,7 @@ export const sections: readonly Section[] = [
     seo: {
       title: by('Skills'),
       description:
-        'Node.js, TypeScript, React, Next.js, NestJS, React Native, PostgreSQL, AWS, Docker and more.',
+        'Node.js, TypeScript, React, Next.js, NestJS, React Native, PostgreSQL, AWS, Azure, Docker and more.',
     },
   },
   {

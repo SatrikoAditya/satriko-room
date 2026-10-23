@@ -32,7 +32,7 @@ export const skillShelves: readonly ISkillShelf[] = [
     id: 'devops',
     title: 'DevOps & Cloud',
     color: 'lavender',
-    skills: ['Docker', 'AWS', 'Vercel', 'Sentry'],
+    skills: ['Docker', 'AWS', 'Azure Cloud', 'Vercel', 'Sentry'],
   },
   {
     id: 'toolbox',

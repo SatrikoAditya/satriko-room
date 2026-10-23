@@ -22,8 +22,8 @@ Node 24 via `nvm use` (`.nvmrc`; `engines` requires Node >= 22.22) and yarn.
 
 The code is done. These items need Satriko before the production launch. Paths are relative to the repo root.
 
-1. **Public CV PDF (blocking, checklist C5).** Export a public version of the CV to `public/resume/Satriko-Aditya-Resume.pdf` with **no phone number and no referees**. Until it exists, the Resume download and the error page's "Download resume" button return 404. Verify (must print `0`):
-   `pdftotext public/resume/Satriko-Aditya-Resume.pdf - | grep -ciE "[+]62|referee"`
+1. **Public CV PDF (checklist C5): done.** `public/resume/Satriko-Aditya-Resume.pdf` is the CV **without the referee page** (added 2026-10-22). The phone number is allowed in it (decision #51). After replacing it, check that no referee details came back (must print `0`; `pdftotext` comes with `brew install poppler`):
+   `pdftotext public/resume/Satriko-Aditya-Resume.pdf - | grep -ciE "referee|Sugeng|Gilang|Fadel|Zaidan"`
 2. **Production domain (blocking, C18).** Set `url` in `src/constants/site.ts` (now the placeholder `https://example.com`) to the real domain, then rebuild. The sitemap, robots, canonical URLs, Open Graph URLs and JSON-LD all derive from it. Verify: `yarn build`, then `curl -s localhost:3000/sitemap.xml` (after `yarn start`) lists the new domain.
 3. **Posters in daylight: done.** Re-captured on 2026-10-22 after the room was regrouped (decision #48). That run was in the evening, so a one-off copy of the poster script pinned the browser clock to 13:00 WIB (Playwright `page.clock.setFixedTime`; `yarn poster` itself uses the real time), and the day poster still shows a day sky. After any layout change, re-run `yarn build && yarn start`, then `yarn poster` in another shell, during Bogor daytime.
 4. **Real-device checks.** Lighthouse Performance under headless SwiftShader was 39 and is not representative. Test iPhone Safari and a mid-range Android: drag and pinch within limits, tags tappable, bottom bar, sheet swipe-to-close, at least 30 fps (or the automatic drop to the low tier). Also run Lighthouse on the production URL (Accessibility and SEO >= 95 on `/experience`).

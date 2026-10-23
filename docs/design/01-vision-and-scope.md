@@ -48,7 +48,7 @@ Animal Crossing is Nintendo's intellectual property. The site may use the *vibe*
 | S4 | Works and feels smooth on a **mid-range phone** (≥ 30 fps target; graphics drop to the low tier automatically) | Manual device QA |
 | S5 | 3D assets total **≤ about 2 MB** compressed | Build size check |
 | S6 | Lighthouse **Accessibility ≥ 95, SEO ≥ 95** on every route | Lighthouse CI / manual |
-| S7 | No phone number or referee details appear anywhere on the site or in the public PDF | Manual review |
+| S7 | No phone number or referee details appear anywhere on the site, and no referee details in the public PDF (which may show the phone number, decision #51) | Manual review |
 
 Detailed budgets are in [07: Quality](07-quality.md#performance-budgets).
 
@@ -62,7 +62,7 @@ Detailed budgets are in [07: Quality](07-quality.md#performance-budgets).
 | S4 | Awaits real devices | Not measurable under headless SwiftShader (about 10 fps there, tier drops to `low` automatically). Needs iPhone Safari and a mid-range Android |
 | S5 | Verified by the build check | There are no 3D model files (0 KB); `yarn budgets` enforces the limit if any appear |
 | S6 | Partly measured | Lighthouse (headless, 2026-10-22) gave Accessibility 100 and SEO 100 on `/experience` and `/`; axe runs on all 13 routes (the room and the 12 sections) in both themes, on desktop and mobile. Lighthouse was not run on every route, and not yet on the production URL |
-| S7 | Verified for the site; PDF pending | `src/content/content.test.ts` fails on forbidden patterns, and a repo-wide grep is clean. The public PDF does not exist yet, so its check (`pdftotext … | grep -ciE "[+]62|referee"` must print 0) waits for C5 |
+| S7 | Verified | `src/content/content.test.ts` fails on forbidden patterns, and a repo-wide grep is clean. The public PDF (added 2026-10-22) was read in full: two pages, no referee page or names; it shows the phone number by Satriko's choice |
 
 ## Scope
 

@@ -1,7 +1,7 @@
 import { site } from '@constants/site'
 
 export const resume = {
-  pdf: site.resumePdf, // checklist C5: public PDF without phone number or referees
+  pdf: site.resumePdf, // checklist C5: the public PDF has no referees (the phone number is allowed, decision #51)
   topSkills: [
     'Node.js',
     'TypeScript',
@@ -12,6 +12,7 @@ export const resume = {
     'PostgreSQL',
     'MySQL',
     'AWS',
+    'Azure Cloud',
     'Docker',
   ],
 }
