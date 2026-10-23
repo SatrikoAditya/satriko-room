@@ -90,7 +90,7 @@ Details are in [06](06-extras-and-easter-eggs.md#phase-2-easter-eggs).
 
 | Idea | Why it's parked |
 | --- | --- |
-| **Projects** object/section | Added later (decision #50): a rolling whiteboard beside the printer opens `/projects`. Placeholder cards until Satriko adds the real projects (C20) |
+| **Projects** object/section | Added later (decision #50): a rolling whiteboard beside the printer opens `/projects`. Seven projects (C20) |
 | Real **FOT-Seurat** font (the Animal Crossing font) | Commercial (Fontworks/Monotype). Legal web use needs a paid Adobe Fonts subscription or a Monotype license. Fonts are set in one place, so switching later is small |
 | Konami-code retro mini-game on the TV | Fun, but not chosen for phase 2 |
 | Discovery counter ("7/14 found") | Not chosen; the hints and phone menu cover findability |

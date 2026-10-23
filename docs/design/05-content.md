@@ -93,7 +93,7 @@ interface Job {
 
 ## Projects: `/projects` (rolling whiteboard)
 
-Project cards in two groups, **Personal** first (public projects with links), then **Work** (NDA-safe: what was built and with what, no client secrets). Each card: a screenshot (`public/images/projects/`) or a pastel tile, title, role, one-line summary, tech chips (names as in `skills.ts`) and links. Model `IProject` in `src/models/project.ts`, content in `src/content/projects.ts`. 📝 For now: **Satriko's Room** (this site, real, with a screenshot) plus three cards marked "(placeholder)" to replace (C20).
+Project cards in two groups, **Personal** first (public projects with links), then **Work** (NDA-safe: what was built and with what, no client secrets). Each card: a screenshot (`public/images/projects/`) or a pastel tile, title, role, one-line summary, tech chips (names as in `skills.ts`) and links. Model `IProject` in `src/models/project.ts`, content in `src/content/projects.ts`. Content: **Satriko's Room** (personal); under Work, first the freelance **Sativa Trip Indonesia** (2026, linked to the live site), then five projects from Satriko's 2025 portfolio (DataX Pipeline Builder, 360U, ProGen, APCO Fusion, TINC Polaris). They are released but their code is private, so they have no links, and their screenshots are cropped to leave out client data (URLs, user names, survey details).
 
 ---
 
@@ -311,6 +311,6 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C17 | Music track(s) for the radio | Radio | No | ✅ Provided: a 90 s loop of "Lofi Restaurant" by alex-morgan on Pixabay (Pixabay Content License; labelled AI-generated) in `public/audio/music-cozy.mp3`, recorded in `CREDITS.md` |
 | C18 | Domain name | Deployment, canonical URLs | **Yes** (before the production launch) | ⏳ Pending. `site.url` is still the placeholder `https://example.com` in `src/constants/site.ts` |
 | C19 | Analytics: yes or no (e.g. Vercel Web Analytics) | Deployment | No | Decision: none (default) |
-| C20 | Projects: 2–4 or more projects (title, kind work or personal, role, one-line summary, tech, links, a screenshot), with an NDA check on work ones | Projects | No | ⏳ Placeholders in use: Satriko's Room plus three "(placeholder)" cards in `src/content/projects.ts` |
+| C20 | Projects: title, kind, role, summary, tech, links, screenshot, with an NDA check on work ones | Projects | No | ✅ Provided on 2026-10-23 from Satriko's portfolio: seven projects in `src/content/projects.ts` (Sativa Trip Indonesia added the same day), screenshots in `public/images/projects/` |
 
-**Status at the end of the build:** C1–C4 provided; C17 provided after the build; C5 and C18 pending (see the README launch checklist); C6 uses its default; C19 none. C7–C16 keep their defaults, and the hobby content (C10–C13) is still empty, so those panels show their empty states. C20 (projects, added with decision #50) uses placeholders.
+**Status at the end of the build:** C1–C4 provided; C17 provided after the build; C5 and C18 pending (see the README launch checklist); C6 uses its default; C19 none. C7–C16 keep their defaults, and the hobby content (C10–C13) is still empty, so those panels show their empty states. C20 (projects, decision #50) is provided.

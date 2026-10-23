@@ -36,7 +36,7 @@ This is a portfolio site that feels like visiting Satriko's room. The room is a 
 - **Privacy:** only email, LinkedIn and GitHub are public. No phone number, no referees.
 - **Language:** English only.
 - **Fonts:** M PLUS Rounded 1c (kept after the style test against Zen Maru Gothic) and Nunito. JetBrains Mono inside the PC panel, VT323 inside the TV panel.
-- **Projects:** added later (decision #50), on a rolling whiteboard beside the printer; placeholder cards until the real projects arrive (C20).
+- **Projects:** added later (decision #50), on a rolling whiteboard beside the printer: Satriko's Room, the freelance Sativa Trip Indonesia site, and five work projects from the 2025 portfolio (C20).
 - **Code structure:** follows Satriko's Jitera Next.js project, so it feels familiar: `src/` with path aliases, thin `app/` routes, atomic design components (atoms, molecules, organisms, templates, pages), one Zustand store per concern in `store/`, plus `constants/`, `hooks/`, `interfaces/`, `models/`, `utils/`, next-themes, shadcn/ui, and the same Prettier/ESLint conventions. Two additions: `components/three/` for the 3D scene and `content/` for site content ([02](02-architecture.md#project-structure)).
 
 ## What's next
