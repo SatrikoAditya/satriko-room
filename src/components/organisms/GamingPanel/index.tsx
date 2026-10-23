@@ -53,8 +53,8 @@ function GameCard({ game, nowPlaying }: { game: IGame; nowPlaying: boolean }) {
         <Image
           src={game.cover}
           alt=""
-          width={256}
-          height={256}
+          width={512}
+          height={512}
           sizes="(min-width: 640px) 25vw, 80px"
           className="aspect-square w-20 shrink-0 rounded object-cover sm:mb-2 sm:w-full"
         />

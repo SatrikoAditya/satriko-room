@@ -170,7 +170,7 @@ A TV bezel with a "SELECT GAME" menu in pixel font, filled from a **snapshot of 
 | Part | Content |
 | --- | --- |
 | Trophy strip | Trophy level, then the platinum, gold, silver and bronze counts |
-| Recently played | The last 6 games: cover, title, a PS5 / PS4 badge, "Last played 20 Oct 2026" and the playtime in hours (left out when PSN has none). The first card is marked ★ Now playing. The date is absolute, because "3 days ago" would go stale on a static page |
+| Recently played | The last 6 games (two rows of three on desktop): cover, title, a PS5 / PS4 badge, "Last played 20 Oct 2026" and the playtime in hours (left out when PSN has none). The first card is marked ★ Now playing. The date is absolute, because "3 days ago" would go stale on a static page |
 | Footer | "Synced 23 Oct 2026", the date of the snapshot |
 | Not shown | The PSN Online ID (gamer tag), the account ID, friends and online status |
 
@@ -178,8 +178,8 @@ A TV bezel with a "SELECT GAME" menu in pixel font, filled from a **snapshot of 
 
 1. It reads `PSN_NPSSO` from `.env.local`, which is git-ignored.
 2. It exchanges the NPSSO for an access token with [psn-api](https://psn-api.achievements.app/), an unofficial library that is a dev-only dependency. Each run starts from the NPSSO, so no refresh token is stored.
-3. It fetches the recently played games (`getUserPlayedGames`) and the trophy summary (`getUserTrophyProfileSummary`).
-4. It writes `src/content/gaming.snapshot.json` (committed) and saves each cover as a small `.webp` in `public/images/gaming/`, deleting covers no longer listed.
+3. It fetches the recently played games (`getUserPlayedGames`, asking for up to 30 titles in the PS5, PS4 and PC game categories) and the trophy summary (`getUserTrophyProfileSummary`). Media apps such as Netflix or YouTube are left out, and `toSnapshot` drops any title without a game platform too, in case PSN ignores the filter.
+4. It writes `src/content/gaming.snapshot.json` (committed) and saves each cover as a `.webp` of up to 512 px (sharp on 2× screens; never upscaled) in `public/images/gaming/`, deleting covers no longer listed.
 5. If the NPSSO is missing or expired, it stops with the renewal steps below and changes no files. It never logs the NPSSO or the tokens.
 
 The covers are the games' official icons from PlayStation, shown small as "what I'm playing", as the PlayStation app does; the rule to respect each game's usage terms still applies.

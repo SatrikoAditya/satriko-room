@@ -16,12 +16,19 @@ import {
 import sharp from 'sharp'
 
 import { formatDay } from '../src/utils/dates'
-import { coverFileName, RECENT_GAMES, toSnapshot } from '../src/utils/games'
+import {
+  coverFileName,
+  FETCH_LIMIT,
+  GAME_CATEGORIES,
+  toSnapshot,
+} from '../src/utils/games'
 
 const root = join(import.meta.dirname, '..')
 const snapshotPath = join(root, 'src', 'content', 'gaming.snapshot.json')
 const coverDir = join(root, 'public', 'images', 'gaming')
-const COVER_SIZE = 256
+// Covers show about 300 CSS px wide on desktop, so 512 px stays sharp on 2×
+// screens; smaller PSN icons are kept at their own size.
+const COVER_SIZE = 512
 
 const RENEW_STEPS = `To renew it:
   1. Sign in at https://www.playstation.com
@@ -52,10 +59,14 @@ let snapshot: ReturnType<typeof toSnapshot>
 let played: Awaited<ReturnType<typeof getUserPlayedGames>>['titles']
 try {
   const [games, summary] = await Promise.all([
-    getUserPlayedGames(auth, 'me', { limit: RECENT_GAMES, offset: 0 }),
+    getUserPlayedGames(auth, 'me', {
+      limit: FETCH_LIMIT,
+      offset: 0,
+      categories: GAME_CATEGORIES.join(','),
+    }),
     getUserTrophyProfileSummary(auth, 'me'),
   ])
-  played = games.titles.slice(0, RECENT_GAMES)
+  played = games.titles
   snapshot = toSnapshot({ played, summary, now: new Date() })
 } catch {
   console.error(
@@ -67,17 +78,27 @@ try {
 // Stage the covers first, so a failure leaves the old ones in place.
 const staging = await mkdtemp(join(tmpdir(), 'games-sync-'))
 try {
-  for (const [i, title] of played.entries()) {
+  // Snapshot IDs are the cover file names without .webp (see toSnapshot).
+  const imageUrlById = new Map(
+    played.map((t) => [
+      coverFileName(t.titleId).replace(/\.webp$/, ''),
+      t.imageUrl,
+    ]),
+  )
+  for (const game of snapshot.recent) {
     try {
-      const res = await fetch(title.imageUrl)
+      const res = await fetch(imageUrlById.get(game.id) ?? '')
       if (!res.ok) throw new Error(String(res.status))
       await sharp(Buffer.from(await res.arrayBuffer()))
-        .resize(COVER_SIZE, COVER_SIZE, { fit: 'cover' })
+        .resize(COVER_SIZE, COVER_SIZE, {
+          fit: 'cover',
+          withoutEnlargement: true,
+        })
         .webp({ quality: 80 })
-        .toFile(join(staging, coverFileName(title.titleId)))
+        .toFile(join(staging, `${game.id}.webp`))
     } catch {
-      console.warn(`No cover saved for "${snapshot.recent[i].title}".`)
-      snapshot.recent[i].cover = null
+      console.warn(`No cover saved for "${game.title}".`)
+      game.cover = null
     }
   }
 

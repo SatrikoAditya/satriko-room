@@ -78,7 +78,7 @@ describe('toSnapshot', () => {
   const now = new Date('2026-10-23T03:00:00Z')
 
   it('keeps the latest games and the trophy counts', () => {
-    const played = Array.from({ length: 8 }, (_, i) => title(i + 1))
+    const played = Array.from({ length: 12 }, (_, i) => title(i + 1))
     const snap = toSnapshot({ played, summary, now })
     expect(snap.syncedAt).toBe('2026-10-23T03:00:00.000Z')
     expect(snap.trophies).toEqual({
@@ -97,6 +97,25 @@ describe('toSnapshot', () => {
       lastPlayed: '2026-10-20T12:00:00Z',
       playtimeHours: 11,
     })
+  })
+
+  it('leaves out media apps such as Netflix and YouTube', () => {
+    const played = [
+      title(1, {
+        name: 'Netflix',
+        localizedName: 'Netflix',
+        category: 'unknown',
+      }),
+      title(2, { category: 'ps4_game' }),
+      title(3, {
+        name: 'YouTube',
+        localizedName: 'YouTube',
+        category: 'unknown',
+      }),
+      title(4, { category: 'pspc_game' }),
+    ]
+    const snap = toSnapshot({ played, summary, now })
+    expect(snap.recent.map((g) => g.title)).toEqual(['Game 2', 'Game 4'])
   })
 
   it('never copies account details', () => {

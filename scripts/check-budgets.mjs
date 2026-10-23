@@ -39,7 +39,7 @@ const assetChecks = [
   [
     'public/images/gaming',
     (n) => n.endsWith('.webp'),
-    300 * 1024,
+    450 * 1024,
     'game covers',
   ],
 ]

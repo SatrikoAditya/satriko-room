@@ -10,6 +10,12 @@ export const RECENT_GAMES = 6
 
 export const GAMING_IMAGE_DIR = '/images/gaming'
 
+/** PSN categories that are games; apps like Netflix or YouTube are left out. */
+export const GAME_CATEGORIES = ['ps5_native_game', 'ps4_game', 'pspc_game']
+
+/** How many titles the sync asks for, so 6 games remain after dropping apps. */
+export const FETCH_LIMIT = 30
+
 type PlayedTitle = UserPlayedGamesResponse['titles'][number]
 
 /** Whole hours from an ISO 8601 duration ("PT228H56M33S" → 229). */
@@ -37,8 +43,9 @@ export function coverFileName(titleId: string) {
 }
 
 /**
- * Maps the PSN responses to the snapshot. Only the listed fields are copied,
- * so account details (account ID, Online ID) can never reach the site.
+ * Maps the PSN responses to the snapshot. Only games are kept (not media apps),
+ * and only the listed fields are copied, so account details (account ID,
+ * Online ID) can never reach the site.
  */
 export function toSnapshot({
   played,
@@ -49,14 +56,17 @@ export function toSnapshot({
   summary: UserTrophyProfileSummaryResponse
   now: Date
 }): IGamingSnapshot {
-  const recent: IGame[] = played.slice(0, RECENT_GAMES).map((t) => ({
-    id: coverFileName(t.titleId).replace(/\.webp$/, ''),
-    title: t.localizedName || t.name,
-    platform: platformOf(t.category),
-    cover: `${GAMING_IMAGE_DIR}/${coverFileName(t.titleId)}`,
-    lastPlayed: t.lastPlayedDateTime,
-    playtimeHours: parsePlayDuration(t.playDuration),
-  }))
+  const recent: IGame[] = played
+    .filter((t) => platformOf(t.category) !== null)
+    .slice(0, RECENT_GAMES)
+    .map((t) => ({
+      id: coverFileName(t.titleId).replace(/\.webp$/, ''),
+      title: t.localizedName || t.name,
+      platform: platformOf(t.category),
+      cover: `${GAMING_IMAGE_DIR}/${coverFileName(t.titleId)}`,
+      lastPlayed: t.lastPlayedDateTime,
+      playtimeHours: parsePlayDuration(t.playDuration),
+    }))
   const { platinum, gold, silver, bronze } = summary.earnedTrophies
   return {
     syncedAt: now.toISOString(),

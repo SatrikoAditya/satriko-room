@@ -75,7 +75,7 @@
 | Room interactive after Enter (mid-range phone, 4G) | ≤ about 4s | Assets preloaded while the loader shows |
 | Frame rate | ≥ 50 fps desktop, ≥ 30 fps mid-range phone | Steps down a graphics tier automatically ([03](03-room-scene.md#performance-tiers)) |
 | Audio | Music loaded on first play only, music loop ≤ 1.5 MB; each sound effect ≤ about 30 KB | Not part of the initial load; both limits are checked by `yarn budgets` |
-| Game covers | `public/images/gaming/` ≤ 300 KB (six 256 px `.webp` covers, about 15–30 KB each) | Saved by `yarn games:sync` (decision #52); checked by `yarn budgets` |
+| Game covers | `public/images/gaming/` ≤ 450 KB (six `.webp` covers of up to 512 px, about 40–70 KB each, sharp on 2× screens) | Saved by `yarn games:sync` (decision #52); checked by `yarn budgets` |
 | Lighthouse | **Accessibility ≥ 95, SEO ≥ 95, Best Practices ≥ 95**; Performance ≥ 80 (mobile) on direct-link pages | The `/` route with 3D may score lower on Performance; that's accepted, since the loader is intentional. The Performance numbers under headless SwiftShader (below) are not representative; re-measure on production and on real devices |
 
 ### Measured (2026-10-22)
