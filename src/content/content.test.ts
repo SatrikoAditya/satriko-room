@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
+import { mountainShapes } from '@constants/mountainShapes'
 import { site } from '@constants/site'
 
 import { about } from './about'
 import { contact } from './contact'
-import { certification, dives } from './diving'
+import { dives } from './diving'
 import { education } from './education'
 import { jobs } from './experience'
 import { gaming } from './gaming'
@@ -57,7 +58,6 @@ describe('content', () => {
       travelPins,
       hikes,
       dives,
-      certification,
       projects,
     })
     for (const re of forbidden) expect(blob).not.toMatch(re)
@@ -80,5 +80,24 @@ describe('content', () => {
         'playtimeHours',
         'title',
       ])
+  })
+  it('keeps travel pins to the agreed shape', () => {
+    expect(new Set(travelPins.map((p) => p.id)).size).toBe(travelPins.length)
+    for (const pin of travelPins) {
+      expect(pin.photos.length).toBeLessThanOrEqual(3)
+      expect(pin.year === null || Number.isInteger(pin.year)).toBe(true)
+      // Inside Indonesia's bounding box.
+      expect(pin.lat).toBeGreaterThan(-11.5)
+      expect(pin.lat).toBeLessThan(6.5)
+      expect(pin.lon).toBeGreaterThan(94.5)
+      expect(pin.lon).toBeLessThan(141.5)
+      for (const photo of pin.photos) {
+        expect(photo.alt.trim()).not.toBe('')
+        expect(photo.src.startsWith(`/images/travel/${pin.id}/`)).toBe(true)
+      }
+    }
+  })
+  it('draws every mountain in its own shape', () => {
+    for (const hike of hikes) expect(mountainShapes[hike.id]).toBeDefined()
   })
 })

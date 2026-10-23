@@ -1,41 +1,57 @@
-import Image from 'next/image'
+'use client'
 
+import { useState } from 'react'
+
+import ChipStrip from '@components/molecules/ChipStrip'
 import EmptyState from '@components/molecules/EmptyState'
+import JournalPage from '@components/molecules/JournalPage'
+import MountainScene from '@components/molecules/MountainScene'
 
 import { hikes as defaultHikes } from '@content/hiking'
 import { oyenLines } from '@content/oyen'
 import type { IHike } from '@models/hike'
+import { formatMetres, summitStats } from '@utils/hiking'
+import { newestFirst } from '@utils/travel'
 
 export default function HikingPanel({
-  items = defaultHikes,
+  items: unsorted = defaultHikes,
 }: {
   items?: readonly IHike[]
 }) {
-  return items.length === 0 ? (
-    <EmptyState message={oyenLines.empty.hiking} />
-  ) : (
-    <ul className="grid gap-3 sm:grid-cols-2">
-      {items.map((h) => (
-        <li key={h.id} className="bg-paper-2 rounded-xl p-3">
-          <p className="font-display font-bold">
-            {h.name} · {h.elevationM} m
-          </p>
-          <p className="text-ink-muted text-sm">
-            {h.location} · {h.date}
-          </p>
-          {h.photos[0] && (
-            <Image
-              src={h.photos[0].src}
-              alt={h.photos[0].alt}
-              width={800}
-              height={600}
-              sizes="(min-width: 640px) 50vw, 100vw"
-              className="h-auto w-full rounded-lg"
-            />
-          )}
-          <p>{h.story}</p>
-        </li>
-      ))}
-    </ul>
+  const hikes = newestFirst(unsorted)
+  // The newest hike is selected on open (decision 54).
+  const [selectedId, setSelectedId] = useState<string | null>(
+    hikes[0]?.id ?? null,
+  )
+  const selected = hikes.find((h) => h.id === selectedId) ?? null
+  const stats = summitStats(hikes)
+
+  if (!stats) return <EmptyState message={oyenLines.empty.hiking} />
+  // Same layout as Travel: phones get the selected mountain, a sideways
+  // mountain strip, then the journal page; desktop puts the page on the right.
+  return (
+    <div className="grid gap-4 [grid-template-areas:'stats'_'sky'_'list'_'card'] lg:grid-cols-[3fr_2fr] lg:grid-rows-[auto_auto_1fr] lg:[grid-template-areas:'stats_card'_'sky_card'_'list_card']">
+      <p className="font-display font-extrabold [grid-area:stats]">
+        {stats.count} {stats.count === 1 ? 'mountain' : 'mountains'} · highest{' '}
+        {formatMetres(stats.highest.elevationM)} ({stats.highest.name})
+      </p>
+      <div className="[grid-area:sky]">
+        {selected && (
+          <MountainScene hike={selected} tallestM={stats.highest.elevationM} />
+        )}
+      </div>
+      <ChipStrip
+        items={hikes.map((h) => ({ id: h.id, label: h.name }))}
+        selectedId={selectedId}
+        onSelect={setSelectedId}
+        label="Mountains, newest first"
+        className="[grid-area:list]"
+      />
+      {selected && (
+        <div aria-live="polite" className="self-start [grid-area:card]">
+          <JournalPage key={selected.id} hike={selected} />
+        </div>
+      )}
+    </div>
   )
 }

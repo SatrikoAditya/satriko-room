@@ -1,19 +1,24 @@
 import type { ComponentType } from 'react'
+import dynamic from 'next/dynamic'
 
 import AboutPanel from '@components/organisms/AboutPanel'
 import ContactPanel from '@components/organisms/ContactPanel'
-import DivingPanel from '@components/organisms/DivingPanel'
 import EducationPanel from '@components/organisms/EducationPanel'
 import ExperiencePanel from '@components/organisms/ExperiencePanel'
 import GamingPanel from '@components/organisms/GamingPanel'
-import HikingPanel from '@components/organisms/HikingPanel'
 import ProjectsPanel from '@components/organisms/ProjectsPanel'
 import RemoteWorkPanel from '@components/organisms/RemoteWorkPanel'
 import ResumePanel from '@components/organisms/ResumePanel'
 import SkillsPanel from '@components/organisms/SkillsPanel'
-import TravelPanel from '@components/organisms/TravelPanel'
 
 import type { SectionSlug } from '@interfaces/section'
+
+// The three hobby panels are the heaviest (map, skyline, depth chart, photo
+// slider), so they load in their own chunks when opened. They still render on
+// the server, so a direct link has their text in the HTML.
+const TravelPanel = dynamic(() => import('@components/organisms/TravelPanel'))
+const HikingPanel = dynamic(() => import('@components/organisms/HikingPanel'))
+const DivingPanel = dynamic(() => import('@components/organisms/DivingPanel'))
 
 export const panelComponents: Record<SectionSlug, ComponentType> = {
   about: AboutPanel,

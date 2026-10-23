@@ -18,6 +18,20 @@
   --accent: #b8553a;
   --accent-soft: #d2694a;
   --on-accent: #ffffff;
+  /* The Travel map and Hiking skyline illustrations (decision 55): a day scene
+     here, an evening scene at night. */
+  --scene-sky: #dcebee;
+  --scene-land: #9fd8c3;
+  --scene-hill: #c2e3d8;
+  --scene-peak: #9fd8c3;
+  --scene-peak-selected: #5faf8f;
+  --scene-outline: #7a5235;
+  --scene-ground: #b9875a;
+  --scene-star: transparent;
+  --scene-sea-top: #a9d6f2;
+  --scene-sea-deep: #3a6ea5;
+  --scene-depth-ink: #1b2233;
+  --scene-smoke: #fffdf8;
 }
 
 [data-theme='night'] {
@@ -36,6 +50,18 @@
   --accent: #f2a65a;
   --accent-soft: #f2a65a;
   --on-accent: #2b2238;
+  --scene-sky: #1c2744;
+  --scene-land: #5f9c86;
+  --scene-hill: #2f4a55;
+  --scene-peak: #5f9c86;
+  --scene-peak-selected: #8fd0b4;
+  --scene-outline: #2a1f30;
+  --scene-ground: #7a5235;
+  --scene-star: #fff1dc;
+  --scene-sea-top: #2a4f7a;
+  --scene-sea-deep: #0b1428;
+  --scene-depth-ink: #d9e6f2;
+  --scene-smoke: #8a94a8;
 }
 
 @theme inline {
@@ -85,7 +111,70 @@ body {
   outline-offset: 2px;
 }
 
+/* A selected map pin hops once (Travel panel). Reduced motion turns it off below. */
+.pin-bounce {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: pin-bounce 0.45s ease-out;
+}
+
+@keyframes pin-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+}
+
+/* The flag on the selected summit waves once (Hiking panel). */
+.flag-wave {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: flag-wave 0.9s ease-in-out;
+}
+
+@keyframes flag-wave {
+  0%,
+  100% {
+    transform: scaleX(1) skewY(0deg);
+  }
+  30% {
+    transform: scaleX(0.8) skewY(8deg);
+  }
+  65% {
+    transform: scaleX(0.95) skewY(-6deg);
+  }
+}
+
+/* Bubbles rise three times from the selected dive, then stop (Diving panel);
+   off with reduced motion. */
+.bubble-rise {
+  opacity: 0;
+  animation: bubble-rise 1.6s ease-in 3 both;
+}
+
+@keyframes bubble-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  /* Hide the bubbles rather than flash them. */
+  .bubble-rise {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {

@@ -199,17 +199,25 @@ Until the first sync: [empty state](#empty-states).
 ## Travel: `/travel` (Indonesia map)
 
 - **Map:** an illustrated **map of Indonesia**, built from a simplified Natural Earth outline (public domain) and drawn in the site's style. The same artwork is the texture on the 3D wall map.
-- **Pins:** 📝 to be added later. Each pin has:
+- **Pins:** the **places Satriko has visited in Indonesia**: cities, islands, villages and areas (decision #53). Hikes and dives are not pinned here: they live in their own objects, the backpack and boots (`/hiking`) and the scuba tank (`/diving`). Each pin in `src/content/travel.ts` has:
 
-| Field | Example |
+| Field | Content |
 | --- | --- |
-| Place | e.g. city / island / national park |
-| Province / island | |
-| Coordinates | Latitude/longitude, projected onto the map |
-| Year | |
-| Photos | 1–3 |
+| Place | The city, island, village or area |
+| Region line | The province, with what the place is when it isn't a city: e.g. "Village · Manggarai, East Nusa Tenggara", "Island · Central Maluku, Maluku", "Plateau · Central Java" |
+| Coordinates | Latitude/longitude at the **place's centre, never an exact spot** (Bogor is pinned as the city, not a home address) |
+| Year | `null` until Satriko sends it with the photos; the postcard then shows just the place, and places without a year come last in the list |
+| Photos | **0–3**, each with alt text (e.g. "Sunset over Padar Island from the viewpoint"). A city without a photo is allowed |
 | Note | One or two lines |
 
+- **One pin or part of a postcard?** A place gets **its own pin** when it's a trip of its own and far enough away to show as a separate dot (Wae Rebo, Nuca Molas). **A day trip from a city** goes in that city's postcard instead: Bair and Adranan islands are in the Kei Islands postcard. Places that sit right next to each other share one pin: Tual and Langgur are the **Kei Islands** pin. To keep crowded Java readable, only the main Java trips are pinned.
+- **The postcard:** clicking a pin (or its place button) shows a polaroid postcard with the photos, "Place · Year", the region line and the note (each left out while empty). The layout is in [04](04-ui-and-visual-design.md#themed-interiors).
+- **Photos: how they get in.** Satriko sends the photos in chat with the place, year and note. Claude then:
+  1. converts each one with `sharp` to a `.webp` of 1200 px on the long side, quality 80. `sharp` drops all metadata, so **EXIF and GPS are removed**;
+  2. saves them as `public/images/travel/<pin-id>/1.webp`, `2.webp`, …;
+  3. checks the outputs carry no metadata, looks up the place's centre coordinates, and writes the `travel.ts` entry with alt text;
+  4. leaves it uncommitted for Satriko's review.
+- **People in photos:** no photos where other people's faces are clearly recognisable, unless they're fine with it.
 - **Later:** a "World" tab can be added if Satriko travels abroad more (parked; see [01](01-vision-and-scope.md#parked-recorded-not-planned)).
 - Until there are pins: [empty state](#empty-states). The map shows with no pins, plus Oyen's placeholder note.
 
@@ -217,11 +225,41 @@ Until the first sync: [empty state](#empty-states).
 
 ## Hiking: `/hiking` (backpack + boots)
 
-A trail journal. 📝 To fill in later: entries with **mountain / trail name, location, elevation (m), date, photos, short story**. Until then: [empty state](#empty-states).
+A **mountain illustration plus a trail journal** (decisions #54, #57): the selected mountain is drawn on its own in its real shape, and the journal page beside it holds Satriko's photos. Each mountain Satriko has climbed is one entry in `src/content/hiking.ts`:
+
+| Field | Content |
+| --- | --- |
+| Name | e.g. "Mount Rinjani" |
+| Location | The region line, e.g. "Lombok, West Nusa Tenggara" |
+| Elevation | Summit height in metres, from a public source |
+| Year | The latest climb (repeat climbs are mentioned in the story) |
+| Route | The trail or basecamp, e.g. "via Gunung Putri" (`null` when there isn't one, e.g. Bromo) |
+| Days | Days on the trail (`null` until sent) |
+| Photos | **0–3**, each with alt text, in `public/images/hiking/<id>/`, prepared like Travel's (1200 px `.webp`, EXIF and GPS stripped) |
+| Story | A few lines |
+
+- **Stats** above the illustration are computed, never written: "15 mountains · highest 3,428 m (Mount Slamet)". Mountains, not summits: Salak counts once although three of its peaks were climbed. Every summit so far was reached, so there is no summit badge.
+- **Shapes:** each mountain has its own silhouette in `src/constants/mountainShapes.ts` (points from base to summit, smoke over active craters, the sea for island volcanoes); a content test fails if a mountain has none.
+- **No exact trail or camp coordinates**: the illustration doesn't need them. No recognisable faces of others without their consent.
+- **The mountains (added 2026-10-23):** 15 so far, with Satriko's years and routes. Heights are the highest summit reached, from public sources; Mount Kawi's differs between sources (2,551 / 2,603 / 2,651 m); it uses 2,603 m, the summit Satriko confirmed. Each story is a placeholder (after any facts Satriko gave, such as Salak's three peaks) and each photo spot shows the mint placeholder tile until Satriko sends the story and photos, one mountain at a time.
+- Until there are hikes: [empty state](#empty-states).
 
 ## Diving: `/diving` (scuba tank, mask + fins)
 
-A dive logbook. 📝 To fill in later: **certification level** (e.g. which PADI/SSI level), and entries with **dive site, location, max depth (m), date, highlights (marine life), photos**. Until then: [empty state](#empty-states).
+An **ocean depth chart plus a dive logbook** (decision #56). Satriko dives **for fun, with no certification or logbook**, so there is no certification line and no visibility or temperature; depths are rough. Each dive is one entry in `src/content/diving.ts`:
+
+| Field | Content |
+| --- | --- |
+| Site | The dive site, or the place when the site's name isn't known (e.g. "Labuan Bajo") |
+| Location | The region line, e.g. "West Manggarai, East Nusa Tenggara" |
+| Depth | Rough max depth in metres, shown as "about 12 m" |
+| Year | `null` until Satriko sends it with the photos |
+| Photos | **0–3**, each with alt text, in `public/images/diving/<id>/`, prepared like Travel's (1200 px `.webp`, EXIF and GPS stripped) |
+| Note | What it was like, including what Satriko saw |
+
+- **Dive stats** above the chart are computed: "6 dives · deepest about 18 m (Manta Point)".
+- **Placeholder:** one entry, "Labuan Bajo (placeholder)" at about 12 m, is in place for review until Satriko sends the dives (added 2026-10-23).
+- Until there are dives: [empty state](#empty-states).
 
 ---
 
@@ -320,9 +358,9 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C8 | Show "Presentation & Public Speaking" as a bookend? | Skills | No | Default: yes (proposal) |
 | C9 | Certificates / awards / talks | Education | No | Default: the 3 frames only |
 | C10 | Games: a PlayStation snapshot (recently played, trophy summary) | Gaming | No | Designed (decision #52): filled by `yarn games:sync` with Satriko's NPSSO in `.env.local`. Empty state until the first sync |
-| C11 | Indonesia pins: places, years, photos, notes | Travel | No | Map without pins until provided |
-| C12 | Hiking entries | Hiking | No | Empty state until provided |
-| C13 | Dive certification + dive entries | Diving | No | Empty state until provided |
+| C11 | Map pins (places visited in Indonesia): place, year, 0–3 photos, note | Travel | No | ✅ 21 places pinned on 2026-10-23 (A to Z, years `null`, notes are placeholders; six smaller Java cities left out to keep Java readable, Tual and Langgur merged as Kei Islands, Gunung Kidul folded into Yogyakarta, and Tegal left to Hiking since the trip there was for Mount Slamet). Years, notes and photos come one place at a time: Satriko sends them in chat, Claude prepares the files and entries |
+| C12 | Hiking entries: mountain, elevation, year, route, days, 0–3 photos, story | Hiking | No | ✅ 15 mountains with years and routes (2026-10-23), each in its own illustrated shape. Stories and photos are placeholders until Satriko sends them, one mountain at a time in chat |
+| C13 | Dive entries: site or place, rough depth, year, 0–3 photos, note (no certification: fun dives) | Diving | No | Built (decision #56) with one placeholder for review. Satriko knows the depths so far; the rest comes one dive at a time in chat |
 | C14 | Remote-work note | Remote work | No | A draft is provided above |
 | C15 | Oyen's markings (stripes? white paws/chest? eye color?) | 3D Oyen, loader SVG | No | Default: orange tabby, cream chest |
 | C16 | Review Oyen's lines | Speech bubble | No | Drafts above |

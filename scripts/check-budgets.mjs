@@ -64,6 +64,33 @@ for (const [dir, pred, limit, label] of assetChecks) {
   report(label, size, limit)
 }
 
+// Each travel, hiking and diving photo on its own (decisions 53, 54, 56):
+// one shows at a time.
+const largestFile = (dir, pred) =>
+  readdirSync(dir, { withFileTypes: true }).reduce((best, e) => {
+    const p = join(dir, e.name)
+    const f = e.isDirectory()
+      ? largestFile(p, pred)
+      : pred(e.name)
+        ? { path: p, size: statSync(p).size }
+        : null
+    return f && (!best || f.size > best.size) ? f : best
+  }, null)
+const TRAVEL_PHOTO_LIMIT = 250 * 1024
+const biggestPhoto = [
+  'public/images/travel',
+  'public/images/hiking',
+  'public/images/diving',
+]
+  .filter((dir) => existsSync(dir))
+  .map((dir) => largestFile(dir, (n) => n.endsWith('.webp')))
+  .reduce((best, f) => (f && (!best || f.size > best.size) ? f : best), null)
+report(
+  `largest hobby photo${biggestPhoto ? ` ${biggestPhoto.path}` : ''}`,
+  biggestPhoto?.size ?? 0,
+  TRAVEL_PHOTO_LIMIT,
+)
+
 // 250 KB: the design asked for ~200 KB, but React/Next runtime alone measured
 // ~216 KB (analyzer, 2026-10-22); motion LazyMotion slimming is a tracked follow-up.
 const FIRST_LOAD_LIMIT = 250 * 1024
