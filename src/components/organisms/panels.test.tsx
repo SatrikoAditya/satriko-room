@@ -27,9 +27,13 @@ describe('panels', () => {
     expect(screen.getAllByRole('list', { name: /shelf/i })).toHaveLength(5)
     expect(screen.getByRole('button', { name: 'NestJS' })).toBeInTheDocument()
   })
-  it('EducationPanel marks Hacktiv8 as honors', () => {
+  it('EducationPanel marks Hacktiv8 as honors and tags each kind', () => {
     render(<EducationPanel />)
     expect(screen.getByText(/Honors Graduate/)).toBeInTheDocument()
+    // Each card says what it is, so the bootcamp isn't read as a degree.
+    expect(screen.getByText('Degree')).toBeInTheDocument()
+    expect(screen.getByText('Bootcamp')).toBeInTheDocument()
+    expect(screen.getByText('Vocational school')).toBeInTheDocument()
   })
   it('hobby panels show the empty state when there is no content', () => {
     render(

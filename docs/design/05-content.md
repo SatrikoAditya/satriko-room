@@ -159,6 +159,8 @@ interface SkillShelf { id: string; title: string; color: string; skills: string[
 | 2 | Immersive Full Stack JavaScript | Hacktiv8 | Jakarta, Indonesia | July 2020 – October 2020 | 🎀 **Honors Graduate**, final score 94.79/100 |
 | 3 | Computer & Network Engineering | SMK Negeri 3 Bogor | Bogor, Indonesia | July 2017 – July 2020 | Final score 84/100 |
 
+**Kind tags (decision #64):** BINUS is tagged **Degree**, Hacktiv8 **Bootcamp** and SMK Negeri 3 Bogor **Vocational school** (`kind` in `src/content/education.ts`). If certificates are added later, they can join the bootcamp as a second group ("Bootcamps & certificates").
+
 **Achievements / certificates:** 📝 none in the CV. If Satriko has certificates, awards or talks, they get extra frames. Otherwise the panel shows only the three frames above.
 
 ---
@@ -317,7 +319,7 @@ One line per panel, said by Oyen peeking over the panel's edge (decision #62), i
 | Work experience | "Satriko has built software for {5}+ years at {3} companies. These days he's at {Jitera}." (years from the first full-time job) |
 | Projects | "A few things Satriko has built, for work and for fun. You're standing in one of them!" |
 | Skills | "The tools Satriko reaches for most, shelf by shelf. Tap one to see where he used it." |
-| Education | "Satriko is studying Computer Science at BINUS, after graduating from Hacktiv8 with honors." |
+| Education | "Satriko is studying Computer Science at BINUS, after graduating with honors from the Hacktiv8 bootcamp." |
 | Gaming | "After work, Satriko unwinds on his PlayStation. Lately: {latest synced game}." |
 | Travel | "Satriko loves exploring Indonesia, one place at a time." |
 | Hiking | "Beside work, Satriko loves climbing mountains. Pick one to see the trail he took." |

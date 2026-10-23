@@ -13,7 +13,7 @@ export const staticIntros = {
   about:
     "That's my human! The short version is below; the PC has the long one.",
   education:
-    'Satriko is studying Computer Science at BINUS, after graduating from Hacktiv8 with honors.',
+    'Satriko is studying Computer Science at BINUS, after graduating with honors from the Hacktiv8 bootcamp.',
   remoteWork:
     'Satriko works from Bogor with teams in Singapore and Abu Dhabi, and keeps hours to overlap.',
   contact:

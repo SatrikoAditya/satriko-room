@@ -3,8 +3,9 @@ import type { IEducation } from '@models/education'
 export const education: readonly IEducation[] = [
   {
     id: 'binus',
+    kind: 'degree',
     program: "Computer Science, Bachelor's degree",
-    institution: 'BINUS (Bina Nusantara) University (Online Program)',
+    institution: 'BINUS (Bina Nusantara) University',
     location: 'Jakarta, Indonesia',
     start: '2023-05',
     end: 'present',
@@ -12,6 +13,7 @@ export const education: readonly IEducation[] = [
   },
   {
     id: 'hacktiv8',
+    kind: 'bootcamp',
     program: 'Immersive Full Stack JavaScript',
     institution: 'Hacktiv8',
     location: 'Jakarta, Indonesia',
@@ -22,6 +24,7 @@ export const education: readonly IEducation[] = [
   },
   {
     id: 'smkn3',
+    kind: 'school',
     program: 'Computer & Network Engineering',
     institution: 'SMK Negeri 3 Bogor',
     location: 'Bogor, Indonesia',
