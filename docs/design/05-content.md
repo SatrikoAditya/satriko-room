@@ -337,6 +337,7 @@ Drafts to edit. Keep every line short (≤ 90 characters).
 | Greeting (after Enter) | "Meow! I'm Oyen. Welcome to Satriko's room! Click anything that looks interesting." |
 | Idle hints (in order) | "Psst… try the PC. That's where the work stuff lives." · "The bookshelf has all of Satriko's skills!" · "Need the resume? The printer's warmed up." |
 | Clicking Oyen (rotating) | "Satriko worked remotely for Singapore and Abu Dhabi, all from this desk." · "Flip the light switch for night mode. I nap better that way." · "Turn on the radio if you want some cozy tunes." · "Use the phone if you're in a hurry. I won't be offended. Much." |
+| Clicking Oyen on a phone (first in the rotation) | "Tags in the way? The tag button in the Settings menu hides them, so you can see the whole room." |
 | Night (sleeping) | "Zzz… (Oyen is asleep. Maybe check the map instead?)" |
 
 ---
