@@ -62,3 +62,17 @@ test('Oyen stays asleep at night', async ({ page }, testInfo) => {
   await page.waitForTimeout(14_000)
   await expect(page.locator('main')).toHaveAttribute('data-oyen', 'sitting')
 })
+
+test('a dark-mode device still starts in the day room with Oyen awake', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop', 'Desktop only')
+  test.setTimeout(60_000)
+  // No saved theme: the device's dark mode is ignored on a first visit.
+  await page.emulateMedia({ colorScheme: 'dark' })
+  await enterRoom(page)
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'day')
+  await expect(page.locator('main')).toHaveAttribute('data-oyen', 'walking', {
+    timeout: 30_000,
+  })
+})

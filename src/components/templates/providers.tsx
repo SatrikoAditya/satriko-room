@@ -8,8 +8,7 @@ export default function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider
       attribute="data-theme"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="light"
       themes={['light', 'dark']}
       value={{ light: 'day', dark: 'night' }}
       disableTransitionOnChange

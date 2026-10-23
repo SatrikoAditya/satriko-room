@@ -31,7 +31,7 @@ Three chunky wall clocks centred above the TV tell the "remote across three time
 | Aspect | Spec |
 | --- | --- |
 | Controls | The **wall light switch** (3D) and the **☀/🌙 button** (on-screen). Both call next-themes' `setTheme`; the resolved theme is mirrored into `useSceneStore` for the 3D lighting ([02](02-architecture.md#state-zustand-stores)) |
-| Initial value | Handled by **next-themes**: saved choice → otherwise the system preference (`prefers-color-scheme`) → otherwise `day` |
+| Initial value | Handled by **next-themes**: saved choice → otherwise `day`. The device's dark mode (`prefers-color-scheme`) is ignored, so a first visit always opens a lit room with Oyen awake (decision #65) |
 | Room (3D) | Day ↔ night lighting presets, blended over 0.8s ([03](03-room-scene.md#art-direction-the-animal-crossing--clay-toy-recipe)): lamps glow, the main light dims, monitor and TV glow, moonlight through the window. Night preset as built (`lightingPresets.ts`): hemisphere `#3a4a70` / `#2a2238` at 1.5, sun `#9fb4ff` at 0.21, ambient 0.16, lamps 2.2, screen glow 1.1, moon 0.5 (day: hemisphere 2.4, sun 1.3, ambient 0.3, lamps off, or 1.2 when switched on, screen glow 0.5, moon 0) |
 | Lamps | The desk and bedside lamps also switch on and off one at a time when clicked, by day or night, with the switch sound and a "Lamp: on" / "Lamp: off" tag. They don't change the theme. Changing the theme (the wall switch or the ☀/🌙 button) resets both: on at night, off by day. State in `useSceneStore` (`lampsOn`, `toggleLamp`) |
 | UI | `<html data-theme="day|night">` switches the CSS tokens ([04](04-ui-and-visual-design.md#palette)) |
