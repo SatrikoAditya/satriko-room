@@ -2,6 +2,7 @@ export const helpContent = {
   explore: [
     'Hover an object to see what it is, click it to open.',
     'On a phone: drag to look around, pinch to zoom, tap a tag to open.',
+    'Tags in the way? The tag button in the Settings menu hides them, so you can see the whole room.',
     'Use the phone button for a menu of every section.',
   ],
   keyboard: [

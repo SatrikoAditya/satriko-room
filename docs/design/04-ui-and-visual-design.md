@@ -179,7 +179,7 @@ Each panel has **Oyen climbing it from outside** (decision #62): his face and tw
 
 A small modal **with no URL**, opened by "?" or the Help app, with a round ✕ button ("Close help") next to its title:
 
-- **How to explore:** mouse/trackpad and touch hints, drawn as our own simple icons.
+- **How to explore:** mouse/trackpad and touch hints, drawn as our own simple icons, plus a phone tip that the tag button in the Settings menu hides the tags (decision #58).
 - **Keyboard tips.**
 - **Sound:** "Sound is on: it starts with your first tap or click. The speaker button (in the Settings menu on phones) turns it off."
 - **Credits & licenses:** the sheet lists its credits from `src/content/help.ts`, kept in step with `CREDITS.md`.
