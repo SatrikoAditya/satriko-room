@@ -13,3 +13,4 @@
 | public/audio/meow.mp3 (from Meow.ogg) | IgnasD on OpenGameArt: https://opengameart.org/content/meow | CC0 | Oyen click (meow) |
 | public/audio/music-cozy.mp3 (90 s excerpt of "Lofi Restaurant", trimmed, faded, loudness-normalised; labelled AI-generated on Pixabay) | alex-morgan on Pixabay: https://pixabay.com/music/lofi-lofi-restaurant-568157/ | Pixabay Content License | radio music |
 | public/audio/rain.mp3 (from rain_on_window_loop.wav, levelled and converted to mono MP3) | alxl, "Rain on Window Loop", on OpenGameArt: https://opengameart.org/content/rain-on-window-loop | CC0 | rain in the window, while sound is on |
+| public/images/gaming/*.webp (game covers, 256 px) | Each game's official title icon from PlayStation, saved by `yarn games:sync` (decision 52) | © the games' publishers | identifying the recently played games in the Gaming panel |

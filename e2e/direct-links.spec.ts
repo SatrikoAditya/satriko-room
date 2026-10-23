@@ -6,7 +6,7 @@ const sections: [string, string, RegExp][] = [
   ['projects', 'Projects', /Satriko's Room/],
   ['skills', 'Skills', /Languages & Runtimes/],
   ['education', 'Education', /Honors Graduate/],
-  ['gaming', 'Gaming', /Oyen is still choosing/],
+  ['gaming', 'Gaming', /SELECT GAME/],
   ['travel', 'Travel', /Oyen is still pinning/],
   ['hiking', 'Hiking', /trail photos/],
   ['diving', 'Diving', /dive photos/],

@@ -1,4 +1,6 @@
-import type { IGame } from '@models/game'
+import type { IGamingSnapshot } from '@models/game'
 
-export const games: readonly IGame[] = [] // checklist C10
-export const platforms: readonly string[] = []
+import snapshot from './gaming.snapshot.json'
+
+/** Written by `yarn games:sync` (decision 52); empty until the first sync. */
+export const gaming = snapshot as IGamingSnapshot

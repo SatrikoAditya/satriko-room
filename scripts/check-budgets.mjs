@@ -35,6 +35,13 @@ const assetChecks = [
     'music',
   ],
   ['public/poster', (n) => n.endsWith('.webp'), 2 * 300 * 1024, 'posters'],
+  // Covers saved by yarn games:sync (decision 52).
+  [
+    'public/images/gaming',
+    (n) => n.endsWith('.webp'),
+    300 * 1024,
+    'game covers',
+  ],
 ]
 
 let failed = false

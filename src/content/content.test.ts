@@ -7,7 +7,7 @@ import { contact } from './contact'
 import { certification, dives } from './diving'
 import { education } from './education'
 import { jobs } from './experience'
-import { games, platforms } from './gaming'
+import { gaming } from './gaming'
 import { helpContent } from './help'
 import { hikes } from './hiking'
 import { oyenLines } from './oyen'
@@ -53,8 +53,7 @@ describe('content', () => {
       remoteWork,
       site,
       // Hobby content is empty until Satriko fills it in (launch checklist item 6).
-      games,
-      platforms,
+      gaming,
       travelPins,
       hikes,
       dives,
@@ -62,5 +61,24 @@ describe('content', () => {
       projects,
     })
     for (const re of forbidden) expect(blob).not.toMatch(re)
+  })
+  it('keeps the games snapshot to games and trophy counts', () => {
+    const keys = (o: object): string[] =>
+      Object.entries(o).flatMap(([k, v]) => [
+        k,
+        ...(v && typeof v === 'object' ? keys(v) : []),
+      ])
+    expect(keys(gaming).join(' ')).not.toMatch(
+      /accountId|onlineId|npsso|accessToken|refreshToken/i,
+    )
+    for (const game of gaming.recent)
+      expect(Object.keys(game).sort()).toEqual([
+        'cover',
+        'id',
+        'lastPlayed',
+        'platform',
+        'playtimeHours',
+        'title',
+      ])
   })
 })

@@ -186,6 +186,7 @@ Following the reference project's pattern: **one store per concern**, one file e
 ## Content layer
 
 - `src/content/*.ts`: one **typed** file per section, typed with the content models in `src/models/` (`IJob`, `ISkillShelf`, …). No CMS, no MDX.
+- **Gaming** is the one generated file: `yarn games:sync` writes `src/content/gaming.snapshot.json` from Satriko's PlayStation account, and `gaming.ts` types it ([05](05-content.md#gaming-gaming-tv), decision #52). `psn-api` is a devDependency used only by that script, so nothing in the build or the browser talks to PlayStation.
 - **Derived data** is computed from content, never duplicated by hand. Example: *skill → companies where it was used* is computed in `src/utils/skills.ts` from the tool lists in `src/content/experience.ts`.
 - Panel components (`src/components/organisms/<X>Panel/`) are **pure presentation**: they take content as props, use no browser APIs, and are safe to render on the server.
 
@@ -242,13 +243,13 @@ What the reference project does, and what this project adopts:
 ├── public/
 │   ├── models/          # not used: every object is built in code (see 03)
 │   ├── audio/           # sound effects + music (licenses in CREDITS.md)
-│   ├── images/          # about/, gaming/, travel/, hiking/, diving/
+│   ├── images/          # about/, gaming/ (covers from yarn games:sync), projects/, travel/, hiking/, diving/
 │   ├── poster/          # room-day / room-night (fallback + OG images)
 │   └── resume/          # Satriko-Aditya-Resume.pdf (public version)
 ├── e2e/                 # Playwright specs: a11y, direct-links, keyboard, mobile, navigation,
 │                        # no-webgl, visual (+ helpers.ts)
 ├── scripts/             # build-indonesia-map.mjs, convert-audio.mjs, capture-poster.mts,
-│                        # check-budgets.mjs
+│                        # check-budgets.mjs, sync-games.mts (PSN snapshot, decision #52)
 ├── src/
 │   ├── app/
 │   │   ├── [[...section]]/
@@ -297,7 +298,7 @@ What the reference project does, and what this project adopts:
 │   │                    # hints.ts, loader.ts, indonesiaMap.ts
 │   ├── content/         # about.ts, experience.ts, skills.ts, education.ts, gaming.ts,
 │   │                    # travel.ts, hiking.ts, diving.ts, remoteWork.ts, contact.ts,
-│   │                    # resume.ts, oyen.ts, projects.ts
+│   │                    # resume.ts, oyen.ts, projects.ts, gaming.snapshot.json
 │   ├── hooks/           # useSectionNavigation.ts, useActiveSection.ts, useBogorTime.ts,
 │   │                    # useIdleHint.ts, useWebGLSupport.ts, useThemeSync.ts,
 │   │                    # useSoundEffects.ts, useViewportSize.ts, useIsCoarsePointer.ts,

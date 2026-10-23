@@ -1,0 +1,60 @@
+{
+  "syncedAt": "2026-10-23T01:23:37.143Z",
+  "trophies": {
+    "level": 170,
+    "platinum": 0,
+    "gold": 18,
+    "silver": 78,
+    "bronze": 553
+  },
+  "recent": [
+    {
+      "id": "PPSA17225_00",
+      "title": "Coral Island",
+      "platform": "PS5",
+      "cover": "/images/gaming/PPSA17225_00.webp",
+      "lastPlayed": "2026-10-01T11:48:16.670000Z",
+      "playtimeHours": 17
+    },
+    {
+      "id": "PPSA27360_00",
+      "title": "EA SPORTS FC™ 26",
+      "platform": "PS5",
+      "cover": "/images/gaming/PPSA27360_00.webp",
+      "lastPlayed": "2026-10-01T11:36:46.270000Z",
+      "playtimeHours": 176
+    },
+    {
+      "id": "PPSA10666_00",
+      "title": "FINAL FANTASY XVI",
+      "platform": "PS5",
+      "cover": "/images/gaming/PPSA10666_00.webp",
+      "lastPlayed": "2026-09-04T19:54:24.220000Z",
+      "playtimeHours": 1
+    },
+    {
+      "id": "PPSA01616_00",
+      "title": "Netflix",
+      "platform": null,
+      "cover": "/images/gaming/PPSA01616_00.webp",
+      "lastPlayed": "2026-08-28T15:59:04.350000Z",
+      "playtimeHours": 32
+    },
+    {
+      "id": "PPSA08340_00",
+      "title": "Marvel's Spider-Man 2",
+      "platform": "PS5",
+      "cover": "/images/gaming/PPSA08340_00.webp",
+      "lastPlayed": "2026-08-28T15:09:22.590000Z",
+      "playtimeHours": 28
+    },
+    {
+      "id": "CUSA03309_00",
+      "title": "Far Cry® Primal",
+      "platform": "PS4",
+      "cover": "/images/gaming/CUSA03309_00.webp",
+      "lastPlayed": "2026-07-26T06:08:27.410000Z",
+      "playtimeHours": 26
+    }
+  ]
+}

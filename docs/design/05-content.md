@@ -165,16 +165,34 @@ interface SkillShelf { id: string; title: string; color: string; skills: string[
 
 ## Gaming: `/gaming` (TV)
 
-A TV bezel with a "SELECT GAME" menu in pixel font.
+A TV bezel with a "SELECT GAME" menu in pixel font, filled from a **snapshot of Satriko's PlayStation account** (decision #52). The site stays static: nothing calls PlayStation when a visitor opens the panel.
 
-| Field | Content |
+| Part | Content |
 | --- | --- |
-| Now playing | 📝 |
-| Favorite games | 📝 Title, platform, cover image (own screenshot or official press art; respect each game's usage terms), one-line "why I love it" |
-| Platforms | 📝 e.g. PC / PlayStation / Switch / mobile |
-| Gamer tags | 📝 Optional, and only if Satriko wants them public |
+| Trophy strip | Trophy level, then the platinum, gold, silver and bronze counts |
+| Recently played | The last 6 games: cover, title, a PS5 / PS4 badge, "Last played 20 Oct 2026" and the playtime in hours (left out when PSN has none). The first card is marked ★ Now playing. The date is absolute, because "3 days ago" would go stale on a static page |
+| Footer | "Synced 23 Oct 2026", the date of the snapshot |
+| Not shown | The PSN Online ID (gamer tag), the account ID, friends and online status |
 
-Until it's filled in: [empty state](#empty-states).
+**Where it comes from:** `yarn games:sync` (`scripts/sync-games.mts`, run with `tsx`; the mapping lives in `src/utils/games.ts`), run on Satriko's machine.
+
+1. It reads `PSN_NPSSO` from `.env.local`, which is git-ignored.
+2. It exchanges the NPSSO for an access token with [psn-api](https://psn-api.achievements.app/), an unofficial library that is a dev-only dependency. Each run starts from the NPSSO, so no refresh token is stored.
+3. It fetches the recently played games (`getUserPlayedGames`) and the trophy summary (`getUserTrophyProfileSummary`).
+4. It writes `src/content/gaming.snapshot.json` (committed) and saves each cover as a small `.webp` in `public/images/gaming/`, deleting covers no longer listed.
+5. If the NPSSO is missing or expired, it stops with the renewal steps below and changes no files. It never logs the NPSSO or the tokens.
+
+The covers are the games' official icons from PlayStation, shown small as "what I'm playing", as the PlayStation app does; the rule to respect each game's usage terms still applies.
+
+**Renewing the PSN sign-in (about every 60 days).** Sony's NPSSO expires about 60 days after sign-in, sooner after signing out everywhere or changing the password. Refreshing tokens does not extend it. When the sync says it has expired:
+
+1. Sign in at playstation.com.
+2. In the same browser, open `https://ca.account.sony.com/api/v1/ssocookie` and copy the 64-character `npsso` value.
+3. Put it in `.env.local` as `PSN_NPSSO=...` and run `yarn games:sync` again.
+
+The NPSSO works like the account password: never commit it, never paste it anywhere public, and never give it a `NEXT_PUBLIC_` name.
+
+Until the first sync: [empty state](#empty-states).
 
 ---
 
@@ -301,7 +319,7 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C7 | Add JavaScript to skills? | Skills | No | Default: not added |
 | C8 | Show "Presentation & Public Speaking" as a bookend? | Skills | No | Default: yes (proposal) |
 | C9 | Certificates / awards / talks | Education | No | Default: the 3 frames only |
-| C10 | Games: now playing, favorites, platforms, gamer tags (optional) | Gaming | No | Empty state until provided |
+| C10 | Games: a PlayStation snapshot (recently played, trophy summary) | Gaming | No | Designed (decision #52): filled by `yarn games:sync` with Satriko's NPSSO in `.env.local`. Empty state until the first sync |
 | C11 | Indonesia pins: places, years, photos, notes | Travel | No | Map without pins until provided |
 | C12 | Hiking entries | Hiking | No | Empty state until provided |
 | C13 | Dive certification + dive entries | Diving | No | Empty state until provided |

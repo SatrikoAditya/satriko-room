@@ -32,7 +32,9 @@ describe('panels', () => {
     expect(screen.getByText(/Honors Graduate/)).toBeInTheDocument()
   })
   it('hobby panels show the empty state when there is no content', () => {
-    render(<GamingPanel />)
+    render(
+      <GamingPanel data={{ syncedAt: null, trophies: null, recent: [] }} />,
+    )
     expect(
       screen.getByText(/Oyen is still choosing a game/),
     ).toBeInTheDocument()
@@ -131,5 +133,50 @@ describe('panels', () => {
     unmount()
     render(<ProjectsPanel items={[]} />)
     expect(screen.getByText(/Oyen is still sticking notes/)).toBeInTheDocument()
+  })
+  it('GamingPanel shows the trophy strip, recent games and the sync date', () => {
+    render(
+      <GamingPanel
+        data={{
+          syncedAt: '2026-10-23T03:00:00.000Z',
+          trophies: {
+            level: 312,
+            platinum: 5,
+            gold: 40,
+            silver: 120,
+            bronze: 600,
+          },
+          recent: [
+            {
+              id: 'PPSA00001_00',
+              title: 'Astro Bot',
+              platform: 'PS5',
+              cover: '/images/gaming/PPSA00001_00.webp',
+              lastPlayed: '2026-10-20T12:00:00Z',
+              playtimeHours: 42,
+            },
+            {
+              id: 'CUSA00002_00',
+              title: 'Stardew Valley',
+              platform: 'PS4',
+              cover: null,
+              lastPlayed: '2026-10-01T12:00:00Z',
+              playtimeHours: null,
+            },
+          ],
+        }}
+      />,
+    )
+    const trophies = screen.getByLabelText('Trophies')
+    expect(trophies).toHaveTextContent('312')
+    expect(trophies).toHaveTextContent('Platinum5')
+    const games = screen.getByRole('list', { name: 'Recently played' })
+    expect(games.querySelectorAll('li')).toHaveLength(2)
+    expect(screen.getByLabelText('Now playing')).toBeInTheDocument()
+    expect(
+      screen.getByText('PS5 · Last played 20 Oct 2026 · 42 h played'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('PS4 · Last played 1 Oct 2026')).toBeInTheDocument()
+    expect(screen.getByText('Synced 23 Oct 2026')).toBeInTheDocument()
   })
 })
