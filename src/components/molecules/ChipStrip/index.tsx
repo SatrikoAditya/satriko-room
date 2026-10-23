@@ -51,7 +51,7 @@ export default function ChipStrip({
             type="button"
             aria-pressed={item.id === selectedId}
             onClick={() => onSelect(item.id)}
-            className="bg-paper-2 font-display aria-pressed:bg-peach min-h-11 rounded-full px-3 text-sm font-bold whitespace-nowrap"
+            className="bg-wood/15 font-display aria-pressed:bg-peach min-h-11 rounded-full px-3 text-sm font-bold whitespace-nowrap"
           >
             {item.label}
           </button>

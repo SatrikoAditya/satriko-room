@@ -18,8 +18,10 @@ interface SoundState {
 
 const persist = (master: boolean) => writeJSON(STORAGE_KEYS.sound, { master })
 
+// Sound is on by default (decision 60), so visitors notice it; a saved "off"
+// is kept. Browsers still wait for the first tap, click or key press.
 export const useSoundStore = create<SoundState>((set, get) => ({
-  master: false,
+  master: true,
   music: false,
   setMaster: (master) => {
     persist(master)
@@ -32,6 +34,6 @@ export const useSoundStore = create<SoundState>((set, get) => ({
     set({
       master:
         readJSON<{ master?: unknown } | null>(STORAGE_KEYS.sound, null)
-          ?.master === true,
+          ?.master !== false,
     }),
 }))

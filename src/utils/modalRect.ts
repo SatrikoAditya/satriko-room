@@ -5,7 +5,8 @@ export const MOBILE_BREAKPOINT = 640
 export function finalRect(viewportWidth: number, viewportHeight: number): Rect {
   if (viewportWidth < MOBILE_BREAKPOINT) {
     const width = Math.round(viewportWidth * 0.95)
-    const height = Math.round(viewportHeight * 0.92)
+    // 88% leaves room above the sheet for Oyen peeking over its edge (decision 62).
+    const height = Math.round(viewportHeight * 0.88)
     return {
       x: Math.round((viewportWidth - width) / 2),
       y: viewportHeight - height,

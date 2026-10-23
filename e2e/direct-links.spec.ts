@@ -9,7 +9,7 @@ const sections: [string, string, RegExp][] = [
   ['gaming', 'Gaming', /SELECT GAME/],
   ['travel', 'Travel', /Ambon/],
   ['hiking', 'Hiking', /Mount Gede/],
-  ['diving', 'Diving', /deepest/],
+  ['diving', 'Diving', /about \d+ m/],
   ['remote-work', 'Remote work', /Overlap: 12:00–17:00 WIB/],
   ['contact', 'Contact', /satrikoaditya@gmail.com/],
   ['resume', 'Resume', /Download PDF/],

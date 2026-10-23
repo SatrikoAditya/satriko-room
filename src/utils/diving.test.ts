@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import type { IDive } from '@models/dive'
 
-import { depthScaleMax, diveStats, formatDepth } from './diving'
+import { depthScaleMax, formatDepth } from './diving'
 
 const dive = (id: string, depthM: number) =>
   ({
@@ -14,18 +14,6 @@ const dive = (id: string, depthM: number) =>
     photos: [],
     note: '',
   }) satisfies IDive
-
-describe('diveStats', () => {
-  it('counts the dives and finds the deepest', () => {
-    expect(diveStats([dive('a', 12), dive('b', 18), dive('c', 5)])).toEqual({
-      count: 3,
-      deepest: { site: 'Site b', depthM: 18 },
-    })
-  })
-  it('is null with no dives', () => {
-    expect(diveStats([])).toBeNull()
-  })
-})
 
 describe('depthScaleMax', () => {
   it('rounds the deepest dive up to 5 m, never below 20 m', () => {

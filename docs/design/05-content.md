@@ -238,7 +238,7 @@ A **mountain illustration plus a trail journal** (decisions #54, #57): the selec
 | Photos | **0–3**, each with alt text, in `public/images/hiking/<id>/`, prepared like Travel's (1200 px `.webp`, EXIF and GPS stripped) |
 | Story | A few lines |
 
-- **Stats** above the illustration are computed, never written: "15 mountains · highest 3,428 m (Mount Slamet)". Mountains, not summits: Salak counts once although three of its peaks were climbed. Every summit so far was reached, so there is no summit badge.
+- **No stats line** (decision #63): the list isn't every mountain Satriko has climbed, so the panel shows no count or "highest". The highest one on the list only sets how tall each mountain is drawn. Every summit so far was reached, so there is no summit badge.
 - **Shapes:** each mountain has its own silhouette in `src/constants/mountainShapes.ts` (points from base to summit, smoke over active craters, the sea for island volcanoes); a content test fails if a mountain has none.
 - **No exact trail or camp coordinates**: the illustration doesn't need them. No recognisable faces of others without their consent.
 - **The mountains (added 2026-10-23):** 15 so far, with Satriko's years and routes. Heights are the highest summit reached, from public sources; Mount Kawi's differs between sources (2,551 / 2,603 / 2,651 m); it uses 2,603 m, the summit Satriko confirmed. Each story is a placeholder (after any facts Satriko gave, such as Salak's three peaks) and each photo spot shows the mint placeholder tile until Satriko sends the story and photos, one mountain at a time.
@@ -257,7 +257,7 @@ An **ocean depth chart plus a dive logbook** (decision #56). Satriko dives **for
 | Photos | **0–3**, each with alt text, in `public/images/diving/<id>/`, prepared like Travel's (1200 px `.webp`, EXIF and GPS stripped) |
 | Note | What it was like, including what Satriko saw |
 
-- **Dive stats** above the chart are computed: "6 dives · deepest about 18 m (Manta Point)".
+- **No stats line** (decision #63): the list isn't every dive, so there's no count or "deepest". The deepest one only sets how deep the chart goes.
 - **Placeholder:** one entry, "Labuan Bajo (placeholder)" at about 12 m, is in place for review until Satriko sends the dives (added 2026-10-23).
 - Until there are dives: [empty state](#empty-states).
 
@@ -306,6 +306,25 @@ Gaming, Travel, Hiking and Diving can launch empty. They show their normal theme
 - the phone menu still working, so visitors are never stuck.
 
 ---
+
+## Oyen's panel intros
+
+One line per panel, said by Oyen peeking over the panel's edge (decision #62), in `src/content/panelIntros.ts` (`introFor(slug)`), at most 120 characters each (130 with the night *yawn…*). **Only complete facts are counted** (work years and companies, computed from the content); projects, skills, trips, climbs and dives get **no numbers**, because the site shows a selection, not every one (decision #63).
+
+| Panel | Line |
+| --- | --- |
+| About me | "That's my human! The short version is below; the PC has the long one." |
+| Work experience | "Satriko has built software for {5}+ years at {3} companies. These days he's at {Jitera}." (years from the first full-time job) |
+| Projects | "A few things Satriko has built, for work and for fun. You're standing in one of them!" |
+| Skills | "The tools Satriko reaches for most, shelf by shelf. Tap one to see where he used it." |
+| Education | "Satriko is studying Computer Science at BINUS, after graduating from Hacktiv8 with honors." |
+| Gaming | "After work, Satriko unwinds on his PlayStation. Lately: {latest synced game}." |
+| Travel | "Satriko loves exploring Indonesia, one place at a time." |
+| Hiking | "Beside work, Satriko loves climbing mountains. Pick one to see the trail he took." |
+| Diving | "Satriko dives just for fun, no certificate (yet!). Pick a dive to see what it was like." |
+| Remote work | "Satriko works from Bogor with teams in Singapore and Abu Dhabi, and keeps hours to overlap." |
+| Contact | "Want to say hi to Satriko? Email, LinkedIn or GitHub. I'll make sure he reads it." |
+| Resume | "Satriko's whole story on two pages. Grab a copy!" |
 
 ## Oyen copy
 

@@ -1,26 +1,12 @@
 import type { IMountainShape } from '@constants/mountainShapes'
 import type { IHike } from '@models/hike'
 
-/** "7 mountains · highest 3,726 m (Mount Rinjani)", computed, never hand-written. */
-export function summitStats(hikes: readonly IHike[]) {
-  if (hikes.length === 0) return null
-  const top = hikes.reduce((a, b) => (b.elevationM > a.elevationM ? b : a))
-  return {
-    count: hikes.length,
-    highest: { name: top.name, elevationM: top.elevationM },
-  }
-}
-
 /**
- * Each peak's height in the skyline: its elevation scaled to the tallest
- * mountain, never below `floor`, so small hills still show.
+ * The highest mountain's elevation, which sets how tall each mountain is drawn.
+ * Not shown as a stat: the list isn't every climb (decision 63).
  */
-export function peakHeights(
-  hikes: readonly IHike[],
-  { max, floor }: { max: number; floor: number },
-) {
-  const tallest = Math.max(...hikes.map((h) => h.elevationM), 1)
-  return hikes.map((h) => floor + ((max - floor) * h.elevationM) / tallest)
+export function highestElevation(hikes: readonly IHike[]) {
+  return Math.max(0, ...hikes.map((h) => h.elevationM))
 }
 
 /** "via Sembalun · 3 days on the trail", leaving out what is still empty. */

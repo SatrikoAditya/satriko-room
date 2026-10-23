@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from 'motion/react'
 
 import IconButton from '@components/atoms/IconButton'
 import StitchedLabel from '@components/atoms/StitchedLabel'
+import OyenPeek from '@components/molecules/OyenPeek'
 import { cn } from '@components/shadcn/utils'
 import {
   DialogContent,
@@ -118,6 +119,8 @@ export default function PanelFrame({
             if (info.offset.y > 120) onClose()
           }}
         >
+          {/* Oyen climbs the panel and introduces it (decision 62). */}
+          <OyenPeek slug={section.slug} animated={animated} />
           {isSheet && (
             <div
               aria-hidden="true"

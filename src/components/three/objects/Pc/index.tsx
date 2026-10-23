@@ -24,7 +24,7 @@ export default function Pc() {
         hitSize={[2.1, 1.1, 0.9]}
         hitOffset={[0.25, 0.5, 0.2]}
         labelHeight={1.25}
-        touchLabelOffset={[0.3, 1.55, 0]}
+        touchLabelOffset={[0.3, 1.2, 0]}
         onActivate={() => openFromScene('experience')}
       >
         <RoundedBox

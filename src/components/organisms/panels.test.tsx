@@ -237,7 +237,7 @@ describe('panels', () => {
     expect(screen.getByText('Bogor · 2023')).toBeInTheDocument()
     expect(screen.queryByRole('group', { name: /Photos of/ })).toBeNull()
   })
-  it('HikingPanel shows the summit stats, newest first, and a journal page', () => {
+  it('HikingPanel lists mountains newest first with a journal page', () => {
     const base = {
       location: 'Java',
       route: null,
@@ -275,9 +275,6 @@ describe('panels', () => {
         ]}
       />,
     )
-    expect(
-      screen.getByText('3 mountains · highest 3,726 m (Mount Rinjani)'),
-    ).toBeInTheDocument()
     const list = screen.getByRole('list', { name: 'Mountains, newest first' })
     expect(
       within(list)
@@ -301,7 +298,7 @@ describe('panels', () => {
     ).toBeInTheDocument()
     expect(screen.queryByText(/on the trail/)).toBeNull()
   })
-  it('DivingPanel shows the dive stats, newest first, and a logbook page', () => {
+  it('DivingPanel lists dives newest first with a logbook page', () => {
     const base = { location: 'NTT', photos: [], note: '' }
     render(
       <DivingPanel
@@ -319,9 +316,6 @@ describe('panels', () => {
         ]}
       />,
     )
-    expect(
-      screen.getByText('3 dives · deepest about 18 m (Manta Point)'),
-    ).toBeInTheDocument()
     const list = screen.getByRole('list', { name: 'Dives, newest first' })
     expect(
       within(list)

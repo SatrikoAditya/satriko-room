@@ -12,6 +12,7 @@ import { gaming } from './gaming'
 import { helpContent } from './help'
 import { hikes } from './hiking'
 import { oyenLines } from './oyen'
+import { staticIntros } from './panelIntros'
 import { projects } from './projects'
 import { remoteWork } from './remoteWork'
 import { resume } from './resume'
@@ -50,6 +51,7 @@ describe('content', () => {
       UNLINKED_SKILL_LABEL,
       resume,
       oyenLines,
+      staticIntros,
       helpContent,
       remoteWork,
       site,

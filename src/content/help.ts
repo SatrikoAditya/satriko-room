@@ -10,7 +10,7 @@ export const helpContent = {
     'Arrow keys move around the phone menu.',
   ],
   sound:
-    'Sound is off by default. The radio or the speaker button turns it on.',
+    'Sound is on: it starts with your first tap or click. The speaker button (in the Settings menu on phones) turns it off.',
   credits: [
     {
       name: 'Fonts: M PLUS Rounded 1c, Nunito, JetBrains Mono, VT323',

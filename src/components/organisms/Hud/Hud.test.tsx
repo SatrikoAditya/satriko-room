@@ -33,16 +33,18 @@ describe('Hud', () => {
       ).toBeInTheDocument()
   })
   it('keeps one Sound label and reports the state with aria-pressed', async () => {
+    // Sound is on by default (decision 60).
+    window.localStorage.clear()
     render(<Hud />)
     const sound = screen.getByRole('button', { name: 'Sound' })
-    expect(sound).toHaveAttribute('aria-pressed', 'false')
+    await waitFor(() => expect(sound).toHaveAttribute('aria-pressed', 'true'))
     await userEvent.click(sound)
     expect(screen.getByRole('button', { name: 'Sound' })).toHaveAttribute(
       'aria-pressed',
-      'true',
+      'false',
     )
     await userEvent.click(sound)
-    expect(sound).toHaveAttribute('aria-pressed', 'false')
+    expect(sound).toHaveAttribute('aria-pressed', 'true')
   })
   it('toggles the theme', async () => {
     render(<Hud />)

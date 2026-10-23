@@ -36,7 +36,6 @@ export const hikes: readonly IHike[] = [
     2211,
     2025,
     'via Cimelati and Ajisaka',
-    'Three of its summits so far: Peak 6 in 2019, Peak 1 via Cimelati in 2024 and Peak 2 via Ajisaka in 2025.',
   ),
   mountain(
     'gede',

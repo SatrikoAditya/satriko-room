@@ -72,7 +72,7 @@ export default function Whiteboard() {
         hitOffset={[0, 0.72, 0]}
         labelHeight={1.6}
         // On phones, tuck the tag below Work experience and left of Hiking.
-        touchLabelOffset={[-1.2, -0.45, -0.4]}
+        touchLabelOffset={[-1.2, -0.65, -0.4]}
         onActivate={() => openFromScene('projects')}
       >
         {/* wheeled base: two feet, four casters */}

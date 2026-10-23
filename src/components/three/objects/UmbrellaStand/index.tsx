@@ -51,8 +51,8 @@ export default function UmbrellaStand() {
         hitSize={[0.5, 1.0, 0.45]}
         hitOffset={[0, 0.5, 0.05]}
         labelHeight={1.15}
-        // A hidden detail; the phone's right edge is already full of tags.
-        alwaysLabelOnTouch={false}
+        // Low on phones, under the door's Contact tag.
+        touchLabelOffset={[0, -0.75, 0]}
         onActivate={callRain}
       >
         {/* brass stand on a dark wooden foot, open at the top */}

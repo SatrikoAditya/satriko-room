@@ -67,7 +67,7 @@ The window shows **the real sky in Bogor right now**, whatever the visitor's own
 
 | State | Default | Controlled by |
 | --- | --- | --- |
-| `sound.master`: all audio on/off | **Off** | 🔊 mute button. **Remembered** between visits (localStorage, try/catch) |
+| `sound.master`: all audio on/off | **On** (decision #60; a saved "off" wins) | 🔊 mute button (in the Settings menu on phones). **Remembered** between visits (localStorage, try/catch) |
 | `sound.music`: radio music on/off | **Off, every visit** (music never auto-plays) | The 3D radio |
 
 ### Rules

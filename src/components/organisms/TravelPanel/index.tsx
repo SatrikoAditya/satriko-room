@@ -42,7 +42,10 @@ export default function TravelPanel({
       >
         <path
           d={indonesiaMap.path}
-          style={{ fill: 'var(--scene-land)', stroke: 'var(--scene-outline)' }}
+          style={{
+            fill: 'var(--scene-land)',
+            stroke: 'var(--scene-outline)',
+          }}
           strokeWidth={2}
           strokeLinejoin="round"
         />

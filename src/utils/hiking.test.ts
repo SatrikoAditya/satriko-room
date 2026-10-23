@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import type { IHike } from '@models/hike'
 
-import { mountainPath, peakHeights, summitStats, tripLine } from './hiking'
+import { highestElevation, mountainPath, tripLine } from './hiking'
 
 const hike = (id: string, elevationM: number, extra: Partial<IHike> = {}) =>
   ({
@@ -18,30 +18,12 @@ const hike = (id: string, elevationM: number, extra: Partial<IHike> = {}) =>
     ...extra,
   }) satisfies IHike
 
-describe('summitStats', () => {
-  it('counts the summits and finds the highest', () => {
+describe('highestElevation', () => {
+  it('finds the highest mountain, and 0 with none', () => {
     expect(
-      summitStats([hike('a', 2958), hike('b', 3726), hike('c', 2565)]),
-    ).toEqual({
-      count: 3,
-      highest: { name: 'Mount b', elevationM: 3726 },
-    })
-  })
-  it('is null with no hikes', () => {
-    expect(summitStats([])).toBeNull()
-  })
-})
-
-describe('peakHeights', () => {
-  it('scales to the tallest mountain with a floor for small ones', () => {
-    const h = peakHeights([hike('a', 3726), hike('b', 1863), hike('c', 100)], {
-      max: 150,
-      floor: 50,
-    })
-    expect(h[0]).toBe(150)
-    expect(h[1]).toBeCloseTo(100)
-    expect(h[2]).toBeGreaterThanOrEqual(50)
-    expect(h[2]).toBeLessThan(h[1])
+      highestElevation([hike('a', 2958), hike('b', 3726), hike('c', 2565)]),
+    ).toBe(3726)
+    expect(highestElevation([])).toBe(0)
   })
 })
 

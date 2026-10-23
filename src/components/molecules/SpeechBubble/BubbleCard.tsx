@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { X } from 'lucide-react'
 import { motion } from 'motion/react'
 
 import Typewriter from '@components/atoms/Typewriter'
@@ -42,10 +43,10 @@ export default function BubbleCard({
     else useSceneStore.getState().setBubble(null)
   }, [done])
   const onDone = useCallback(() => setDone(true), [])
+  const close = () => useSceneStore.getState().setBubble(null)
   return (
-    <motion.button
-      type="button"
-      onClick={advance}
+    <motion.div
+      data-bubble-card
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       initial={{ opacity: 0, scale: 0.8 }}
@@ -58,18 +59,35 @@ export default function BubbleCard({
         y: '-100%',
         transformOrigin: `${tailX}px 100%`,
       }}
-      className="stitched bg-paper font-display text-ink fixed z-30 w-72 rounded-2xl p-3 pt-5 text-left text-[15px] font-bold shadow-lg"
+      className="stitched bg-paper font-display text-ink fixed z-30 w-72 rounded-2xl text-[15px] font-bold shadow-lg"
     >
       <span className="bg-accent text-on-accent absolute -top-3 left-3 rounded-full px-2 py-0.5 text-xs">
         Oyen
       </span>
-      <Typewriter text={text} skip={skip} onDone={onDone} />
+      {/* Tapping the line finishes the typing, then closes it. */}
+      <button
+        type="button"
+        onClick={advance}
+        className="block w-full rounded-2xl p-3 pt-5 pr-9 text-left"
+      >
+        <Typewriter text={text} skip={skip} onDone={onDone} />
+      </button>
+      {/* Closes the bubble at once, without waiting for it to fade. */}
+      <button
+        type="button"
+        aria-label="Close Oyen's message"
+        title="Close"
+        onClick={close}
+        className="text-ink-muted hover:text-ink absolute top-1.5 right-1.5 flex size-8 items-center justify-center rounded-full"
+      >
+        <X size={16} aria-hidden="true" />
+      </button>
       <span
         aria-hidden="true"
         data-bubble-tail
         style={{ left: tailX - 8 }}
         className="bg-paper absolute -bottom-2 h-4 w-4 rotate-45"
       />
-    </motion.button>
+    </motion.div>
   )
 }

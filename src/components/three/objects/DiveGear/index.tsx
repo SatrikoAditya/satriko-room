@@ -208,10 +208,8 @@ export default function DiveGear() {
         label="Diving"
         hitSize={[0.84, 1.08, 0.48]}
         hitOffset={[-0.17, 0.54, 0.04]}
-        // Higher than the backpack's tag beside it, so the two don't overlap on
-        // phones, where every tag is always shown.
-        labelHeight={2.25}
-        touchLabelOffset={[0, 0.4, 0]}
+        // Just above the tank, and still clear of the backpack's lower tag.
+        labelHeight={1.45}
         onActivate={() => openFromScene('diving')}
       >
         <Tank />

@@ -27,7 +27,7 @@ describe('SpeechBubble', () => {
   })
 
   const tailCentre = () => {
-    const card = document.querySelector<HTMLElement>('button.stitched')!
+    const card = document.querySelector<HTMLElement>('[data-bubble-card]')!
     const tail = card.querySelector<HTMLElement>('[data-bubble-tail]')!
     return parseFloat(card.style.left) + parseFloat(tail.style.left) + 8
   }
@@ -51,5 +51,17 @@ describe('SpeechBubble', () => {
     )
     act(() => useSceneStore.getState().setBubble('Meow!'))
     expect(Math.abs(tailCentre() - (window.innerWidth - 30))).toBeLessThan(10)
+  })
+  it('closes at once with its × button', () => {
+    render(
+      <MotionConfig reducedMotion="always">
+        <SpeechBubble />
+      </MotionConfig>,
+    )
+    act(() => useSceneStore.getState().setBubble('Zzz…'))
+    act(() => {
+      screen.getByRole('button', { name: "Close Oyen's message" }).click()
+    })
+    expect(useSceneStore.getState().bubble).toBeNull()
   })
 })

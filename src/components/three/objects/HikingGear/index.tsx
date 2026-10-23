@@ -21,6 +21,8 @@ export default function HikingGear() {
         hitSize={[1.0, 0.9, 0.8]}
         hitOffset={[0, 0.4, 0]}
         labelHeight={0.95}
+        // Low on phones, so the tank's tag beside it stays clear.
+        touchLabelOffset={[0, -0.85, 0]}
         onActivate={() => openFromScene('hiking')}
       >
         <RoundedBox

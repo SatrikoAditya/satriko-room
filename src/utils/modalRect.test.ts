@@ -20,8 +20,8 @@ describe('modalRect', () => {
   it('uses a bottom sheet under 640px', () => {
     const r = finalRect(390, 844)
     expect(r.width).toBe(371)
-    expect(r.height).toBe(776)
-    expect(r.y).toBe(844 - 776)
+    expect(r.height).toBe(743)
+    expect(r.y).toBe(844 - 743)
   })
   it('computes the transform that maps the final rect onto the origin rect', () => {
     const to = { x: 100, y: 80, width: 800, height: 640 }
