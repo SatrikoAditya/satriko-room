@@ -7,6 +7,7 @@ import { depthScaleMax, formatDepth } from './diving'
 const dive = (id: string, depthM: number) =>
   ({
     id,
+    kind: 'scuba',
     site: `Site ${id}`,
     location: '',
     depthM,

@@ -1,5 +1,9 @@
+/** Scuba with a tank, or a freedive on one breath (decision 67). */
+export type DiveKind = 'scuba' | 'freedive'
+
 export interface IDive {
   id: string
+  kind: DiveKind
   /** The dive site, or the place when the site's name isn't known. */
   site: string
   /** The region line, e.g. "West Manggarai, East Nusa Tenggara". */

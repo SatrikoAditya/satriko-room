@@ -4,7 +4,7 @@ export const about: IAbout = {
   name: 'Satriko Aditya',
   title: 'Full Stack Software Engineer',
   location: 'Bogor, Indonesia',
-  photo: { src: '/images/about/satriko.jpg', alt: 'Satriko Aditya' },
+  photo: { src: '/images/about/satriko.webp', alt: 'Satriko Aditya' },
   intro:
     "Hi, I'm Satriko! I'm a full stack engineer from Bogor who loves building fast, friendly web and mobile apps with TypeScript, React, Next.js and NestJS. When I'm not coding you'll find me gaming, hiking a mountain, diving somewhere blue, or exploring Indonesia.",
   summary:

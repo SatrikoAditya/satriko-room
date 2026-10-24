@@ -17,7 +17,7 @@
 | Name | Satriko Aditya |
 | Title | Full Stack Software Engineer |
 | Location | Bogor, Indonesia |
-| Photo | ✅ Provided: `public/images/about/satriko.jpg` (`about.photo` in `src/content/about.ts`); used on the desk frame texture and in the panel |
+| Photo | ✅ Provided: `public/images/about/satriko.webp` (a waist-up square crop, 660 px, updated 2026-10-24) (`about.photo` in `src/content/about.ts`); used on the desk frame texture and in the panel |
 | Intro | ✅ The draft below is in use (Satriko kept it):  "Hi, I'm Satriko! I'm a full stack engineer from Bogor who loves building fast, friendly web and mobile apps with TypeScript, React, Next.js and NestJS. When I'm not coding you'll find me gaming, hiking a mountain, diving somewhere blue, or exploring Indonesia." |
 | Summary (CV) | Full Stack Software Engineer with 5+ years of professional experience specializing in Node.js, TypeScript, React.js, Next.js, and NestJS. Strong background in building, optimizing, and maintaining scalable web and mobile applications. Currently pursuing a Bachelor's degree in Computer Science at BINUS University. Passionate about continuous learning and delivering high-quality solutions in collaborative, and fast paced environments. |
 | Quick facts (stickers) | 5+ years experience · Remote across 3 time zones (Bogor, Singapore, Abu Dhabi) · Currently: Full Stack Developer @ Jitera · Studying: BSc Computer Science @ BINUS |
@@ -237,13 +237,15 @@ A **mountain illustration plus a trail journal** (decisions #54, #57): the selec
 | Year | The latest climb (repeat climbs are mentioned in the story) |
 | Route | The trail or basecamp, e.g. "via Gunung Putri" (`null` when there isn't one, e.g. Bromo) |
 | Days | Days on the trail (`null` until sent) |
-| Photos | **0–3**, each with alt text, in `public/images/hiking/<id>/`, prepared like Travel's (1200 px `.webp`, EXIF and GPS stripped) |
+| Photos | **0–3**, each with alt text, in `public/images/hiking/<id>/`, prepared like Travel's (cropped to 4:3, 1200 px `.webp` under 200 KB, EXIF and GPS stripped) |
 | Story | A few lines |
 
 - **No stats line** (decision #63): the list isn't every mountain Satriko has climbed, so the panel shows no count or "highest". The highest one on the list only sets how tall each mountain is drawn. Every summit so far was reached, so there is no summit badge.
 - **Shapes:** each mountain has its own silhouette in `src/constants/mountainShapes.ts` (points from base to summit, smoke over active craters, the sea for island volcanoes); a content test fails if a mountain has none.
 - **No exact trail or camp coordinates**: the illustration doesn't need them. No recognisable faces of others without their consent.
-- **The mountains (added 2026-10-23):** 15 so far, with Satriko's years and routes. Heights are the highest summit reached, from public sources; Mount Kawi's differs between sources (2,551 / 2,603 / 2,651 m); it uses 2,603 m, the summit Satriko confirmed. Each story is a placeholder (after any facts Satriko gave, such as Salak's three peaks) and each photo spot shows the mint placeholder tile until Satriko sends the story and photos, one mountain at a time.
+- **The mountains (added 2026-10-23):** 15 so far, with Satriko's years and routes. Heights are the highest summit reached, from public sources; Mount Kawi's differs between sources (2,551 / 2,603 / 2,651 m); it uses 2,603 m, the summit Satriko confirmed. Each story is a placeholder (after any facts Satriko gave, such as Salak's three peaks) until Satriko sends it.
+- **Order:** latest climb first, as Satriko confirmed (2026-10-24): Api Banda, Merbabu, Andong, Raung, Slamet, Gede, Papandayan, Lawu, Ciremai, Kawi, Kelud, Bromo, Pangrango, Cikuray, Salak. Salak is 2024 (fixed 2026-10-24 from the photo dates).
+- **Photos (added 2026-10-24):** all 15 mountains have 2–3 photos each. Each photo is cropped to the carousel's 4:3 by hand, keeping the summit or the people in frame (most originals are portrait), and saved as `public/images/hiking/<id>/<n>.webp`: 1200×900 (1024×768 for very grainy ones; never upscaled), WebP quality stepped down from 74 until it is under 200 KB, EXIF and GPS stripped. Group photos show friends who agreed to be on the site (Satriko, 2026-10-24).
 - Until there are hikes: [empty state](#empty-states).
 
 ## Diving: `/diving` (scuba tank, mask + fins)
@@ -252,15 +254,16 @@ An **ocean depth chart plus a dive logbook** (decision #56). Satriko dives **for
 
 | Field | Content |
 | --- | --- |
-| Site | The dive site, or the place when the site's name isn't known (e.g. "Labuan Bajo") |
-| Location | The region line, e.g. "West Manggarai, East Nusa Tenggara" |
+| Site | The dive site, or the place when the site's name isn't known (e.g. "Lava Flow") |
+| Kind | **Scuba** or **Freedive**, shown as a small tag on the logbook page (decision #67) |
+| Location | The region line, e.g. "Banda Islands, Maluku" |
 | Depth | Rough max depth in metres, shown as "about 12 m" |
 | Year | `null` until Satriko sends it with the photos |
 | Photos | **0–3**, each with alt text, in `public/images/diving/<id>/`, prepared like Travel's (1200 px `.webp`, EXIF and GPS stripped) |
 | Note | What it was like, including what Satriko saw |
 
 - **No stats line** (decision #63): the list isn't every dive, so there's no count or "deepest". The deepest one only sets how deep the chart goes.
-- **Placeholder:** one entry, "Labuan Bajo (placeholder)" at about 12 m, is in place for review until Satriko sends the dives (added 2026-10-23).
+- **The dives (added 2026-10-24), latest first:** Lava Flow, Banda Islands (scuba, about 10 m, 2026, 3 photos) and Menjangan Island, Bali (freedive, about 5 m, 2026, 2 photos). Notes are placeholders until Satriko sends them.
 - Until there are dives: [empty state](#empty-states).
 
 ---
@@ -381,8 +384,8 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C9 | Certificates / awards / talks | Education | No | Default: the 3 frames only |
 | C10 | Games: a PlayStation snapshot (recently played, trophy summary) | Gaming | No | Designed (decision #52): filled by `yarn games:sync` with Satriko's NPSSO in `.env.local`. Empty state until the first sync |
 | C11 | Map pins (places visited in Indonesia): place, year, 0–3 photos, note | Travel | No | ✅ 21 places pinned on 2026-10-23 (A to Z, years `null`, notes are placeholders; six smaller Java cities left out to keep Java readable, Tual and Langgur merged as Kei Islands, Gunung Kidul folded into Yogyakarta, and Tegal left to Hiking since the trip there was for Mount Slamet). Years, notes and photos come one place at a time: Satriko sends them in chat, Claude prepares the files and entries |
-| C12 | Hiking entries: mountain, elevation, year, route, days, 0–3 photos, story | Hiking | No | ✅ 15 mountains with years and routes (2026-10-23), each in its own illustrated shape. Stories and photos are placeholders until Satriko sends them, one mountain at a time in chat |
-| C13 | Dive entries: site or place, rough depth, year, 0–3 photos, note (no certification: fun dives) | Diving | No | Built (decision #56) with one placeholder for review. Satriko knows the depths so far; the rest comes one dive at a time in chat |
+| C12 | Hiking entries: mountain, elevation, year, route, days, 0–3 photos, story | Hiking | No | ✅ 15 mountains with years and routes (2026-10-23), each in its own illustrated shape. Photos for all 15 mountains (2026-10-24), latest first. Stories are placeholders until Satriko sends them |
+| C13 | Dive entries: site or place, rough depth, year, 0–3 photos, note (no certification: fun dives) | Diving | No | ✅ Lava Flow (scuba, 10 m) and Menjangan Island (freedive, 5 m) with photos (2026-10-24). Notes are placeholders until Satriko sends them |
 | C14 | Remote-work note | Remote work | No | A draft is provided above |
 | C15 | Oyen's markings (stripes? white paws/chest? eye color?) | 3D Oyen, loader SVG | No | Default: orange tabby, cream chest |
 | C16 | Review Oyen's lines | Speech bubble | No | Drafts above |

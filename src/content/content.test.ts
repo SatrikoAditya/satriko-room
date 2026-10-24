@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 import { mountainShapes } from '@constants/mountainShapes'
@@ -101,5 +103,22 @@ describe('content', () => {
   })
   it('draws every mountain in its own shape', () => {
     for (const hike of hikes) expect(mountainShapes[hike.id]).toBeDefined()
+  })
+  it('lists hikes and dives latest first, each photo in public/', () => {
+    for (const [kind, list] of [
+      ['hiking', hikes],
+      ['diving', dives],
+    ] as const) {
+      const years = list.map((item) => item.year ?? 0)
+      expect(years).toEqual([...years].sort((a, b) => b - a))
+      for (const item of list) {
+        expect(item.photos.length).toBeLessThanOrEqual(3)
+        for (const photo of item.photos) {
+          expect(photo.alt.trim()).not.toBe('')
+          expect(photo.src.startsWith(`/images/${kind}/${item.id}/`)).toBe(true)
+          expect(existsSync(join('public', photo.src))).toBe(true)
+        }
+      }
+    }
   })
 })

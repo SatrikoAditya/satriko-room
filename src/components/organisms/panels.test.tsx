@@ -303,7 +303,12 @@ describe('panels', () => {
     expect(screen.queryByText(/on the trail/)).toBeNull()
   })
   it('DivingPanel lists dives newest first with a logbook page', () => {
-    const base = { location: 'NTT', photos: [], note: '' }
+    const base = {
+      kind: 'scuba' as const,
+      location: 'NTT',
+      photos: [],
+      note: '',
+    }
     render(
       <DivingPanel
         items={[
@@ -316,7 +321,14 @@ describe('panels', () => {
             year: 2025,
             note: 'Mantas!',
           },
-          { ...base, id: 'c', site: 'Bunaken', depthM: 12, year: null },
+          {
+            ...base,
+            id: 'c',
+            kind: 'freedive',
+            site: 'Bunaken',
+            depthM: 12,
+            year: null,
+          },
         ]}
       />,
     )
@@ -331,7 +343,9 @@ describe('panels', () => {
     ).toBeInTheDocument()
     expect(screen.getByText('Depth about 18 m')).toBeInTheDocument()
     expect(screen.getByText('Mantas!')).toBeInTheDocument()
+    expect(screen.getByText('Scuba')).toBeInTheDocument()
     fireEvent.click(within(list).getByRole('button', { name: 'Bunaken' }))
     expect(screen.getByRole('heading', { name: 'Bunaken' })).toBeInTheDocument()
+    expect(screen.getByText('Freedive')).toBeInTheDocument()
   })
 })

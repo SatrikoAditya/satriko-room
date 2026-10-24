@@ -1,10 +1,18 @@
 import { Waves } from 'lucide-react'
 
+import Chip from '@components/atoms/Chip'
 import Tape from '@components/atoms/Tape'
 import PhotoCarousel from '@components/molecules/PhotoCarousel'
 
-import type { IDive } from '@models/dive'
+import type { DiveKind, IDive } from '@models/dive'
+import type { ISkillShelf } from '@models/skill'
 import { formatDepth } from '@utils/diving'
+
+const kinds: Record<DiveKind, { label: string; color: ISkillShelf['color'] }> =
+  {
+    scuba: { label: 'Scuba', color: 'sky' },
+    freedive: { label: 'Freedive', color: 'mint' },
+  }
 
 /** The selected dive as a page of a dive logbook (decision 56). */
 export default function LogbookPage({ dive }: { dive: IDive }) {
@@ -35,6 +43,12 @@ export default function LogbookPage({ dive }: { dive: IDive }) {
           </span>
           <span aria-hidden="true">{dive.depthM} m</span>
         </p>
+        <Chip
+          color={kinds[dive.kind].color}
+          className="mb-1 px-2.5 py-0.5 text-xs"
+        >
+          {kinds[dive.kind].label}
+        </Chip>
         <h4 className="font-display text-lg font-extrabold">
           {dive.site}
           {dive.year !== null && ` · ${dive.year}`}
