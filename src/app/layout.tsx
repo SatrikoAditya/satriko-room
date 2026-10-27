@@ -10,8 +10,10 @@ import '@styles/globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: `${site.name} · ${site.title}`,
-  description: `Step into Satriko's cozy room and explore 5+ years of full stack work with Node.js, TypeScript, React, Next.js and NestJS.`,
+  title: site.brand,
+  applicationName: site.brand,
+  description: `Step into Satriko's cozy 3D room: click around to see his work, skills, games, hikes, dives and travels.`,
+  openGraph: { siteName: site.brand },
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -27,5 +27,13 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "satriko-room.vercel.app" }],
+      "destination": "https://room.satriko.dev/:path*",
+      "permanent": true
+    }
   ]
 }

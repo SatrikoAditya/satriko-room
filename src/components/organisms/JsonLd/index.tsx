@@ -8,7 +8,7 @@ export default function JsonLd() {
     name: site.name,
     jobTitle: 'Full Stack Software Engineer',
     email: `mailto:${site.email}`,
-    url: site.url,
+    url: site.mainUrl,
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Bogor',
@@ -21,7 +21,7 @@ export default function JsonLd() {
         '@type': 'EducationalOrganization',
         name: e.institution,
       })),
-    sameAs: [site.linkedin, site.github].filter(Boolean),
+    sameAs: [site.linkedin, site.github, site.url].filter(Boolean),
   }
   return (
     <script

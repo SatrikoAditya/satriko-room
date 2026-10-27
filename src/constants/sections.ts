@@ -15,7 +15,7 @@ import {
 
 import type { ObjectId, Section, SectionSlug } from '@interfaces/section'
 
-const by = (t: string) => `${t} · Satriko Aditya`
+const by = (t: string) => `${t} · Satriko's Room`
 
 export const sections: readonly Section[] = [
   {

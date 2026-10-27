@@ -22,6 +22,7 @@ import { useVisitorActivity } from '@hooks/useVisitorActivity'
 import { useWeather } from '@hooks/useWeather'
 import { useWebGLSupport } from '@hooks/useWebGLSupport'
 
+import { site } from '@constants/site'
 import { oyenLines } from '@content/oyen'
 import type { SectionSlug } from '@interfaces/section'
 import { audio } from '@utils/audio'
@@ -111,7 +112,7 @@ export default function Room({
       data-zoomed={zoomedIn}
       data-weather={weather}
     >
-      <h1 className="sr-only">{"Satriko's Room"}</h1>
+      <h1 className="sr-only">{site.brand}</h1>
       <p className="sr-only">
         An illustrated 3D room. Use the phone menu to explore sections.
       </p>

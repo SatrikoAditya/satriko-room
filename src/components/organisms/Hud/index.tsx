@@ -103,8 +103,7 @@ export default function Hud() {
         {...about}
         className="stitched bg-paper font-display fixed top-4 left-4 z-30 rounded-xl px-3 py-2 text-sm font-bold shadow-md"
       >
-        {site.name}{' '}
-        <span className="text-ink-muted hidden sm:inline">· {site.title}</span>
+        {site.brand}
       </a>
       <div className="fixed top-4 right-4 z-30 flex gap-2">
         {zoomedIn && active === null && (

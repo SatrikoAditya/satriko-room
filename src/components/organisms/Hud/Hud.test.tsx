@@ -15,7 +15,7 @@ describe('Hud', () => {
   it('shows the name tag and the always-visible controls', () => {
     render(<Hud />)
     expect(
-      screen.getByRole('link', { name: /Satriko Aditya/ }),
+      screen.getByRole('link', { name: /Satriko's Room/ }),
     ).toHaveAttribute('href', '/about')
     for (const name of [
       'Sound',
