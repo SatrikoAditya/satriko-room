@@ -47,11 +47,10 @@ export default function ExperiencePanel({
             </span>{' '}
             · {formatRange(selected)}
           </p>
-          <ul className="my-4 space-y-3">
+          {selected.summary && <p className="mt-4">{selected.summary}</p>}
+          <ul className="my-4 list-disc space-y-2 pl-5">
             {selected.highlights.map((h) => (
-              <li key={h.title}>
-                <strong>{h.title}:</strong> {h.text}
-              </li>
+              <li key={h}>{h}</li>
             ))}
           </ul>
           {selected.tools.length > 0 && (

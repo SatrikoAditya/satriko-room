@@ -35,7 +35,7 @@ describe('ModalHost', () => {
     await waitFor(() =>
       expect(dialog.contains(document.activeElement)).toBe(true),
     )
-    expect(screen.getByText(/Agile Collaboration/)).toBeInTheDocument()
+    expect(screen.getByText(/Solution division/)).toBeInTheDocument()
   })
   it('closes with Escape by replacing the URL when not opened in-app', async () => {
     const replace = vi.spyOn(window.history, 'replaceState')

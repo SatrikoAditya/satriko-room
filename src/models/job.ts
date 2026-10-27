@@ -8,6 +8,8 @@ export interface IJob {
   remote: boolean
   start: string
   end: string | 'present'
-  highlights: { title: string; text: string }[]
+  /** One line on what the role was, shown above the highlights. */
+  summary?: string
+  highlights: string[]
   tools: string[]
 }

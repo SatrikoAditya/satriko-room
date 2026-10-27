@@ -9,7 +9,7 @@ export const education: readonly IEducation[] = [
     location: 'Jakarta, Indonesia',
     start: '2023-05',
     end: 'present',
-    note: 'In progress',
+    note: 'Online program, expected June 2027',
   },
   {
     id: 'hacktiv8',

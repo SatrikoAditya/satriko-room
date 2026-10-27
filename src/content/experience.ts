@@ -10,19 +10,14 @@ export const jobs: readonly IJob[] = [
     remote: true,
     start: '2024-10',
     end: 'present',
+    summary:
+      "Working in Jitera's Solution division, building web and mobile products for Japanese clients.",
     highlights: [
-      {
-        title: 'Agile Collaboration and Coordination',
-        text: 'Work closely with cross-functional teams, including managers, team leads, designers, QA, and developers, to align project objectives, ensure clear communication, and deliver high-quality solutions within set timelines.',
-      },
-      {
-        title: 'Code Quality and Compliance',
-        text: 'Perform in-depth code reviews and automated/manual testing to validate that software adheres to functional requirements, coding standards, and architectural best practices, ensuring seamless deployment readiness.',
-      },
-      {
-        title: 'Security and Compliance',
-        text: 'Ensure applications adhere to industry security standards and compliance requirements by implementing robust measures during the development lifecycle.',
-      },
+      'Delivered 5 projects for Japanese clients across hospitality, HR, travel, wellness, and digital media, using Next.js, React, NestJS, and React Native',
+      'Developed an internal workforce management system with a companion attendance app for an HR client, covering candidate tracking, placements, and worker attendance',
+      'Built a customer reservation and loyalty platform for a hospitality client, with multi-location booking, promotions, and a points-based rewards system',
+      'Work in English with clients and international PMs, QA engineers, and UI/UX designers from requirements through delivery',
+      'Use AI coding agents (Claude Code) daily, and review all generated code before merging',
     ],
     tools: [
       'Git',
@@ -54,19 +49,13 @@ export const jobs: readonly IJob[] = [
     remote: true,
     start: '2022-01',
     end: '2024-10',
+    summary:
+      "Spent most of this role on APCO Worldwide's Dubai team, and also worked full stack on Charcentric's own projects.",
     highlights: [
-      {
-        title: 'Software Lifecycle Management',
-        text: 'Engage in researching, designing, and managing software programs, ensuring their seamless lifecycle progression.',
-      },
-      {
-        title: 'Code Enhancement and Testing',
-        text: 'Developing, modifying software to rectify errors and enhance performance, and rigorously test and evaluate new programs for optimal functionality.',
-      },
-      {
-        title: 'Collaborative Development and Support',
-        text: 'Collaborate with engineering staff, follow internal development processes, and communicate effectively within the team, clients, and stakeholders. Additionally, provide technical support to clients and monitor reported issues for swift resolution.',
-      },
+      'Delivered 4 internal products for APCO as a frontend engineer, using React, Next.js, and TypeScript',
+      'Built the frontend for a low-code AI workflow builder, where users visually design data pipelines and LangChain-powered AI workflows to process and analyze media and communications data',
+      'Built the frontend for an AI document generation platform, where users create documents from reusable templates, writing styles, and data sources, refine each section with AI proofreading, fact-checking, translation, and chat, then export to PDF or Word',
+      'Worked directly with APCO stakeholders on requirements, and provided technical support after release',
     ],
     tools: [
       'Git',
@@ -100,23 +89,12 @@ export const jobs: readonly IJob[] = [
     remote: false,
     start: '2020-12',
     end: '2021-12',
+    summary:
+      "Placed at Telkomsel, Indonesia's largest mobile network operator, building internal applications for its teams.",
     highlights: [
-      {
-        title: 'Application Development for Internal Teams',
-        text: "Spearheaded the design and development of applications tailored for Telkomsel's internal teams, focusing on user needs and seamless integration within the existing infrastructure.",
-      },
-      {
-        title: 'Collaborative Development',
-        text: 'Worked closely with other engineers, sharing knowledge, and coordinating efforts to ensure cohesive development processes and successful project outcomes.',
-      },
-      {
-        title: 'Performance Monitoring and Optimization',
-        text: 'Ensured the consistent performance of applications through continuous monitoring and proactive optimization, addressing potential issues before they impact operations.',
-      },
-      {
-        title: 'Error Resolution and Debugging',
-        text: 'Led the debugging process, identifying, and resolving software issues to maintain application stability and reliability.',
-      },
+      'Developed internal web applications for Telkomsel teams using React, Ext.js, and Laravel, integrated with existing internal systems',
+      'Built backend services with Node.js, Express.js, and Sequelize on MySQL',
+      'Monitored, debugged, and fixed production issues to keep the applications stable',
     ],
     tools: [
       'Git',
@@ -128,6 +106,7 @@ export const jobs: readonly IJob[] = [
       'MySQL',
       'React.js',
       'Ext.js',
+      'JavaScript',
       'Presentation and Public Speaking',
     ],
   },
@@ -141,18 +120,9 @@ export const jobs: readonly IJob[] = [
     start: '2019-01',
     end: '2019-05',
     highlights: [
-      {
-        title: 'Systems and Network Maintenance',
-        text: 'Ensured the smooth operation of computers, applications, and LAN networks to support uninterrupted learning activities, minimizing downtime, and enhancing user experience.',
-      },
-      {
-        title: 'Technical Troubleshooting and Support',
-        text: 'Provided expert troubleshooting for hardware and network issues, quickly diagnosing and resolving problems to maintain optimal system performance.',
-      },
-      {
-        title: 'Software and OS Installation',
-        text: 'Managed the installation and configuration of applications and operating systems, ensuring that all systems were up-to-date and equipped to meet user requirements.',
-      },
+      'Ensured the smooth operation of computers, applications, and LAN networks to support uninterrupted learning activities, minimizing downtime, and enhancing user experience',
+      'Provided expert troubleshooting for hardware and network issues, quickly diagnosing and resolving problems to maintain optimal system performance',
+      'Managed the installation and configuration of applications and operating systems, ensuring that all systems were up-to-date and equipped to meet user requirements',
     ],
     tools: [],
   },

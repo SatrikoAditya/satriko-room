@@ -5,7 +5,7 @@ export const skillShelves: readonly ISkillShelf[] = [
     id: 'languages',
     title: 'Languages & Runtimes',
     color: 'peach',
-    skills: ['Node.js', 'TypeScript', 'PHP', 'Python'],
+    skills: ['Node.js', 'TypeScript', 'JavaScript', 'PHP', 'Python'],
   },
   {
     id: 'frontend',

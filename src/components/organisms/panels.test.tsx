@@ -17,9 +17,7 @@ describe('panels', () => {
   it('ExperiencePanel lists the four roles and shows the first one', () => {
     render(<ExperiencePanel />)
     expect(screen.getByRole('button', { name: /jitera/i })).toBeInTheDocument()
-    expect(
-      screen.getByText(/Agile Collaboration and Coordination/),
-    ).toBeInTheDocument()
+    expect(screen.getByText(/Solution division/)).toBeInTheDocument()
     expect(screen.getByText('Remote · Singapore')).toBeInTheDocument()
   })
   it('SkillsPanel renders five shelves and derives "Used at"', () => {

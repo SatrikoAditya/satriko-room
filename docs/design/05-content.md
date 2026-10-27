@@ -19,8 +19,8 @@
 | Location | Bogor, Indonesia |
 | Photo | ✅ Provided: `public/images/about/satriko.webp` (a waist-up square crop, 660 px, updated 2026-10-24) (`about.photo` in `src/content/about.ts`); used on the desk frame texture and in the panel |
 | Intro | ✅ The draft below is in use (Satriko kept it):  "Hi, I'm Satriko! I'm a full stack engineer from Bogor who loves building fast, friendly web and mobile apps with TypeScript, React, Next.js and NestJS. When I'm not coding you'll find me gaming, hiking a mountain, diving somewhere blue, or exploring Indonesia." |
-| Summary (CV) | Full Stack Software Engineer with 5+ years of professional experience specializing in Node.js, TypeScript, React.js, Next.js, and NestJS. Strong background in building, optimizing, and maintaining scalable web and mobile applications. Currently pursuing a Bachelor's degree in Computer Science at BINUS University. Passionate about continuous learning and delivering high-quality solutions in collaborative, and fast paced environments. |
-| Quick facts (stickers) | 5+ years experience · Remote across 3 time zones (Bogor, Singapore, Abu Dhabi) · Currently: Full Stack Developer @ Jitera · Studying: BSc Computer Science @ BINUS |
+| Summary (CV) | From the resume updated 2026-10-27 (decision #69): Full Stack Software Engineer with 5+ years of experience building web and mobile applications across frontend and backend. I mainly work with TypeScript, React, Next.js, Node.js, and NestJS, with experience using both relational and NoSQL databases. Over the past two years, I've worked on projects for Japanese clients across five industries, including hospitality and travel. I'm used to working remotely with international teams, collaborating with other engineers, project managers, designers, and QA engineers in English. I'm currently pursuing a B.Sc. in Computer Science at BINUS University. |
+| Quick facts (stickers) | 5+ years experience · Remote across 3 time zones (Bogor, Singapore, Abu Dhabi) · Currently: Full Stack Developer @ Jitera · Studying: BSc Computer Science @ BINUS · Speaks Indonesian & English |
 
 ```ts
 // Design sketch
@@ -35,37 +35,42 @@ interface AboutContent {
 
 ## Experience: `/experience` (PC)
 
-Shown as a desktop window: a sidebar of companies like files, and a detail pane. Tool chips also feed the Skills "Used at" mapping.
+Shown as a desktop window: a sidebar of companies like files, and a detail pane. The three engineering roles follow the resume updated 2026-10-27 (decision #69): a one-line summary, then plain bullets. The IPB internship is not on that resume but stays on the site. Tool chips also feed the Skills "Used at" mapping.
 
 ### Jitera: Full Stack Developer
 
 - **Type / location:** Remote · Singapore
 - **Dates:** October 2024 – Present
+- **Summary:** Working in Jitera's Solution division, building web and mobile products for Japanese clients.
 - **Highlights:**
-  - **Agile Collaboration and Coordination:** Work closely with cross-functional teams, including managers, team leads, designers, QA, and developers, to align project objectives, ensure clear communication, and deliver high-quality solutions within set timelines.
-  - **Code Quality and Compliance:** Perform in-depth code reviews and automated/manual testing to validate that software adheres to functional requirements, coding standards, and architectural best practices, ensuring seamless deployment readiness.
-  - **Security and Compliance:** Ensure applications adhere to industry security standards and compliance requirements by implementing robust measures during the development lifecycle.
+  - Delivered 5 projects for Japanese clients across hospitality, HR, travel, wellness, and digital media, using Next.js, React, NestJS, and React Native
+  - Developed an internal workforce management system with a companion attendance app for an HR client, covering candidate tracking, placements, and worker attendance
+  - Built a customer reservation and loyalty platform for a hospitality client, with multi-location booking, promotions, and a points-based rewards system
+  - Work in English with clients and international PMs, QA engineers, and UI/UX designers from requirements through delivery
+  - Use AI coding agents (Claude Code) daily, and review all generated code before merging
 - **Tools:** Git, Node.js, TypeScript, NestJS, React.js, Next.js, React Native, Tailwind, Zustand, Zod, TypeORM, MySQL, Supabase, AWS, Azure Cloud, Docker, Jira, Presentation and Public Speaking
 
 ### Charcentric: Software Engineer
 
 - **Type / location:** Remote · Abu Dhabi, United Arab Emirates
 - **Dates:** January 2022 – October 2024
+- **Summary:** Spent most of this role on APCO Worldwide's Dubai team, and also worked full stack on Charcentric's own projects.
 - **Highlights:**
-  - **Software Lifecycle Management:** Engage in researching, designing, and managing software programs, ensuring their seamless lifecycle progression.
-  - **Code Enhancement and Testing:** Developing, modifying software to rectify errors and enhance performance, and rigorously test and evaluate new programs for optimal functionality.
-  - **Collaborative Development and Support:** Collaborate with engineering staff, follow internal development processes, and communicate effectively within the team, clients, and stakeholders. Additionally, provide technical support to clients and monitor reported issues for swift resolution.
+  - Delivered 4 internal products for APCO as a frontend engineer, using React, Next.js, and TypeScript
+  - Built the frontend for a low-code AI workflow builder, where users visually design data pipelines and LangChain-powered AI workflows to process and analyze media and communications data
+  - Built the frontend for an AI document generation platform, where users create documents from reusable templates, writing styles, and data sources, refine each section with AI proofreading, fact-checking, translation, and chat, then export to PDF or Word
+  - Worked directly with APCO stakeholders on requirements, and provided technical support after release
 - **Tools:** Git, Node.js, TypeScript, Python, React.js, Next.js, React Native, Ionic, Capacitor.js, Tailwind, Storybook, Prisma, PostgreSQL, AWS, Azure Cloud, Vercel, Sentry, Docker, Jira, Presentation and Public Speaking
 
 ### PT Immobi Solusi Prima: Full Stack Developer
 
 - **Location:** Jakarta, Indonesia
 - **Dates:** December 2020 – December 2021
+- **Summary:** Placed at Telkomsel, Indonesia's largest mobile network operator, building internal applications for its teams.
 - **Highlights:**
-  - **Application Development for Internal Teams:** Spearheaded the design and development of applications tailored for Telkomsel's internal teams, focusing on user needs and seamless integration within the existing infrastructure.
-  - **Collaborative Development:** Worked closely with other engineers, sharing knowledge, and coordinating efforts to ensure cohesive development processes and successful project outcomes.
-  - **Performance Monitoring and Optimization:** Ensured the consistent performance of applications through continuous monitoring and proactive optimization, addressing potential issues before they impact operations.
-  - **Error Resolution and Debugging:** Led the debugging process, identifying, and resolving software issues to maintain application stability and reliability.
+  - Developed internal web applications for Telkomsel teams using React, Ext.js, and Laravel, integrated with existing internal systems
+  - Built backend services with Node.js, Express.js, and Sequelize on MySQL
+  - Monitored, debugged, and fixed production issues to keep the applications stable
 - **Tools:** Git, Node.js, Express.js, Sequelize, PHP, Laravel, MySQL, React.js, Ext.js, Presentation and Public Speaking
 
 ### Institut Pertanian Bogor (IPB) University: Information Technology Support Engineer (Internship)
@@ -73,9 +78,9 @@ Shown as a desktop window: a sidebar of companies like files, and a detail pane.
 - **Location:** Bogor, Indonesia
 - **Dates:** January 2019 – May 2019
 - **Highlights:**
-  - **Systems and Network Maintenance:** Ensured the smooth operation of computers, applications, and LAN networks to support uninterrupted learning activities, minimizing downtime, and enhancing user experience.
-  - **Technical Troubleshooting and Support:** Provided expert troubleshooting for hardware and network issues, quickly diagnosing and resolving problems to maintain optimal system performance.
-  - **Software and OS Installation:** Managed the installation and configuration of applications and operating systems, ensuring that all systems were up-to-date and equipped to meet user requirements.
+  - Ensured the smooth operation of computers, applications, and LAN networks to support uninterrupted learning activities, minimizing downtime, and enhancing user experience
+  - Provided expert troubleshooting for hardware and network issues, quickly diagnosing and resolving problems to maintain optimal system performance
+  - Managed the installation and configuration of applications and operating systems, ensuring that all systems were up-to-date and equipped to meet user requirements
 
 ```ts
 // Design sketch
@@ -84,7 +89,8 @@ interface Job {
   company: string; role: string; kind: 'full-time' | 'internship';
   location: string; remote: boolean;
   start: string; end: string | 'present';  // 'YYYY-MM'
-  highlights: { title: string; text: string }[];
+  summary?: string;                        // one line above the highlights
+  highlights: string[];
   tools: string[];                          // must match skill names in skills.ts
 }
 ```
@@ -106,6 +112,7 @@ Four shelves follow the CV's "Full Stack Technologies" groups, plus a **Toolbox*
 | **Languages & Runtimes** | Node.js | Jitera, Charcentric, Immobi |
 | | TypeScript | Jitera, Charcentric |
 | | PHP | Immobi |
+| | JavaScript | Immobi |
 | | Python | Charcentric |
 | **Frontend** | React.js | Jitera, Charcentric, Immobi |
 | | Redux | n/a 📝 |
@@ -155,7 +162,7 @@ interface SkillShelf { id: string; title: string; color: string; skills: string[
 
 | Frame | Program | Institution | Location | Dates | Note |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Computer Science, Bachelor's degree | BINUS (Bina Nusantara) University (Online Program) | Jakarta, Indonesia | May 2023 – Present | In progress |
+| 1 | Computer Science, Bachelor's degree | BINUS (Bina Nusantara) University (Online Program) | Jakarta, Indonesia | May 2023 – Present | Online program, expected June 2027 |
 | 2 | Immersive Full Stack JavaScript | Hacktiv8 | Jakarta, Indonesia | July 2020 – October 2020 | 🎀 **Honors Graduate**, final score 94.79/100 |
 | 3 | Computer & Network Engineering | SMK Negeri 3 Bogor | Bogor, Indonesia | July 2017 – July 2020 | Final score 84/100 |
 
@@ -377,7 +384,7 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C2 | Friendly intro (2–4 sentences) | About | **Yes** | ✅ The draft above is in use |
 | C3 | LinkedIn URL | Contact, JSON-LD | **Yes** | ✅ Provided (`site.linkedin`) |
 | C4 | GitHub URL | Contact, JSON-LD | **Yes** | ✅ Provided (`site.github`) |
-| C5 | Public CV PDF (no referees; the phone number is allowed, decision #51) | Resume | **Yes** | ✅ Provided on 2026-10-22: `public/resume/Satriko-Aditya-Resume.pdf` (2 pages, no referee page) |
+| C5 | Public CV PDF (no referees; the phone number is allowed, decision #51) | Resume | **Yes** | ✅ Provided on 2026-10-22, replaced with the updated resume on 2026-10-27 (decision #69): `public/resume/Satriko-Aditya-Resume.pdf` (2 pages, no referee page) |
 | C6 | Labels for skills with no job link (Redux, Vue.js, GraphQL, Redis, MongoDB) | Skills | **Yes** | Default in use: `UNLINKED_SKILL_LABEL = 'Side projects & learning'` in `src/content/skills.ts`. Change it there if Satriko prefers other wording |
 | C7 | Add JavaScript to skills? | Skills | No | Default: not added |
 | C8 | Show "Presentation & Public Speaking" as a bookend? | Skills | No | Default: yes (proposal) |
