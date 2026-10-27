@@ -41,5 +41,5 @@ This is a portfolio site that feels like visiting Satriko's room. The room is a 
 
 ## What's next
 
-1. Work through the **Launch checklist** in the repository `README.md` (public PDF, real domain, optional music and hobby content, poster re-capture, real-device checks, deploy). Content status is in the [content checklist](05-content.md#content-checklist); missing hobby content isn't blocking, since those panels have cozy placeholders.
+1. Follow [docs/maintenance.md](../maintenance.md) for content updates, the deploy and the remaining real-device checks (the README is a public project overview, decision #70). Content status is in the [content checklist](05-content.md#content-checklist); missing hobby content isn't blocking, since those panels have cozy placeholders.
 2. Phase 2 (PC terminal and Oyen antics) gets its own plan after launch.

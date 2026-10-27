@@ -57,7 +57,7 @@ describe('content', () => {
       helpContent,
       remoteWork,
       site,
-      // Hobby content is empty until Satriko fills it in (launch checklist item 6).
+      // Hobby content is empty until Satriko fills it in (docs/maintenance.md, Content).
       gaming,
       travelPins,
       hikes,

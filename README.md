@@ -1,6 +1,6 @@
 # Satriko's Room
 
-A portfolio site presented as a cozy 3D room: visitors explore Satriko's desk, shelves and gadgets, and each object opens a part of his work and story.
+My portfolio, built as a cozy 3D room. Instead of scrolling through a page, you look around my room and click on things: the monitor shows my work experience, the bookshelf my skills, the TV the games I've been playing, and so on. Oyen, my orange cat, walks around and gives hints.
 
 **Live:** [satriko-room.vercel.app](https://satriko-room.vercel.app)
 
@@ -8,58 +8,79 @@ A portfolio site presented as a cozy 3D room: visitors explore Satriko's desk, s
 | --- | --- |
 | ![The room by day: desk under a sunny window, bookshelf, TV, Indonesia map and Oyen the cat on the rug](public/poster/room-day.webp) | ![The same room at night with the lamps on](public/poster/room-night.webp) |
 
-Clicking an object opens its panel, here the monitor's Work experience:
-
 ![The Work experience panel open over the blurred room, listing each job as a file with its highlights and tools](docs/screenshots/experience-panel.webp)
 
-Built with Next.js 16, React 19, TypeScript, Three.js (React Three Fiber and drei), Tailwind CSS 4, Zustand and Motion.
+## What's in the room
 
-Docs: see `docs/design/README.md` (design docs, synced with the code) and `docs/plans/` (implementation plan).
+| Click on | To see |
+| --- | --- |
+| Photo frame on the desk | About me |
+| Monitor | Work experience |
+| Whiteboard | Projects |
+| Bookshelf | Skills, and where I used each one |
+| Frames on the wall | Education |
+| TV | Games I've played recently on PlayStation |
+| Indonesia map | Places I've travelled to |
+| Backpack and boots | Mountains I've hiked |
+| Dive tank | My dive log |
+| Three wall clocks | Remote work: my time zone next to Singapore's and Abu Dhabi's |
+| Mailbox | Contact |
+| Printer | Resume, with a PDF download |
 
-## Commands
+A few small things to find:
 
-Node 24 via `nvm use` (`.nvmrc`; `engines` requires Node >= 22.22) and yarn.
+- The window shows the real sky in Bogor, my hometown, so it's dark at night there. Bogor is known as the City of Rain, so sometimes it rains, and clicking the umbrella stand calls the rain.
+- The light switch turns the room to night mode.
+- The radio plays a lofi loop, and objects make small sounds when you hover over or click them.
+- Oyen naps at night and talks to you about whatever you open.
 
-- `yarn dev` / `yarn build` / `yarn start`: develop, build, serve the production build
-- `yarn test` / `yarn lint` / `yarn typecheck` / `yarn prettier`: unit tests, ESLint, types, formatting
-- `yarn e2e`: Playwright suite (builds and starts the site itself; set `PLAYWRIGHT_BASE_URL` to test a deployment instead)
-- `yarn e2e:ui`: the same suite in Playwright's UI mode
-- `yarn poster`: re-capture `public/poster/*` (day, night, OG) from the running site (start it first with `yarn start`; `POSTER_BASE_URL` overrides the address)
-- `yarn budgets`: check the asset and JS size budgets (run `yarn build` first)
-- `yarn analyze`: bundle analysis with `next analyze`; `yarn analyze:export` exports its data
-- `yarn map:build`: rebuild the Indonesia map data from `world-atlas`
-- `yarn audio:convert`: convert CC0 `.ogg` sources in `public/audio` to the shipped MP3s
-- `yarn games:sync`: refresh the Gaming panel's PlayStation snapshot (needs `PSN_NPSSO` in `.env.local`; see launch step 6)
+On a phone the room fits the screen, and a phone-style menu reaches every section. Every panel also has its own link (for example [/experience](https://satriko-room.vercel.app/experience)), and its text is in the page HTML, so it works for search engines and screen readers too.
 
-## Launch checklist (for Satriko)
+## Tech stack
 
-The code is done. These items need Satriko before the production launch. Paths are relative to the repo root.
+- **Framework:** Next.js 16 (App Router, static pages), React 19, TypeScript
+- **3D:** Three.js with React Three Fiber and drei. Every object in the room is built in code from simple shapes; there are no 3D model files.
+- **UI:** Tailwind CSS 4, Radix UI, Motion for animation, Lucide icons
+- **State:** Zustand
+- **Testing:** Vitest and Testing Library for unit tests, Playwright for end-to-end tests, axe for accessibility checks
+- **Hosting:** Vercel
 
-1. **Public CV PDF (checklist C5): done.** `public/resume/Satriko-Aditya-Resume.pdf` is the CV **without the referee page** (added 2026-10-22). The phone number is allowed in it (decision #51). After replacing it, check that no referee details came back (must print `0`; `pdftotext` comes with `brew install poppler`):
-   `pdftotext public/resume/Satriko-Aditya-Resume.pdf - | grep -ciE "referee|Sugeng|Gilang|Fadel|Zaidan"`
-2. **Production domain (C18): done.** `url` in `src/constants/site.ts` is `https://satriko-room.vercel.app` (2026-10-27, decision #68). The sitemap, robots, canonical URLs, Open Graph URLs and JSON-LD all derive from it. If a custom domain comes later, change `url`, rebuild and redeploy. Verify: `yarn build`, then `curl -s localhost:3000/sitemap.xml` (after `yarn start`) lists the domain.
-3. **Posters in daylight: done.** Re-captured on 2026-10-22 after the room was regrouped (decision #48). That run was in the evening, so a one-off copy of the poster script pinned the browser clock to 13:00 WIB (Playwright `page.clock.setFixedTime`; `yarn poster` itself uses the real time), and the day poster still shows a day sky. After any layout change, re-run `yarn build && yarn start`, then `yarn poster` in another shell, during Bogor daytime.
-4. **Real-device checks.** Lighthouse Performance under headless SwiftShader was 39 and is not representative. Test iPhone Safari and a mid-range Android: drag and pinch within limits, tags tappable, bottom bar, sheet swipe-to-close, at least 30 fps (or the automatic drop to the low tier). Also run Lighthouse on the production URL (Accessibility and SEO >= 95 on `/experience`).
-5. **Music track (C17): done.** The radio plays a 90 s loop of "Lofi Restaurant" by alex-morgan on Pixabay (Pixabay Content License; Pixabay labels it AI-generated). To swap it, run `yarn music:loop <licensed-track.mp3> [startSeconds] [durationSeconds]`, then update its row in `CREDITS.md` and the Help credits in `src/content/help.ts`. `yarn budgets` keeps the loop at most 1.5 MB.
-6. **Optional: hobby and project content (C10 to C13, C20).** Games come from `yarn games:sync`: put `PSN_NPSSO=...` (copied from `https://ca.account.sony.com/api/v1/ssocookie` after signing in at playstation.com) in `.env.local`, run it, then commit `src/content/gaming.snapshot.json` and `public/images/gaming/`; renew the NPSSO about every 60 days ([05](docs/design/05-content.md#gaming-gaming-tv)). Indonesia pins, hikes and dives go in `src/content/travel.ts`, `hiking.ts` and `diving.ts`; projects are in `src/content/projects.ts` (seven so far); photos and screenshots go in `public/images/<section>/`. Empty ones show the "Oyen is still sorting these photos..." state. Verify: `yarn test && yarn build`, then open the panel.
-7. **Optional decisions.** Wording for skills with no job link is the default `'Side projects & learning'` (`UNLINKED_SKILL_LABEL` in `src/content/skills.ts`); analytics is none (C19).
-8. **Final check before deploying:** `yarn lint && yarn typecheck && yarn test && yarn build && yarn budgets && yarn e2e`. The content test (`src/content/content.test.ts`) fails if a phone number or referee name appears in any file under `src/content/` (including Oyen's lines, the Help text and the hobby sections) or in `src/constants/site.ts`. It does not check the PDF (item 1 has its own check).
+All the text on the site (jobs, skills, trips, hikes, dives) lives in typed files under `src/content/`, so updating the site mostly means editing data, not components.
 
-Then deploy (below).
+## Running it locally
 
-## Deploy
+You need Node 24 (there's an `.nvmrc`) and Yarn.
 
-Vercel, static output, no environment variables.
+```sh
+yarn install
+yarn dev
+```
 
-1. In Vercel choose **Add New > Project** and import this git repository. The framework preset **Next.js** is detected automatically; the build command is `yarn build`.
-2. In the project settings set **Node.js Version** to **24** (matches `.nvmrc`; `package.json` `engines` says `>=22.22`).
-3. `vercel.json` already sets `Cache-Control: public, max-age=86400, stale-while-revalidate=604800` for `/audio`, `/poster` and `/images` (file names are not versioned, so no `immutable`).
-4. The site runs on the Vercel subdomain `https://satriko-room.vercel.app`, which is `site.url` (`src/constants/site.ts`). For a custom domain, add it in the Vercel project, put it in `site.url`, commit, and redeploy so the sitemap, canonical URLs and OG tags use it.
-5. After the deploy, from this repo:
-   - `PLAYWRIGHT_BASE_URL=https://<your-deployment> yarn e2e` runs the Playwright suite against the deployment (no local server is started). The visual check has a macOS-only baseline, so it can fail on first run elsewhere.
-   - Share a link such as `/experience` in https://www.opengraph.xyz and confirm the title, description and image.
-   - Run Lighthouse on the production URL.
+Then open <http://localhost:3000>.
+
+Other useful commands:
+
+| Command | What it does |
+| --- | --- |
+| `yarn build` / `yarn start` | Build and serve the production site |
+| `yarn test` | Unit tests |
+| `yarn e2e` | End-to-end tests with Playwright |
+| `yarn lint` / `yarn typecheck` | ESLint and TypeScript checks |
+| `yarn budgets` | Check JS and asset sizes after a build |
+| `yarn poster` | Re-capture the day and night screenshots from a running site |
+
+## Project structure
+
+```text
+src/
+  app/          routes (one dynamic route serves the room and every panel)
+  components/   UI in atomic design (atoms, molecules, organisms, templates, pages), plus three/ for the 3D room
+  content/      everything the site says
+  constants/    sections, room layout, time zones and site settings
+  hooks/, store/, utils/, models/
+docs/design/    the design docs I wrote before building it, kept in sync with the code
+```
 
 ## Credits
 
-Fonts, the Indonesia outline and the sound effects are listed with their sources and licenses in `CREDITS.md`.
+Fonts, the Indonesia map outline, the sound effects and the music are listed with their sources and licenses in [CREDITS.md](CREDITS.md).
