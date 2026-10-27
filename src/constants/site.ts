@@ -1,7 +1,7 @@
 export const site = {
   name: 'Satriko Aditya',
   shortName: 'Satriko',
-  title: 'Full Stack Engineer',
+  brand: "Satriko's Room",
   location: 'Bogor, Indonesia',
   email: 'satrikoaditya@gmail.com',
   linkedin: 'https://www.linkedin.com/in/satriko-aditya-0313631ab/',

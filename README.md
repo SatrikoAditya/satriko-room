@@ -1,6 +1,6 @@
 # Satriko's Room
 
-My portfolio, built as a cozy 3D room. Instead of scrolling through a page, you look around my room and click on things: the monitor shows my work experience, the bookshelf my skills, the TV the games I've been playing, and so on. Oyen, my orange cat, walks around and gives hints.
+The playful side of my portfolio, built as a cozy 3D room. My main site is [satriko.dev](https://satriko.dev). Instead of scrolling through a page, you look around my room and click on things: the monitor shows my work experience, the bookshelf my skills, the TV the games I've been playing, and so on. Oyen, my orange cat, walks around and gives hints.
 
 **Live:** [room.satriko.dev](https://room.satriko.dev)
 

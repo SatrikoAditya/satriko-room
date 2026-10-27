@@ -28,7 +28,7 @@ export async function generateMetadata({
   const slug = resolve((await params).section)
   if (slug === undefined) return {}
   const base = {
-    openGraph: { images: ['/poster/og.png'] },
+    openGraph: { siteName: site.brand, images: ['/poster/og.png'] },
     twitter: { card: 'summary_large_image' as const },
   }
   if (slug === null) return { ...base, alternates: { canonical: '/' } }

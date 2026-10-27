@@ -36,7 +36,7 @@ describe('sections registry', () => {
       expect(s.label.length).toBeGreaterThan(0)
       expect(s.icon).toBeTypeOf('object')
       expect(s.cameraPose.zoomFactor).toBeGreaterThan(1)
-      expect(s.seo.title).toContain('Satriko Aditya')
+      expect(s.seo.title).toContain("Satriko's Room")
       expect(s.seo.description.length).toBeGreaterThan(20)
     }
   })

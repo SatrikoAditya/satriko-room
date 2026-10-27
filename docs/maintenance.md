@@ -27,10 +27,10 @@ yarn lint && yarn typecheck && yarn test && yarn build && yarn budgets && yarn e
 Static output, no environment variables. Pushing to `main` deploys.
 
 - **Project settings:** framework preset Next.js, build command `yarn build`, Node.js Version 24 (matches `.nvmrc`).
-- **Domain:** `https://satriko-room.vercel.app` is `site.url` in `src/constants/site.ts` (decision #68). The sitemap, robots, canonical URLs, Open Graph URLs and JSON-LD all derive from it. For a custom domain, add it in Vercel, change `site.url`, and redeploy.
+- **Domain:** `https://room.satriko.dev` is `site.url` in `src/constants/site.ts` (decision #71); the main, professional site `https://satriko.dev` is `site.mainUrl`. The sitemap, robots, canonical URLs and Open Graph URLs derive from `site.url`. `vercel.json` redirects the old `satriko-room.vercel.app` to it.
 - **Caching:** `vercel.json` sets `Cache-Control: public, max-age=86400, stale-while-revalidate=604800` for `/audio`, `/poster` and `/images` (file names are not versioned, so no `immutable`).
 - **After a deploy:**
-  - `PLAYWRIGHT_BASE_URL=https://satriko-room.vercel.app yarn e2e` runs the Playwright suite against the live site. The visual check has a macOS-only baseline.
+  - `PLAYWRIGHT_BASE_URL=https://room.satriko.dev yarn e2e` runs the Playwright suite against the live site. The visual check has a macOS-only baseline.
   - Paste a link such as `/experience` into <https://www.opengraph.xyz> and check the title, description and image.
   - Run Lighthouse on the live URL (Accessibility and SEO at least 95 on `/experience`).
 

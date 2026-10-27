@@ -30,7 +30,7 @@ for (const [slug, title, text] of sections) {
       .replace(/&amp;/g, '&')
     expect(decoded).toContain(title)
     expect(decoded).toMatch(text)
-    expect(html).toMatch(/<title>[^<]*Satriko Aditya<\/title>/)
+    expect(html).toMatch(/<title>[^<]*Satriko(&#x27;|&#39;|')s Room<\/title>/)
     await page.goto(`/${slug}`)
     await expect(page.getByRole('dialog', { name: title })).toBeVisible()
     await expect(page.getByRole('dialog')).toContainText(text)
