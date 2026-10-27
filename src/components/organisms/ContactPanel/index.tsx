@@ -36,6 +36,11 @@ export default function ContactPanel({
             GitHub
           </Button>
         )}
+        {content.website && (
+          <Button variant="ghost" href={content.website}>
+            satriko.dev
+          </Button>
+        )}
       </div>
       <p className="text-ink-muted">{content.references}</p>
     </div>

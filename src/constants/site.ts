@@ -6,6 +6,7 @@ export const site = {
   email: 'satrikoaditya@gmail.com',
   linkedin: 'https://www.linkedin.com/in/satriko-aditya-0313631ab/',
   github: 'https://github.com/SatrikoAditya',
-  url: 'https://satriko-room.vercel.app',
+  url: 'https://room.satriko.dev',
+  mainUrl: 'https://satriko.dev',
   resumePdf: '/resume/Satriko-Aditya-Resume.pdf',
 } as const

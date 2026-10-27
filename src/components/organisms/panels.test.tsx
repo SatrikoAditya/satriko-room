@@ -60,6 +60,10 @@ describe('panels', () => {
       'href',
       'https://github.com/SatrikoAditya',
     )
+    expect(screen.getByRole('link', { name: 'satriko.dev' })).toHaveAttribute(
+      'href',
+      'https://satriko.dev',
+    )
     expect(
       screen.getByText('References available on request.'),
     ).toBeInTheDocument()

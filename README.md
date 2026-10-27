@@ -2,7 +2,7 @@
 
 My portfolio, built as a cozy 3D room. Instead of scrolling through a page, you look around my room and click on things: the monitor shows my work experience, the bookshelf my skills, the TV the games I've been playing, and so on. Oyen, my orange cat, walks around and gives hints.
 
-**Live:** [satriko-room.vercel.app](https://satriko-room.vercel.app)
+**Live:** [room.satriko.dev](https://room.satriko.dev)
 
 | Day | Night |
 | --- | --- |
@@ -34,7 +34,7 @@ A few small things to find:
 - The radio plays a lofi loop, and objects make small sounds when you hover over or click them.
 - Oyen naps at night and talks to you about whatever you open.
 
-On a phone the room fits the screen, and a phone-style menu reaches every section. Every panel also has its own link (for example [/experience](https://satriko-room.vercel.app/experience)), and its text is in the page HTML, so it works for search engines and screen readers too.
+On a phone the room fits the screen, and a phone-style menu reaches every section. Every panel also has its own link (for example [/experience](https://room.satriko.dev/experience)), and its text is in the page HTML, so it works for search engines and screen readers too.
 
 ## Tech stack
 
