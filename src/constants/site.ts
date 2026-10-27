@@ -6,6 +6,6 @@ export const site = {
   email: 'satrikoaditya@gmail.com',
   linkedin: 'https://www.linkedin.com/in/satriko-aditya-0313631ab/',
   github: 'https://github.com/SatrikoAditya',
-  url: 'https://example.com', // replaced by the real domain in Task 28
+  url: 'https://satriko-room.vercel.app',
   resumePdf: '/resume/Satriko-Aditya-Resume.pdf',
 } as const

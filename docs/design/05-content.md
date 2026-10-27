@@ -390,7 +390,7 @@ Synced with `src/constants/sections.ts` (the single source). Section titles foll
 | C15 | Oyen's markings (stripes? white paws/chest? eye color?) | 3D Oyen, loader SVG | No | Default: orange tabby, cream chest |
 | C16 | Review Oyen's lines | Speech bubble | No | Drafts above |
 | C17 | Music track(s) for the radio | Radio | No | ✅ Provided: a 90 s loop of "Lofi Restaurant" by alex-morgan on Pixabay (Pixabay Content License; labelled AI-generated) in `public/audio/music-cozy.mp3`, recorded in `CREDITS.md` |
-| C18 | Domain name | Deployment, canonical URLs | **Yes** (before the production launch) | ⏳ Pending. `site.url` is still the placeholder `https://example.com` in `src/constants/site.ts` |
+| C18 | Domain name | Deployment, canonical URLs | **Yes** (before the production launch) | ✅ Provided (2026-10-27, decision #68): `site.url` is `https://satriko-room.vercel.app` in `src/constants/site.ts` |
 | C19 | Analytics: yes or no (e.g. Vercel Web Analytics) | Deployment | No | Decision: none (default) |
 | C20 | Projects: title, kind, role, summary, tech, links, screenshot, with an NDA check on work ones | Projects | No | ✅ Provided on 2026-10-23 from Satriko's portfolio: seven projects in `src/content/projects.ts` (Sativa Trip Indonesia added the same day), screenshots in `public/images/projects/` |
 

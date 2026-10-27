@@ -61,7 +61,7 @@
   - `email`; `sameAs`: LinkedIn and GitHub URLs (checklist C3/C4)
   - `worksFor`: Jitera
   - `alumniOf`: computed from the education content, completed programs only (Hacktiv8, SMK Negeri 3 Bogor; BINUS is excluded while it is "present")
-- **The canonical domain** is set once the domain is decided (checklist C18). Until then `site.url` is the placeholder `https://example.com`, which must be replaced before the production launch.
+- **The canonical domain** is `https://satriko-room.vercel.app` (checklist C18, decision #68), set in `site.url`.
 
 ## Performance budgets
 
@@ -124,7 +124,7 @@ The axe suite (`a11y.spec.ts`) scans all 13 routes (`/` and the 12 sections) in 
   - **Production** from the main branch.
 - **Caching:** hashed JS/CSS files are cached indefinitely by Next. The files in `public/` are **not** versioned (`/audio`, `/poster`, `/images`), so `vercel.json` gives them `Cache-Control: public, max-age=86400, stale-while-revalidate=604800` (one day fresh, one week stale-while-revalidate) and not `immutable`. If a file ever gets versioned names, it can be made immutable.
 - **Environment variables:** none required (no backend). `PSN_NPSSO` lives only in Satriko's `.env.local` for `yarn games:sync` and never goes on Vercel (decision #52).
-- **Domain:** to be decided (checklist C18). The canonical URL and sitemap base come from the single constant `site.url` in `src/constants/site.ts`; set it to the production domain and redeploy.
+- **Domain:** the Vercel subdomain `satriko-room.vercel.app` for now (checklist C18, decision #68). The canonical URL and sitemap base come from the single constant `site.url` in `src/constants/site.ts`; if a custom domain replaces it, change it there and redeploy.
 - **Analytics:** none by default. Vercel Web Analytics is the option if wanted (checklist C19).
 - **Vercel setup:** import the git repository; framework preset Next.js (auto-detected); build command `yarn build`; Node.js 24 in the project settings (`.nvmrc` says 24, and `engines.node` is `>=22.22`); no environment variables. Then add the domain, set `site.url`, and redeploy. The step-by-step version is in the README "Deploy" section.
 - **Post-deploy checks:** `PLAYWRIGHT_BASE_URL=https://<deployment> yarn e2e` (when set, `playwright.config.ts` uses it as `baseURL` and does not start a local server); an OG preview check with https://www.opengraph.xyz; Lighthouse on the production URL.
